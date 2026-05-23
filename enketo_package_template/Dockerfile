@@ -11,10 +11,12 @@
 # =============================================================================
 
 # ── Stage 1: build ───────────────────────────────────────────────────────────
-FROM node:22-bookworm-slim AS build
+# Enketo Express 6.x requires Node 14-16 and has legacy deps (node-sass,
+# phantomjs) needing build tools + bzip2 + fontconfig.
+FROM node:16-bullseye AS build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git python3 make g++ ca-certificates \
+        git python3 make g++ ca-certificates bzip2 fontconfig libfontconfig1 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv
@@ -45,7 +47,7 @@ RUN npm prune --omit=dev
 
 
 # ── Stage 2: runtime ─────────────────────────────────────────────────────────
-FROM node:22-bookworm-slim
+FROM node:16-bullseye-slim
 
 # tini come PID 1 per gestire correttamente i segnali (CTRL-C / docker stop)
 RUN apt-get update && apt-get install -y --no-install-recommends tini \

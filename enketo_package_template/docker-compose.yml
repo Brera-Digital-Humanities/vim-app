@@ -11,6 +11,9 @@
 #   docker compose down
 # =============================================================================
 
+# 'version' kept for docker-compose v1 compatibility (Compose v2 ignores it).
+version: "3.7"
+
 services:
   redis_main:
     image: redis:7-alpine

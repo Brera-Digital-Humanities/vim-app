@@ -40,3 +40,4 @@ npm-debug.log*
 enketo_package_template/.env
 enketo_package_template/config/config.json
 # (i .example sono committati)
+enketo_preview.html
