@@ -64,7 +64,7 @@ function renderPage(idx) {
   area.innerHTML = '';
 
   // Header sezione con nome, nota obbligatorietà e contatore
-  const isRequired = idx < COMPLETE_THRESHOLD;
+  const isRequired = pageHasRequiredFields(pg);
   const hdr = document.createElement('div');
   hdr.className = 'form-page-header';
   hdr.innerHTML = `
@@ -441,62 +441,43 @@ function attachListeners(card, q) {
 
 // --- completion gate ---
 
-/**
- * COMPLETE_THRESHOLD — Numero di sezioni obbligatorie.
- * Il bottone "Completato" si sblocca quando tutti i campi required
- * nelle sezioni 0..(COMPLETE_THRESHOLD-1) sono compilati.
- *
- * Sezioni obbligatorie (prime 5):
- *   0. Nomi dell'espressione
- *   1. Materiale raccolto
- *   2. Classificazione
- *   3. Il portatore
- *   4. Consenso FPIC
- */
-const COMPLETE_THRESHOLD = 5;
+// Required flag comes from Kobo (sync writes "yes"/"").
+function isFieldRequired(f) { return f.required === 'yes' || f.required === 'true'; }
+
+// Empty check; media fields keep their value in mediaFiles, not answers.
+function isFieldEmpty(f) {
+  if (/^(audio|image|video|file)$/.test(f.type) && mediaFiles[f.name]) return false;
+  const v = answers[f.name];
+  return v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0);
+}
+
+// A section has obligations only via its currently-visible required fields.
+function pageHasRequiredFields(pg) {
+  return pg.fields.some(f => isFieldRequired(f) && isVisible(f.name));
+}
 
 /**
- * updateCompleteBtn() — Valuta se il bottone "Completato" può essere abilitato.
- *
- * Logica:
- *   1. Itera le prime COMPLETE_THRESHOLD sezioni
- *   2. Per ogni campo required E visibile (isVisible = true)
- *   3. Verifica che answers[fieldName] non sia vuoto
- *   4. Se tutti compilati → abilita btn-complete (classe .enabled)
- *   5. Altrimenti → disabilita
- *
- * Viene chiamato da attachListeners(), handleMedia() e renderPage().
+ * updateCompleteBtn() — Enable "Completato" when every required AND visible
+ * field (in any section) is filled. Conditional fields hidden by their
+ * `relevant` rule are skipped (as on Kobo). Driven by the Kobo `required`
+ * flag, independent of section order.
+ * Called by attachListeners(), handleMedia() and renderPage().
  */
 function updateCompleteBtn() {
   const btn = document.getElementById('btn-complete');
   if (!btn) return;
 
   let allFilled = true;
-
-  for (let pi = 0; pi < COMPLETE_THRESHOLD; pi++) {
-    const pg = PAGES[pi];
-    if (!pg) break;
-
+  for (const pg of PAGES) {
     for (const f of pg.fields) {
-      if (!isVisible(f.name)) continue; // Salta campi nascosti dalle condizioni
-      const isReq = f.required === 'true' || f.required === 'yes';
-      if (!isReq) continue;
-
-      const val   = answers[f.name];
-      const empty = val === undefined || val === null || val === '' ||
-                    (Array.isArray(val) && val.length === 0);
-      if (empty) { allFilled = false; break; }
+      if (!isFieldRequired(f) || !isVisible(f.name)) continue;
+      if (isFieldEmpty(f)) { allFilled = false; break; }
     }
     if (!allFilled) break;
   }
 
-  if (allFilled) {
-    btn.disabled = false;
-    btn.classList.add('enabled');
-  } else {
-    btn.disabled = true;
-    btn.classList.remove('enabled');
-  }
+  btn.disabled = !allFilled;
+  btn.classList.toggle('enabled', allFilled);
 }
 
 /**

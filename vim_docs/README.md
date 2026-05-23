@@ -108,21 +108,26 @@ variabili devono essere viste dai file successivi).
 
 Il form è organizzato in **9 sezioni** (`PAGES`), con **un campo per schermata**.
 
-| # | Nome interno | IT | EN | AR | Obbligatoria |
+Ordine e obbligatorietà vengono da Kobo (rigenerati da `npm run sync`).
+Ordine attuale (può cambiare su Kobo):
+
+| # | Nome interno | IT | EN | AR | Campi obbligatori |
 |---|-------------|----|----|-----|:---:|
 | 1 | `pag_nomi` | Nomi dell'espressione | Names of the expression | أسماء التعبير | ✓ |
-| 2 | `sez_materiali` | Materiale raccolto | Collected material | المادة المجمّعة | ✓ |
-| 3 | `pag_classif` | Classificazione | Classification | التصنيف | ✓ |
-| 4 | `pag_portatore` | Il portatore | The bearer | حامل التراث | ✓ |
+| 2 | `pag_classif` | Classificazione | Classification | التصنيف | ✓ |
+| 3 | `pag_portatore` | Il portatore | The bearer | حامل التراث | ✓ |
+| 4 | `sez_materiali` | Materiale raccolto | Collected material | المادة المجمّعة | ✓ |
 | 5 | `pag_fpic` | Consenso FPIC | FPIC Consent | موافقة FPIC | ✓ |
 | 6 | `pag_evento` | Evento di raccolta | Collection event | حدث الجمع | — |
 | 7 | `pag_rischio` | Stato di rischio | Risk assessment | تقييم الخطر | — |
 | 8 | `pag_descriz` | Descrizione espressione | Description | وصف التعبير | — |
 | 9 | `pag_note` | Note raccoglitore | Collector's notes | ملاحظات الجامع | — |
 
-Il bottone **Completato** si sblocca solo quando tutte le sezioni 1-5
-(le obbligatorie) hanno tutti i campi `required="yes"` compilati.
-La soglia è definita da `COMPLETE_THRESHOLD = 5` in `screens/form/form.js`.
+Il bottone **Completato** si sblocca quando **tutti i campi obbligatori e
+attualmente visibili** (in qualsiasi sezione) sono compilati. L'obbligatorietà
+viene da Kobo (`required`); i campi condizionali nascosti dalla loro regola
+`relevant` non bloccano. Logica in `updateCompleteBtn()` (`screens/form/form.js`),
+indipendente dall'ordine delle sezioni.
 
 ---
 
@@ -165,8 +170,8 @@ Avvio
             └─ Moduli inviati
 ```
 
-*Completato disponibile solo dopo aver compilato tutti i campi
-obbligatori delle prime 5 sezioni.
+*Completato disponibile quando tutti i campi obbligatori e visibili
+(da Kobo) sono compilati — vedi sezione "Sezioni del form".
 
 ---
 
@@ -199,7 +204,7 @@ Variabili globali che mantengono lo stato durante una sessione:
 | `prevPage()` | Torna al campo precedente |
 | `buildQuestion(q)` | Genera HTML per un campo singolo |
 | `buildMediaField(q, kind)` | Doppio bottone "Registra" / "Carica" per audio/video/foto |
-| `updateCompleteBtn()` | Abilita/disabilita il bottone "Completato" in base a `COMPLETE_THRESHOLD` |
+| `updateCompleteBtn()` | Abilita/disabilita "Completato": tutti i campi required + visibili compilati |
 | `isVisible(fieldName)` | Risolve i campi condizionali tramite `evalRelevant` |
 | `evalRelevant(expr)` | Interpreta espressioni XLSForm |
 | `saveDraft()` | Salva bozza in memoria + mostra modal di conferma |
