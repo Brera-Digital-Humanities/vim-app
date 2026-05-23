@@ -1,0 +1,60 @@
+// VIM — outer page layout (hero, phone-wrap)
+
+
+// Intestazione sopra il telefono
+.hero {
+  width: 100%;
+  max-width: var(--max-w);
+  padding: 18px 0 16px;
+  text-align: center;
+  position: relative;
+
+  // Asterisco decorativo sopra il titolo
+  &::before {
+    content: '✦';
+    display: block;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    letter-spacing: .3em;
+  }
+
+  h1 {
+    font-family: $font-serif;
+    font-size: clamp(2.6rem, 9vw, 4rem); // Responsive: min 2.6rem, ideale 9vw, max 4rem
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: .02em;
+    color: var(--ink);
+
+    // "valigia" in gradiente brand
+    em {
+      font-style: italic;
+      font-weight: 400;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  // Linea divisoria sotto il titolo
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+    margin: 20px auto;
+    opacity: .5;
+  }
+}
+
+// Wrapper centrato del telefono
+.phone-wrap {
+  width: 100%;
+  max-width: $phone-w;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+

@@ -1,0 +1,51 @@
+# =============================================================================
+# VIM — Enketo Express stack via Docker Compose
+#
+# Uso:
+#   cp config/config.json.docker.example config/config.json
+#   nano config/config.json    # → inserisci TOKEN Kobo + encryption key
+#   docker compose up -d --build
+#   docker compose logs -f enketo
+#
+# Per fermare:
+#   docker compose down
+# =============================================================================
+
+services:
+  redis_main:
+    image: redis:7-alpine
+    container_name: vim_redis_main
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_main_data:/data
+    restart: unless-stopped
+    # Niente porte esposte all'host: usato solo internamente da enketo
+
+  redis_cache:
+    image: redis:7-alpine
+    container_name: vim_redis_cache
+    restart: unless-stopped
+
+  enketo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Versione di Enketo Express da clonare (master | tag | branch)
+        ENKETO_REF: master
+    container_name: vim_enketo
+    depends_on:
+      - redis_main
+      - redis_cache
+    # HOST_PORT viene letta dal file .env (vedi .env.example).
+    # Default 8005. Cambiarla se la porta è occupata sull'host.
+    ports:
+      - "${HOST_PORT:-8005}:8005"
+    volumes:
+      # La config "vive" sull'host — modifiche immediate senza rebuild
+      - ./config/config.json:/srv/enketo-express/config/config.json:ro
+    restart: unless-stopped
+
+volumes:
+  redis_main_data:
+    name: vim_redis_main_data

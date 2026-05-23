@@ -1,0 +1,56 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: FORM
+           Area compilazione. Una domanda per schermata.
+           
+           #form-area: scrollabile, popolato da renderPage() in navigation.js
+           
+           Struttura di ogni domanda (generata da buildQuestion()):
+             .form-page-header  → sezione + contatore + nota obbligatorietà
+             .q-card            → domanda singola con animazione slide
+               .q-text          → testo domanda
+               .q-hint          → hint opzionale
+               [input/choices/media]
+           
+           Bottoni:
+             .form-nav          → riga principale: ← + Avanti
+             .form-nav-row      → riga secondaria: Salva bozza + Completato
+             
+           Logica completato:
+             btn-complete.enabled si sblocca quando tutti i campi required
+             delle prime 5 sezioni (COMPLETE_THRESHOLD) sono compilati.
+             Calcolato da updateCompleteBtn() ad ogni risposta.
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-form">
+
+        <!-- Area domande (scrollabile) -->
+        <div class="form-area" id="form-area">
+          <!-- Contenuto generato dinamicamente da renderPage() -->
+        </div>
+
+        <!--
+          Riga nav principale.
+          btn-back: hidden sulla prima domanda della prima sezione.
+          btn-next: "Avanti" nelle sezioni intermedie, hidden sull'ultima domanda.
+          La funzione nextField() gestisce l'avanzamento campo per campo
+          e il passaggio alla sezione successiva.
+        -->
+        <div class="form-nav" id="form-nav" style="display:none">
+          <button class="btn btn-back" id="btn-back" onclick="prevPage()">←</button>
+          <button class="btn btn-next" id="btn-next" onclick="nextField()">Avanti</button>
+        </div>
+
+        <!--
+          Riga nav secondaria.
+          Sempre visibile durante la compilazione (mostrata da startFillForm()).
+          
+          btn-draft:    apre modal bottom-sheet con opzione home o rimani
+          btn-complete: disabled finché le prime 5 sezioni non sono complete,
+                        poi diventa verde (classe .enabled)
+        -->
+        <div class="form-nav-row" id="form-nav-extra" style="display:none">
+          <button class="btn-draft" id="btn-draft" onclick="saveDraft()">Salva bozza</button>
+          <button class="btn-complete" id="btn-complete" onclick="markComplete()">Completato</button>
+        </div>
+      </div>
+
+

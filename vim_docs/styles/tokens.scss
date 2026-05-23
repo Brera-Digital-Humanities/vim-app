@@ -1,0 +1,35 @@
+// VIM — design tokens (CSS variables, SCSS vars)
+
+
+// — Variabili SCSS (usate solo nel file SCSS) —
+$font-serif:   'Cormorant Garamond', serif;
+$font-sans:    'DM Sans', sans-serif;
+$font-mono:    'DM Mono', monospace;
+$font-arabic:  'Noto Naskh Arabic', 'DM Sans', sans-serif;
+
+$phone-w:      390px;
+$phone-h:      780px;
+$phone-radius: 44px;
+
+$transition-fast:   .15s ease;
+$transition-medium: .2s ease;
+$transition-spring: .28s cubic-bezier(.22,.68,0,1.2);
+
+// — Variabili CSS (runtime, override da JS per temi dinamici) —
+:root {
+  // Palette cromatica
+  --bg:       #f7f4ef;   // Sfondo pagina — carta avorio
+  --surface:  #ffffff;   // Superfici elevate (card, modal)
+  --border:   #e0d9ce;   // Bordi, divisori
+  --ink:      #1c1814;   // Testo principale, bottoni primari
+  --muted:    #8a8070;   // Testo secondario, placeholder
+  --accent:   #c4763a;   // Arancio terracotta — colore brand
+  --accent2:  #7a9e8a;   // Verde salvia — conferma, completato
+  --error:    #c0392b;   // Rosso errore
+
+  // Geometria
+  --radius:   12px;
+  --max-w:    520px;
+}
+
+

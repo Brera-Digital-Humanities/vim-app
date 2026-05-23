@@ -1,0 +1,31 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: OUTBOX
+           Moduli completati (markComplete()) in attesa di invio.
+           
+           Ogni voce outbox: { answers, mediaFiles, savedAt, label }
+           
+           #outbox-list: popolato da renderOutbox() in navigation.js
+           
+           Azioni per singolo modulo:
+             sendSingle(i)  → doSubmit() in api.js
+             deleteSingle(i) → rimuove dalla coda
+           
+           "Invia tutti" → sendAllOutbox() → loop doSubmit()
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-outbox">
+        <div class="home-screen" id="outbox-list-wrap">
+          <div style="padding:16px;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);" id="outbox-header-label">In attesa di invio</div>
+          <!-- Voci populate da renderOutbox() -->
+          <div id="outbox-list" style="padding:0 16px;display:flex;flex-direction:column;gap:10px;"></div>
+          <div style="padding:16px;">
+            <button
+              onclick="sendAllOutbox()"
+              id="send-all-btn"
+              style="width:100%;padding:13px;border:none;border-radius:10px;background:var(--ink);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;">
+              Invia tutti
+            </button>
+          </div>
+        </div>
+      </div>
+
+

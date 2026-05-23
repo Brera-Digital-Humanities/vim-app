@@ -1,0 +1,29 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: LINGUA
+           Prima schermata mostrata all'avvio (class="screen active").
+           
+           Lingue disponibili: definite in UI_LANGS in navigation.js
+           La lista #lang-list viene popolata dinamicamente da renderLangScreen()
+           
+           Flusso:
+             Avvio → renderLangScreen() popola la lista
+             Utente seleziona lingua → selectedLangIdx aggiornato
+             Clic "Continua" → confirmLanguage() → applyUILang() → goHome()
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen active" id="screen-lang">
+        <div class="lang-screen">
+          <div class="lang-header">
+            <h2 id="lang-header-title">La valigia immateriale</h2>
+            <p id="lang-header-sub">Scegli la lingua · Choose your language</p>
+          </div>
+          <!-- Popolato da renderLangScreen() in navigation.js -->
+          <div class="lang-list" id="lang-list"></div>
+          <div class="lang-confirm-wrap">
+            <button class="lang-confirm" id="lang-confirm-btn" disabled onclick="confirmLanguage()">
+              Continua · Continue
+            </button>
+          </div>
+        </div>
+      </div>
+
+

@@ -1,0 +1,51 @@
+# VIM — build concatenation order (modular layout).
+# Lines are paths relative to vim_docs/. Blank lines and #-comments ignored.
+# Both build_monolith.sh and build_enketo_package.sh read this file.
+#
+# JS order matters: const globals (state, UI_LANGS) must precede use;
+# init.js runs last. function declarations are hoisted, so order among
+# them is irrelevant for calls.
+# HTML partials are inserted into template.html at the <!-- @screens --> marker.
+
+[html]
+screens/lang/lang.html
+screens/home/home.html
+screens/form/form.html
+screens/download/download.html
+screens/outbox/outbox.html
+
+[js]
+i18n/it.js
+i18n/en.js
+i18n/ar.js
+i18n/index.js
+core/state.js
+core/clock.js
+core/i18n-runtime.js
+core/labels.js
+core/relevant.js
+core/router.js
+core/feedback.js
+screens/lang/lang.js
+screens/download/download.js
+screens/form/form.js
+screens/outbox/outbox.js
+core/init.js
+
+[scss]
+styles/tokens.scss
+styles/base.scss
+styles/layout.scss
+styles/phone-shell.scss
+styles/app-bar.scss
+styles/screens-base.scss
+screens/lang/lang.scss
+screens/home/home.scss
+screens/form/form.scss
+screens/download/download.scss
+screens/outbox/outbox.scss
+styles/buttons.scss
+styles/modal.scss
+styles/feedback.scss
+styles/rtl.scss
+styles/responsive.scss

@@ -1,0 +1,172 @@
+<!--
+  =============================================================================
+  VIM — La valigia immateriale
+  02_template.html
+  
+  Template HTML per Enketo Express self-hosted.
+  
+  In Enketo Express il template principale si trova in:
+    enketo-express/app/views/surveys/webform.pug  (formato Pug/Jade)
+  Questo file è la versione HTML equivalente documentata.
+  
+  Per adattarlo a Enketo Express:
+  1. Converti in formato Pug: html2pug 02_template.html > webform.pug
+  2. Sostituisci i blocchi statici con le variabili Enketo (#{title}, etc.)
+  3. Integra il CSS compilato da 01_styles.scss
+  4. Collegare 03_navigation.js e 04_api.js tramite script tag
+  5. Configurare il manifest PWA (05_manifest.json)
+  
+  STRUTTURA SCHERMATE:
+    #screen-lang      → Selezione lingua (prima schermata all'avvio)
+    #screen-home      → Home KoboCollect-style con menu voci
+    #screen-form      → Compilazione form (una domanda per schermata)
+    #screen-download  → Scarica modulo dal server
+    #screen-outbox    → Moduli completati in attesa di invio
+  =============================================================================
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- PWA: collega il manifest per installazione su home screen -->
+  <link rel="manifest" href="/manifest.json"/>
+  <meta name="theme-color" content="#1c1814"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+
+  <title>La valigia immateriale</title>
+
+  <!--
+    Font Google:
+    - Cormorant Garamond: titoli, domande (serif elegante)
+    - DM Sans: interfaccia, bottoni, testi
+    - DM Mono: orologio, pill contatori
+    - Noto Naskh Arabic: testi in arabo (RTL)
+  -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- CSS compilato da 01_styles.scss -->
+  <link rel="stylesheet" href="/styles/vim.css"/>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HERO — Intestazione sopra il telefono
+       Visibile solo su viewport desktop/tablet.
+       Su mobile (max-width: 430px) viene compressa.
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="hero">
+    <!--
+      h1: "La" in weight 300, "valigia" in corsivo con gradiente accent/accent2,
+      "immateriale" in weight 300. Il gradiente è applicato via CSS
+      con background-clip: text.
+    -->
+    <h1>La <em>valigia</em><br>immateriale</h1>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       PHONE WRAP — Centramento del contenitore telefono
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="phone-wrap">
+
+    <!--
+      PHONE SHELL — Cornice iPhone stilizzata
+      - .island: dynamic island (pillola nera in alto)
+      - ::before / ::after CSS: pulsanti laterali decorativi
+      - overflow: hidden garantisce che le schermate non escano dalla cornice
+      - dir="ltr" default, cambiato in "rtl" da JS per l'arabo
+    -->
+    <div class="phone-shell">
+
+      <!-- Dynamic Island -->
+      <div class="island"></div>
+
+      <!-- ─── STATUS BAR ──────────────────────────────────────────────────
+           Orologio + icone sistema (segnale, wifi, batteria)
+           L'orologio (#clock) viene aggiornato ogni 15s da JS (navigation.js)
+      ─────────────────────────────────────────────────────────────────── -->
+      <div class="status-bar">
+        <span class="time" id="clock">9:41</span>
+        <div class="icons">
+          <!-- Icona segnale cellulare (4 barre) -->
+          <svg viewBox="0 0 24 24">
+            <rect x="1" y="16" width="3" height="6" rx="1"/>
+            <rect x="6" y="12" width="3" height="10" rx="1"/>
+            <rect x="11" y="8" width="3" height="14" rx="1"/>
+            <rect x="16" y="4" width="3" height="18" rx="1" opacity=".3"/>
+          </svg>
+          <!-- Icona WiFi -->
+          <svg viewBox="0 0 24 24">
+            <path d="M12 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm0-4.5a6 6 0 0 1 4.24 1.76l-1.42 1.42A4 4 0 0 0 12 15.5a4 4 0 0 0-2.83 1.17L7.76 15.24A6 6 0 0 1 12 13.5zm0-4.5a10.5 10.5 0 0 1 7.42 3.08l-1.42 1.41A8.5 8.5 0 0 0 12 11a8.5 8.5 0 0 0-6 2.49L4.58 12.08A10.5 10.5 0 0 1 12 9z"/>
+          </svg>
+          <!-- Icona batteria -->
+          <svg viewBox="0 0 24 24">
+            <rect x="1" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <rect x="3" y="9" width="12" height="6" rx="1"/>
+            <path d="M20 10v4a2 2 0 0 0 0-4z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ─── APP BAR ─────────────────────────────────────────────────────
+           Barra navigazione app.
+           - #bar-back-btn: freccia indietro (hidden sulla home)
+           - #bar-title: titolo aggiornato da JS in base alla schermata
+           - #lang-btn: bottone cambio lingua (visible solo nel form)
+           - #pill: contatore pagine "1 / 9" (visible solo nel form)
+           - #prog-track / #prog-fill: progress bar lineare
+      ─────────────────────────────────────────────────────────────────── -->
+      <div class="app-bar" id="app-bar">
+        <button
+          id="bar-back-btn"
+          onclick="goHome()"
+          style="display:none;background:none;border:none;cursor:pointer;padding:0;font-size:1.1rem;color:var(--muted);margin-right:4px;">
+          ←
+        </button>
+        <span class="bar-title" id="bar-title">La valigia immateriale</span>
+        <span class="progress-pill" id="pill" style="display:none;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent);border:1px solid rgba(196,118,58,.4);border-radius:20px;padding:2px 8px;">1 / 9</span>
+        <!--
+          Bottone lingua (globo) — appare nell'app bar durante la compilazione
+          come alternativa rapida a cambiare lingua senza tornare alla home
+        -->
+        <button
+          id="lang-btn"
+          onclick="changeLang()"
+          style="display:none;background:none;border:none;cursor:pointer;font-size:.75rem;color:var(--muted);padding:2px 6px;border:1px solid var(--border);border-radius:6px;">
+          🌐
+        </button>
+      </div>
+
+      <!-- Progress track: linea sottile sotto l'app bar -->
+      <div class="progress-track" id="prog-track" style="display:none">
+        <div class="progress-fill" id="prog-fill"></div>
+      </div>
+
+
+      <!-- @screens -->
+      <!-- ─── HOME INDICATOR (barra in fondo) ──────────────────────── -->
+      <div class="nav-bar"><div class="home-ind"></div></div>
+
+    </div><!-- .phone-shell -->
+  </div><!-- .phone-wrap -->
+
+
+  <!--
+    SCRIPT:
+    L'ordine di caricamento è importante.
+    navigation.js deve essere caricato prima di api.js
+    perché api.js usa funzioni definite in navigation.js (showSuccess, showError, tr).
+    
+    In Enketo Express questi script vanno registrati in:
+      enketo-express/app/views/surveys/webform.pug
+    oppure inclusi nel bundle Webpack/Grunt.
+  -->
+  <script src="/js/vim.data.js"></script>      <!-- PAGES e CHOICES hardcoded da XLS -->
+  <script src="/js/vim.navigation.js"></script> <!-- UI, navigazione, rendering form -->
+  <script src="/js/vim.api.js"></script>        <!-- Chiamate API KoboToolbox / Enketo -->
+
+</body>
+</html>

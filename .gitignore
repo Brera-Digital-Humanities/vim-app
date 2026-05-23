@@ -1,0 +1,42 @@
+# =============================================================================
+# CREDENZIALI — non committare mai
+# =============================================================================
+.env
+.env.local
+.env.*.local
+# (.env.example è committato)
+
+# =============================================================================
+# Dipendenze npm (rigenerabili con `npm install`)
+# =============================================================================
+node_modules/
+package-lock.json
+
+# =============================================================================
+# Artefatti generati dagli script di build
+# - valigia_immateriale.html è rigenerabile con `npm run build:monolith`
+# - enketo_package/ è rigenerabile con `npm run build:enketo`
+# - i .bak storici contengono TOKEN compromesso — non committare
+# =============================================================================
+valigia_immateriale.html
+enketo_package/
+*.bak
+*.orig
+
+# File temporanei sass / editor
+.sass-cache/
+*.css.map
+*.swp
+*.swo
+.DS_Store
+.vscode/
+.idea/
+
+# Log
+*.log
+npm-debug.log*
+
+# Docker secrets / runtime files in enketo_package_template/
+enketo_package_template/.env
+enketo_package_template/config/config.json
+# (i .example sono committati)

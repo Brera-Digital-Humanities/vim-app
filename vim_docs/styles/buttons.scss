@@ -1,0 +1,100 @@
+// VIM — navigation buttons
+
+
+// Riga principale: ← + Avanti
+.form-nav {
+  padding: 16px 24px 12px;
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+}
+
+// Base shared per tutti i bottoni nav
+.btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-family: $font-sans;
+  font-size: .82rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity $transition-fast, transform .1s;
+
+  &:active { transform: scale(.98); }
+  &:disabled { opacity: .4; cursor: not-allowed; }
+}
+
+// Bottone indietro — bordo, sfondo chiaro, flex fisso
+.btn-back {
+  background: var(--bg);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  flex: 0 0 48px;
+}
+
+// Bottone avanti — sfondo scuro, testo chiaro
+.btn-next {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+// Riga secondaria: salva bozza + completato
+.form-nav-row {
+  padding: 0 24px 14px;
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+// Salva bozza — bordo, tono neutro
+.btn-draft {
+  flex: 1;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: $font-sans;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color $transition-fast, transform .1s;
+
+  &:hover  { border-color: var(--accent); }
+  &:active { transform: scale(.98); }
+}
+
+// Completato — disabilitato finché le prime 5 sezioni non sono complete
+.btn-complete {
+  flex: 1;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: $font-sans;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: not-allowed;
+  opacity: .38;
+  transition: background $transition-medium, color $transition-medium,
+              border-color $transition-medium, opacity $transition-medium, transform .1s;
+
+  // Stato abilitato: verde salvia
+  &.enabled {
+    background: var(--accent2);
+    border-color: var(--accent2);
+    color: #fff;
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  &.enabled:active { transform: scale(.98); }
+}
+
+
