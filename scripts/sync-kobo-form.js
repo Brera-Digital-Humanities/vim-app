@@ -36,13 +36,27 @@ async function main() {
   const TOKEN = env.VIM_KOBO_TOKEN, UID = env.VIM_KOBO_UID, BASE = env.VIM_KOBO_BASE;
   if (!TOKEN || !UID || !BASE) { console.error('ERROR: VIM_KOBO_TOKEN/UID/BASE missing in .env'); process.exit(1); }
 
-  const url = `${BASE}/api/v2/assets/${UID}/?format=json`;
+  const hdr = { headers: { Authorization: `Token ${TOKEN}` } };
   console.log('▸ Fetching form from Kobo…');
-  const res = await fetch(url, { headers: { Authorization: `Token ${TOKEN}` } });
-  if (!res.ok) { console.error(`ERROR: Kobo returned HTTP ${res.status}`); process.exit(1); }
-  const asset = await res.json();
-  const content = asset.content;
-  if (!content || !content.survey) { console.error('ERROR: asset has no content.survey'); process.exit(1); }
+  const assetRes = await fetch(`${BASE}/api/v2/assets/${UID}/?format=json`, hdr);
+  if (!assetRes.ok) { console.error(`ERROR: Kobo returned HTTP ${assetRes.status}`); process.exit(1); }
+  const asset = await assetRes.json();
+
+  // Prefer the DEPLOYED version (what people actually fill in) over the draft
+  // content. They can differ if there are unsaved/undeployed edits on Kobo.
+  let content = asset.content;
+  const dvid = asset.deployed_version_id;
+  if (dvid && dvid !== asset.version_id) {
+    console.log(`▸ Using deployed version ${dvid} (draft differs)`);
+    const vRes = await fetch(`${BASE}/api/v2/assets/${UID}/versions/${dvid}/?format=json`, hdr);
+    if (vRes.ok) {
+      const v = await vRes.json();
+      content = v.content || v;
+    } else {
+      console.warn(`  (could not fetch deployed version, HTTP ${vRes.status} — using draft content)`);
+    }
+  }
+  if (!content || !content.survey) { console.error('ERROR: form has no survey rows'); process.exit(1); }
 
   // translations → language indexes (robust to order)
   const tr = content.translations || ['Italian (it)'];
