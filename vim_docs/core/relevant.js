@@ -1,29 +1,9 @@
 // VIM — conditional fields (XLSForm relevant evaluation)
+//
+// The RELEVANT map (fieldName → XLSForm expression) lives in data.js,
+// generated from the Kobo form by `npm run sync`. This file holds only the
+// evaluation logic. RELEVANT is loaded before this file (data.js comes first).
 
-
-/**
- * RELEVANT — Map fieldName → espressione XLSForm relevant.
- * Estratta automaticamente dalla colonna "relevant" del file XLS.
- *
- * Formato XLSForm: ${fieldName}='valore' oppure selected(${field},'val')
- * I campi NON presenti in questa mappa sono sempre visibili.
- */
-const RELEVANT = {
-  // media_audio visibile solo se file_type = audio
-  "media_audio": "${file_type}='tipo_file_19_1'",
-  // media_foto visibile solo se file_type = fotografia
-  "media_foto": "${file_type}='tipo_file_19_3'",
-  // media_video visibile solo se file_type = video
-  "media_video": "${file_type}='tipo_file_19_2'",
-  // media_documento visibile per file_type = documento O altro
-  "media_documento": "${file_type}='tipo_file_19_4' or ${file_type}='tipo_file_19_5'",
-  // bearer_age visibile solo se il portatore è un individuo
-  "bearer_age": "${bearer_type}='tipo_port_6_1'",
-  // fpic_consent_recording solo se consenso verbale
-  "fpic_consent_recording": "${fpic_consent}='consenso_28_1'",
-  // fpic_consent_file solo se consenso scritto
-  "fpic_consent_file": "${fpic_consent}='consenso_28_2'",
-};
 
 /**
  * isVisible(fieldName) — Valuta se un campo deve essere mostrato.

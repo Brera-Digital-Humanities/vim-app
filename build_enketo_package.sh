@@ -106,7 +106,7 @@ const UID  = '__VIM_KOBO_UID__';
 EOF
   # Estrae le righe CHOICES e PAGES da vim_docs/data.js, scartando il TOKEN
   # e le altre dichiarazioni dev (BASE/UID già definiti sopra per Enketo).
-  grep -E '^const (CHOICES|PAGES)\s*=' "$SRC/data.js"
+  grep -E '^const (CHOICES|PAGES|RELEVANT)\s*=' "$SRC/data.js"
 } > "$OUT/public/js/vim.data.js"
 # Inietta UID reale dal .env
 sed -i "s|__VIM_KOBO_UID__|$VIM_KOBO_UID|g" "$OUT/public/js/vim.data.js"
