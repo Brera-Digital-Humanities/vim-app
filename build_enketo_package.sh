@@ -65,11 +65,11 @@ rm -rf "$OUT"
 mkdir -p "$OUT/public/css" "$OUT/public/js" "$OUT/public/images" \
          "$OUT/app/views/surveys" "$OUT/config"
 
-# ── 2. SCSS → CSS (concatena per build.order, poi compila) ──────────────────
-echo "▸ Concateno + compilo SCSS → theme-vim.css"
+# ── 2. SCSS → CSS — usa il tema ENKETO ([enketo-scss]), non quello dell'app ─
+echo "▸ Concateno + compilo tema Enketo → theme-vim.css"
 TMP_SCSS="$(mktemp --suffix=.scss)"
 : > "$TMP_SCSS"
-for f in $(order scss); do
+for f in $(order enketo-scss); do
   [ -f "$SRC/$f" ] || { echo "ERRORE: vim_docs/$f in build.order ma mancante"; rm -f "$TMP_SCSS"; exit 1; }
   cat "$SRC/$f" >> "$TMP_SCSS"; printf '\n' >> "$TMP_SCSS"
 done

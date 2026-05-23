@@ -32,6 +32,8 @@ screens/form/form.js
 screens/outbox/outbox.js
 core/init.js
 
+# [scss] — theme for the CUSTOM APP (monolith). Targets the custom DOM
+# (.phone-shell, .screen…). Used by build_monolith.sh.
 [scss]
 styles/tokens.scss
 styles/base.scss
@@ -49,3 +51,9 @@ styles/modal.scss
 styles/feedback.scss
 styles/rtl.scss
 styles/responsive.scss
+
+# [enketo-scss] — theme for ENKETO EXPRESS. Targets Enketo's form DOM
+# (.question, .paper, .btn…), reusing VIM tokens. Used by build_enketo_package.sh.
+[enketo-scss]
+styles/tokens.scss
+enketo-theme/theme.scss
