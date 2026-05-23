@@ -52,8 +52,9 @@ styles/feedback.scss
 styles/rtl.scss
 styles/responsive.scss
 
-# [enketo-scss] — theme for ENKETO EXPRESS. Targets Enketo's form DOM
-# (.question, .paper, .btn…), reusing VIM tokens. Used by build_enketo_package.sh.
+# [enketo-scss] — DORMANT. Theme for Enketo Express (targets .question/.paper…),
+# kept for a possible future Enketo path. The build_enketo_package.sh script that
+# consumed it was removed during cleanup — recover it from git history if needed.
 [enketo-scss]
 styles/tokens.scss
 enketo-theme/theme.scss

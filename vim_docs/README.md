@@ -7,9 +7,8 @@ nella root del progetto:
 
 | Documento | Quando consultarlo |
 |---|---|
-| [`../SETUP.md`](../SETUP.md) | Setup dev + workflow + deploy completo (sviluppatore che lavora sul progetto) |
-| [`../enketo_package/INSTALL.md`](../enketo_package/INSTALL.md) | Installazione del pacchetto pre-buildato su un'istanza Enketo Express esistente (sysadmin che riceve solo il pacchetto) |
-| **questo file** | Capire il form: sezioni, campi, lingue, mapping XLSForm → JS |
+| [`../SETUP.md`](../SETUP.md) | Setup dev + workflow + deploy (sviluppatore che lavora sul progetto) |
+| **questo file** | Capire il form: sezioni, campi, lingue, mapping Kobo → JS |
 
 ---
 
@@ -72,19 +71,18 @@ al marker `<!-- @screens -->`. **JS:** le `const` globali (state, UI_LANGS)
 precedono l'uso; `init.js` è ultimo. **SCSS:** `tokens.scss` per primo (le
 variabili devono essere viste dai file successivi).
 
-`vim_docs/` è la **fonte di verità**. Gli artefatti
-(`valigia_immateriale.html` e `enketo_package/`) si generano da qui — vedi
-`../SETUP.md` sez. 5.
+`vim_docs/` è la **fonte di verità**. L'app (`valigia_immateriale.html`) si
+genera da qui con `npm run build` — vedi `../SETUP.md` sez. 5.
 
 ---
 
 ## Stack tecnologico
 
-- **Form engine**: KoboToolbox / Enketo Express (XLSForm standard)
+- **Form engine**: KoboToolbox (definizione XLSForm, presa via API)
 - **Frontend**: HTML5 + SCSS + JavaScript vanilla ES6+ (nessun framework, nessuna dep a runtime)
 - **Font**: Cormorant Garamond (serif), DM Sans (UI), DM Mono (numeri), Noto Naskh Arabic (RTL)
 - **API**: KoboToolbox REST API v2, formato OpenRosa/XForm
-- **Build**: Dart Sass + html2pug + bash scripts (vedi `package.json`)
+- **Build**: Dart Sass + bash scripts, concatenazione per `build.order` (vedi `package.json`)
 
 ---
 
@@ -276,6 +274,5 @@ Non esiste ancora uno script di rigenerazione automatica da XLSX
 ## Risorse esterne
 
 - KoboToolbox API v2: https://kobo.kobotoolbox.org/api/v2/
-- Enketo Express: https://enketo.github.io/enketo-express/
 - XLSForm spec: https://xlsform.org/
 - Form pubblico Kobo (test): https://ee-eu.kobotoolbox.org/x/<ENKETO-ID>

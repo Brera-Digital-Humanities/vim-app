@@ -4,10 +4,10 @@
   "linked form and data server": {
     "name": "La valigia immateriale",
     "server url": "https://eu.kobotoolbox.org",
-    "api key": "INSERIRE_QUI_TOKEN_KOBO"
+    "api key": "61b7abe3945995d1bf2d3c663c14179dcba245a3"
   },
 
-  "encryption key": "INSERIRE_STRINGA_CASUALE_DI_32_CARATTERI",
+  "encryption key": "2f6e6b21f0c86a9673054cd64ece39b6",
   "less secure encryption key": false,
 
   "port": 8005,

@@ -19,7 +19,6 @@ package-lock.json
 # - i .bak storici contengono TOKEN compromesso — non committare
 # =============================================================================
 valigia_immateriale.html
-enketo_package/
 *.bak
 *.orig
 
@@ -35,9 +34,3 @@ enketo_package/
 # Log
 *.log
 npm-debug.log*
-
-# Docker secrets / runtime files in enketo_package_template/
-enketo_package_template/.env
-enketo_package_template/config/config.json
-# (i .example sono committati)
-enketo_preview.html
