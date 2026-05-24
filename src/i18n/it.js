@@ -1,0 +1,93 @@
+// VIM — Italian (it) UI strings
+const VIM_LANG_it = {
+    key: 'Italian (it)',
+    name: 'Italiano',
+    rtl: false,
+    ui: {
+      // — Titles and navigation —
+      appTitle:         'La valigia immateriale',
+      loginTitle: 'Accesso tester (beta)',
+      loginName: 'Nome',
+      loginCode: 'Codice di accesso',
+      loginBtn: 'Entra',
+      loginErrName: 'Inserisci il tuo nome',
+      loginErrCode: 'Codice non valido',
+      questionnaire:    'Modulo',
+      // — Home menu —
+      compilaTitle:     'Compila modulo',
+      compilaSub:       'Avvia il modulo',
+      scaricaTitle:     'Scarica modulo',
+      scaricaSub:       'Aggiorna dalla rete',
+      bozzaTitle:       'Modifica bozza',
+      bozzaSub:         'Riprendi una compilazione',
+      outboxTitle:      'Moduli da inviare',
+      outboxSub:        'In attesa di connessione',
+      inviatiTitle:     'Moduli inviati',
+      inviatiSub:       'Visualizza risposte inviate',
+      archivio:         'Archivio',
+      azioniPrincipali: 'Azioni principali',
+      // — Language —
+      cambiaLinguaTitle: 'Cambia lingua',
+      cambiaLinguaSub:   'Lingua attiva',
+      // — Form buttons —
+      avanti:    'Avanti',
+      indietro:  '←',
+      invia:     'Invia',
+      completato: '✓ Completato',
+      salvaBozza: '💾 Salva bozza',
+      // — States —
+      loading:      'Caricamento…',
+      sending:      'Invio in corso…',
+      successTitle: 'Grazie!',
+      successMsg:   'Il tuo modulo è stato inviato.',
+      noBozza:      'Nessuna bozza salvata.',
+      noOutbox:     'Nessun modulo completato',
+      noInviati:    'Nessun modulo inviato.',
+      outboxSavedMsg: 'Salvato nella coda di invio.<br>Vai su "Moduli da inviare" per inviarlo.',
+      noFormDl:     'Scarica prima il modulo.',
+      // — Download —
+      dlBtn:     'Scarica selezionati',
+      dlLoading: 'Download…',
+      dlOk:      '✓ Pronto.',
+      dlErr:     '⚠️ Errore: ',
+      notDl:     'Non scaricato',
+      downloaded: '✓ Scaricato',
+      // — Language —
+      continua: 'Continua',
+      // — Form section header —
+      sectionLabel:  'Sezione',
+      requiredNote:  'Campi obbligatori per il completamento',
+      fieldRequired: 'Questo campo è obbligatorio',
+      // — Form bar —
+      home:         'Home',
+      // — Save-draft modal —
+      draftTitle:   'Bozza salvata',
+      draftMsg:     'Vuoi tornare alla home o continuare la compilazione?',
+      draftGoHome:  'Vai alla home',
+      draftStay:    'Continua qui',
+      resume:       'Riprendi',
+      draftsHeader: 'Bozze salvate',
+      // — Form exit modal —
+      exitTitle:    'Uscire dalla compilazione?',
+      exitMsg:      'Se esci senza salvare perdi quello che hai inserito finora.',
+      exitSave:     'Salva bozza ed esci',
+      exitDiscard:  'Esci senza salvare',
+      exitStay:     'Rimani',
+      // — Media —
+      tapRecord:       'Registra',
+      tapUploadAudio:  'Carica audio',
+      tapPhoto:        'Scatta foto',
+      tapUploadPhoto:  'Carica foto',
+      tapVideo:        'Registra video',
+      tapUploadVideo:  'Carica video',
+      tapFile:         'Carica file',
+      captured:        '✓ Acquisito',
+      // — Outbox —
+      sendAll:     'Invia tutti',
+      inAttesa:    'In attesa di invio',
+      formSavedAt: 'Salvato il',
+      // — Connectivity indicator (home) —
+      statusOnline:  'Connesso',
+      statusOffline: 'Nessuna connessione',
+    }
+};

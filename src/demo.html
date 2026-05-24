@@ -1,0 +1,71 @@
+<!--
+  =============================================================================
+  VIM — La valigia immateriale · DEMO PAGE (iPhone frame)
+  Presentation build: same app as app.html, wrapped in the phone skin (hero +
+  frame + fake status bar + home indicator). Built to test/index.html. NOT the
+  shipped PWA: it's for screenshots/presentations.
+  Screens (@screens) and the bar (@file:partials/app-bar.html) shared with app.html.
+  =============================================================================
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#c4763a"/>
+
+  <title>La valigia immateriale — demo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="/styles/vim.css"/>
+</head>
+<body class="demo">
+
+  <!-- Header above the phone (demo only) -->
+  <div class="hero">
+    <h1>La <em>valigia</em><br>immateriale</h1>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone-shell">
+
+      <!-- Dynamic Island (decorative) -->
+      <div class="island"></div>
+
+      <!-- Fake status bar: clock + system icons -->
+      <div class="status-bar">
+        <span class="time" id="clock">9:41</span>
+        <div class="icons">
+          <svg viewBox="0 0 24 24">
+            <rect x="1" y="16" width="3" height="6" rx="1"/>
+            <rect x="6" y="12" width="3" height="10" rx="1"/>
+            <rect x="11" y="8" width="3" height="14" rx="1"/>
+            <rect x="16" y="4" width="3" height="18" rx="1" opacity=".3"/>
+          </svg>
+          <svg viewBox="0 0 24 24">
+            <path d="M12 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm0-4.5a6 6 0 0 1 4.24 1.76l-1.42 1.42A4 4 0 0 0 12 15.5a4 4 0 0 0-2.83 1.17L7.76 15.24A6 6 0 0 1 12 13.5zm0-4.5a10.5 10.5 0 0 1 7.42 3.08l-1.42 1.41A8.5 8.5 0 0 0 12 11a8.5 8.5 0 0 0-6 2.49L4.58 12.08A10.5 10.5 0 0 1 12 9z"/>
+          </svg>
+          <svg viewBox="0 0 24 24">
+            <rect x="1" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <rect x="3" y="9" width="12" height="6" rx="1"/>
+            <path d="M20 10v4a2 2 0 0 0 0-4z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- @file:partials/app-bar.html -->
+      <!-- @screens -->
+
+      <!-- Home indicator (bottom bar, decorative) -->
+      <div class="nav-bar"><div class="home-ind"></div></div>
+
+    </div><!-- .phone-shell -->
+  </div><!-- .phone-wrap -->
+
+  <script src="/js/vim.data.js"></script>
+  <script src="/js/vim.navigation.js"></script>
+  <script src="/js/vim.api.js"></script>
+
+</body>
+</html>

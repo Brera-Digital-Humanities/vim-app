@@ -1,0 +1,14 @@
+// VIM — responsive media queries
+
+
+@media (max-width: 430px) {
+  // On small screens drop the phone frame
+  .phone-shell {
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    height: 100dvh; // Dynamic viewport height for Safari iOS
+  }
+
+  .hero { padding: 24px 0 16px; }
+}

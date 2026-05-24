@@ -1,0 +1,100 @@
+// VIM — phone shell frame
+
+
+.phone-shell {
+  width: $phone-w;
+  max-width: 100%;
+  height: $phone-h;
+  max-height: 90vh;           // Fit short screens
+  background: var(--surface);
+  border-radius: $phone-radius;
+  border: 2px solid #d4c9b8;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.8) inset,
+    0 30px 80px -10px rgba(28,24,20,.18),
+    0 2px 8px rgba(196,118,58,.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;     // Stack all inner elements in a column
+  position: relative;
+
+  // Left side buttons (volume)
+  &::before {
+    content: '';
+    position: absolute;
+    left: -3px; top: 110px;
+    width: 3px; height: 32px;
+    background: #d4c9b8;
+    border-radius: 3px 0 0 3px;
+    box-shadow: 0 50px 0 #d4c9b8, 0 90px 0 #d4c9b8;
+  }
+
+  // Right side button (power)
+  &::after {
+    content: '';
+    position: absolute;
+    right: -3px; top: 150px;
+    width: 3px; height: 60px;
+    background: #d4c9b8;
+    border-radius: 0 3px 3px 0;
+  }
+}
+
+// Dynamic Island (black pill at the top)
+.island {
+  position: absolute;
+  top: 12px; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 32px;
+  background: var(--ink);
+  border-radius: 18px;
+  z-index: 20;
+}
+
+// Status bar (clock, icons)
+.status-bar {
+  height: 50px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+
+  .time {
+    font-family: $font-mono;
+    font-size: .75rem;
+    color: var(--ink);
+  }
+
+  .icons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    svg {
+      width: 14px; height: 14px;
+      fill: var(--ink);
+    }
+  }
+}
+
+// Home indicator (bottom bar)
+.nav-bar {
+  height: 44px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-ind {
+  width: 120px; height: 4px;
+  background: rgba(28,24,20,.15);
+  border-radius: 2px;
+}
+
+

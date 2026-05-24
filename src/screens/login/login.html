@@ -1,0 +1,20 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: LOGIN — provisional tester access (name + shared code).
+           First screen at startup if not logged in. Logic in core/auth.js.
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen active" id="screen-login">
+        <div class="login-screen">
+           <!-- Brand header -->
+           <div class="brand">
+            <div class="brand-logo" aria-hidden="true"></div>
+            <h2>La valigia immateriale</h2>
+            <p>Tester login (beta)</p>
+          </div>
+          <div class="login-form">
+            <input type="text" id="login-name" class="login-input" placeholder="Nome" autocomplete="name"/>
+            <input type="password" id="login-code" class="login-input" placeholder="Codice di accesso"/>
+            <div id="login-error" class="login-error" style="display:none"></div>
+            <button class="login-btn" id="login-btn" onclick="doLogin()">Entra</button>
+          </div>
+        </div>
+      </div>

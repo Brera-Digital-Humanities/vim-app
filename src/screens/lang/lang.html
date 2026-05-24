@@ -1,0 +1,29 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: LANGUAGE
+           Shown at startup only on first run (once a language is chosen it's
+           skipped and you go straight home). Also reachable from home.
+
+           Languages: defined in UI_LANGS. #lang-list filled by renderLangScreen().
+           Flow: pick language → selectedLangIdx → "Continue" →
+                 confirmLanguage() → applyUILang() → goHome().
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-lang">
+        <div class="lang-screen">
+           <!-- Brand header -->
+           <div class="brand">
+            <div class="brand-logo" aria-hidden="true"></div>
+            <h2>La valigia immateriale</h2>
+            <p>Choose your language</p>
+          </div>
+         
+          <!-- Populated by renderLangScreen() -->
+          <div class="lang-list" id="lang-list"></div>
+          <div class="lang-confirm-wrap">
+            <button class="lang-confirm" id="lang-confirm-btn" disabled onclick="confirmLanguage()">
+              Continua · Continue
+            </button>
+          </div>
+        </div>
+      </div>
+
+

@@ -1,0 +1,52 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: FORM
+           Filling area. One question per screen.
+
+           #form-area: scrollable, filled by renderPage().
+
+           Each question (built by buildQuestion()):
+             .form-page-header  → section + counter + required note
+             .q-card            → single question with slide animation
+               .q-text          → question text
+               .q-hint          → optional hint
+               [input/choices/media]
+
+           Buttons:
+             .form-nav          → primary row: back + next
+             .form-nav-row      → secondary row: save draft + complete
+
+           Completion: btn-complete.enabled unlocks when every required AND
+           visible field (Kobo "required" flag) is filled; computed by
+           updateCompleteBtn() on each answer.
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-form">
+
+        <!-- Questions area (scrollable) -->
+        <div class="form-area" id="form-area">
+          <!-- Content generated dynamically by renderPage() -->
+        </div>
+
+        <!--
+          Primary nav row.
+          btn-back: hidden on the first question of the first section.
+          btn-next: "Next" on intermediate sections, hidden on the last question.
+          nextField() drives field-by-field advance and section transitions.
+        -->
+        <div class="form-nav" id="form-nav" style="display:none">
+          <button class="btn btn-back" id="btn-back" onclick="prevPage()">←</button>
+          <button class="btn btn-next" id="btn-next" onclick="nextField()">Avanti</button>
+        </div>
+
+        <!--
+          Secondary nav row. Always visible while filling (shown by openForm()).
+          btn-draft:    opens a bottom-sheet modal (go home or stay)
+          btn-complete: disabled until all required+visible fields are filled,
+                        then turns green (.enabled)
+        -->
+        <div class="form-nav-row" id="form-nav-extra" style="display:none">
+          <button class="btn-draft" id="btn-draft" onclick="saveDraft()">Salva bozza</button>
+          <button class="btn-complete" id="btn-complete" onclick="markComplete()">Completato</button>
+        </div>
+      </div>
+
+

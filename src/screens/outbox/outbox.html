@@ -1,0 +1,27 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: OUTBOX
+           Completed forms (markComplete()) waiting to be sent.
+
+           Each outbox item: { answers, mediaFiles, savedAt, label }
+           #outbox-list: populated by renderOutbox().
+
+           Per-form actions: sendSingle(i) → doSubmit() · deleteSingle(i) → remove.
+           "Send all" → sendAllOutbox() → loops doSubmit().
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-outbox">
+        <div class="home-screen" id="outbox-list-wrap">
+          <div style="color:var(--muted);" id="outbox-header-label" class="outbox-header-label">In attesa di invio</div>
+          <!-- Items populated by renderOutbox() -->
+          <div id="outbox-list" class="outbox-list"></div>
+          <div>
+            <button
+              onclick="sendAllOutbox()"
+              id="send-all-btn"
+              class="send-all-btn">
+              Invia tutti
+            </button>
+          </div>
+        </div>
+      </div>
+
+

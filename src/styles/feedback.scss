@@ -1,0 +1,44 @@
+// VIM — loading / success / error states
+
+
+// Centered container for special states
+.state-loading,
+.state-error,
+.state-success {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  gap: 16px;
+}
+
+// Rotating spinner
+.spinner {
+  width: 36px; height: 36px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.state-loading p { font-size: .8rem; color: var(--muted); letter-spacing: .08em; }
+.state-error p   { color: var(--error); font-size: .85rem; }
+
+.state-success {
+  .icon { font-size: 2.5rem; }
+
+  h2 {
+    font-family: $font-serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+  }
+
+  p { font-size: .82rem; color: var(--muted); }
+}
+
+

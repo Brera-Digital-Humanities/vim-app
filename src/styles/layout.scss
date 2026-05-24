@@ -1,0 +1,92 @@
+// VIM — outer page layout (hero, phone-wrap)
+
+
+// Header above the phone
+.hero {
+  width: 100%;
+  max-width: var(--max-w);
+  padding: 18px 0 16px;
+  text-align: center;
+  position: relative;
+
+  // Decorative asterisk above the title
+  &::before {
+    content: '✦';
+    display: block;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    letter-spacing: .3em;
+  }
+
+  h1 {
+    font-family: $font-serif;
+    font-size: clamp(2.6rem, 9vw, 4rem); // Responsive: min 2.6rem, ideale 9vw, max 4rem
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: .02em;
+    color: var(--ink);
+
+    // "valigia" in gradiente brand
+    em {
+      font-style: italic;
+      font-weight: 400;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  // Divider line below the title
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+    margin: 20px auto;
+    opacity: .5;
+  }
+}
+
+// Centered phone wrapper
+.phone-wrap {
+  width: 100%;
+  max-width: $phone-w;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// Shared brand header (login, lang, home)
+.brand {
+  background: var(--surface);
+  padding: 18px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+
+  // Logo from assets/logo.svg. Data-URI injected once at build time
+  // (__VIM_LOGO__ → base64 of the SVG).
+  .brand-logo {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    background: url("__VIM_LOGO__") center / contain no-repeat;
+  }
+
+  h2 {
+    font-family: $font-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  p {
+    margin-top: 6px;
+    font-size: .72rem;
+    color: var(--muted);
+    letter-spacing: .08em;
+  }
+}
+

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * sync-kobo-form.js — Regenerate vim_docs/data.js from the real Kobo form.
+ * sync-kobo-form.js — Regenerate src/data.js from the real Kobo form.
  *
  * Fetches the asset content from KoboToolbox and maps survey + choices into
  * VIM's PAGES / CHOICES / RELEVANT structures. Credentials are read from .env;
@@ -13,7 +13,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const OUT = path.join(ROOT, 'vim_docs', 'data.js');
+const OUT = path.join(ROOT, 'src', 'data.js');
 
 // ── Load .env (token, uid, base) ─────────────────────────────────────────────
 function loadEnv() {

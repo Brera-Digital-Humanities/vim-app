@@ -13,16 +13,13 @@ node_modules/
 package-lock.json
 
 # =============================================================================
-# Artefatti generati dagli script di build
-# - valigia_immateriale.html è rigenerabile con `npm run build:monolith`
-# - enketo_package/ è rigenerabile con `npm run build:enketo`
+# Artefatti generati dallo script di build (rigenerabili con `npm run build`)
+# - dist/  = PWA single-file (app, full-screen) + manifest/service-worker/icons
+# - test/  = demo single-file con skin telefono
 # - i .bak storici contengono TOKEN compromesso — non committare
 # =============================================================================
-valigia_immateriale.html
-# PWA assets copied to root by build_monolith.sh (sources live in vim_docs/)
-/manifest.json
-/service-worker.js
-/icons/
+/dist/
+/test/
 *.bak
 *.orig
 
@@ -34,6 +31,7 @@ valigia_immateriale.html
 .DS_Store
 .vscode/
 .idea/
+.claude/
 
 # Log
 *.log

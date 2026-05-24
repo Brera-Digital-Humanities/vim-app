@@ -1,16 +1,17 @@
 {
   "name": "vim-enketo",
   "version": "1.0.0",
-  "description": "VIM — La valigia immateriale. Form digitale multilingua per raccolta patrimonio culturale immateriale palestinese. Tema custom per Enketo Express + build monolite per test.",
+  "description": "VIM — La valigia immateriale. Form digitale multilingua per raccolta patrimonio culturale immateriale palestinese. PWA single-file buildata da src/ (dist/ = app, test/ = demo con skin telefono).",
   "private": true,
   "scripts": {
-    "build": "npm run build:monolith",
+    "build": "npm run build:app",
     "sync": "node scripts/sync-kobo-form.js",
-    "build:monolith": "./build_monolith.sh",
-    "start": "http-server -p 8765 -c-1 -o /valigia_immateriale.html",
-    "serve": "http-server -p 8765 -c-1",
-    "clean": "rm -rf valigia_immateriale.html",
-    "check": "find vim_docs -name '*.js' | sort | while read f; do node --check \"$f\" && echo \"OK $f\"; done",
+    "build:app": "./scripts/build-app.sh",
+    "start": "http-server dist -p 8765 -c-1 -o /index.html",
+    "serve": "http-server dist -p 8765 -c-1",
+    "demo": "http-server test -p 8766 -c-1 -o /index.html",
+    "clean": "rm -rf dist test",
+    "check": "find src -name '*.js' | sort | while read f; do node --check \"$f\" && echo \"OK $f\"; done",
     "prebuild": "npm run check"
   },
   "engines": {

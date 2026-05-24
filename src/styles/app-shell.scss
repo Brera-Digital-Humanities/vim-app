@@ -1,0 +1,26 @@
+// VIM — full-screen PWA shell (body.app)
+//
+// The real PWA (dist/index.html) uses <body class="app">: the .phone-shell
+// container fills the whole viewport, with no frame/shadow/island.
+// The demo page (test/index.html) uses <body class="demo"> and keeps the
+// hero + iPhone frame defined in layout.scss / phone-shell.scss.
+
+body.app {
+  padding: 0;
+  display: block;
+  background-image: none;
+}
+
+body.app .phone-shell {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;       // fill the real viewport height (Safari iOS included)
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+// No decorative side buttons in the PWA
+body.app .phone-shell::before,
+body.app .phone-shell::after { display: none; }

@@ -1,0 +1,89 @@
+      <!-- ═══════════════════════════════════════════════════════════════
+           SCREEN: HOME — main menu (KoBoCollect-style)
+           Items: fill form · change language · edit draft ·
+                  forms to send (badge) · sent forms
+           (The form is embedded via Kobo sync: no "download form" step.)
+      ══════════════════════════════════════════════════════════════════ -->
+      <div class="screen" id="screen-home">
+        <div class="home-screen">
+
+          <!-- Brand header -->
+          <div class="brand">
+            <div class="brand-logo" aria-hidden="true"></div>
+            <h2>La valigia immateriale</h2>
+            <p>v1.0 · beta</p>
+          </div>
+
+          <!-- Main section -->
+          <div class="home-section-label">Azioni principali</div>
+          <div class="home-menu">
+
+            <!-- Fill form — dark primary button -->
+            <div class="menu-item primary" onclick="startFillForm()">
+              <div class="mi-icon">📝</div>
+              <div class="mi-body">
+                <div class="mi-title">Compila modulo</div>
+                <div class="mi-sub">Avvia il questionario</div>
+              </div>
+              <span class="mi-arrow">›</span>
+            </div>
+
+            <!-- Change language — .mi-sub shows the active language; revealed
+                 by applyUILang() after the initial language choice. -->
+            <div class="menu-item" id="home-lang-item" onclick="homeLangChange()" style="display:none">
+              <div class="mi-icon">🌐</div>
+              <div class="mi-body">
+                <div class="mi-title">Cambia lingua</div>
+                <div class="mi-sub" id="home-lang-sub">—</div>
+              </div>
+              <span class="mi-arrow">›</span>
+            </div>
+          </div>
+
+          <!-- Archive section -->
+          <div class="home-section-label">Archivio</div>
+          <div class="home-menu">
+
+            <!-- Edit draft -->
+            <div class="menu-item" onclick="showDraft()">
+              <div class="mi-icon">✏️</div>
+              <div class="mi-body">
+                <div class="mi-title">Modifica bozza</div>
+                <div class="mi-sub">Riprendi una compilazione</div>
+              </div>
+              <span class="mi-arrow">›</span>
+            </div>
+
+            <!-- Forms to send (outbox). #outbox-badge: numeric badge, hidden when
+                 the outbox is empty; updated by updateOutboxBadge(). -->
+            <div class="menu-item" onclick="showOutbox()">
+              <div class="mi-icon">📤</div>
+              <div class="mi-body">
+                <div class="mi-title">Moduli da inviare</div>
+                <div class="mi-sub">In attesa di connessione</div>
+              </div>
+              <span class="mi-arrow">›</span>
+              <span class="menu-badge" id="outbox-badge" style="display:none">0</span>
+            </div>
+
+            <!-- Sent forms -->
+            <div class="menu-item" onclick="showSent()">
+              <div class="mi-icon">✅</div>
+              <div class="mi-body">
+                <div class="mi-title">Moduli inviati</div>
+                <div class="mi-sub">Visualizza risposte inviate</div>
+              </div>
+              <span class="mi-arrow">›</span>
+            </div>
+          </div>
+
+          <!-- Connectivity indicator: online/offline (updated by connectivity.js) -->
+          <div class="home-status" id="conn-status">
+            <div class="hs-dot"></div>
+            <div class="hs-text" id="conn-text">—</div>
+          </div>
+
+        </div>
+      </div>
+
+

@@ -1,0 +1,17 @@
+// VIM — generic screen wrapper
+
+
+// Each screen fills the available space in the phone-shell flex
+// display:none by default; .active makes it visible
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; // CRITICAL: needed for overflow on a flex child
+
+  &.active {
+    display: flex;
+  }
+}
+
+

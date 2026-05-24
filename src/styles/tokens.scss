@@ -1,0 +1,35 @@
+// VIM — design tokens (CSS variables, SCSS vars)
+
+
+// — SCSS variables (used only within SCSS) —
+$font-serif:   'Cormorant Garamond', serif;
+$font-sans:    'DM Sans', sans-serif;
+$font-mono:    'DM Mono', monospace;
+$font-arabic:  'Noto Naskh Arabic', 'DM Sans', sans-serif;
+
+$phone-w:      390px;
+$phone-h:      780px;
+$phone-radius: 44px;
+
+$transition-fast:   .15s ease;
+$transition-medium: .2s ease;
+$transition-spring: .28s cubic-bezier(.22,.68,0,1.2);
+
+// — CSS variables (runtime; overridable from JS) —
+:root {
+  // Color palette
+  --bg:       #f7f4ef;   // Page background — ivory paper
+  --surface:  #ffffff;   // Elevated surfaces (card, modal)
+  --border:   #e0d9ce;   // Borders, dividers
+  --ink:      #1c1814;   // Primary text, primary buttons
+  --muted:    #8a8070;   // Secondary text, placeholder
+  --accent:   #c4763a;   // Terracotta orange — brand color
+  --accent2:  #7a9e8a;   // Sage green — confirm, completed
+  --error:    #c0392b;   // Error red
+
+  // Geometry
+  --radius:   12px;
+  --max-w:    520px;
+}
+
+

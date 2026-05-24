@@ -1,0 +1,46 @@
+// VIM — RTL (Arabic) support
+
+// Attivato da JS con: document.querySelector('.phone-shell').setAttribute('dir', 'rtl')
+
+[dir="rtl"] {
+  // Arabic font for all main text
+  .form-area,
+  .q-text,
+  .q-label,
+  .q-hint,
+  .mi-body,
+  .home-brand,
+  .lang-header,
+  .choice-item span,
+  input,
+  textarea {
+    font-family: $font-arabic;
+    text-align: right;
+    direction: rtl;
+  }
+
+  .q-text {
+    font-family: $font-arabic; // Replaces Cormorant Garamond for Arabic
+  }
+
+  // Mirror component layout
+  .choice-item  { flex-direction: row-reverse; }
+  .menu-item    { flex-direction: row-reverse; }
+  .app-bar      { flex-direction: row-reverse; }
+  .status-bar   { flex-direction: row-reverse; }
+
+  .home-section-label { text-align: right; }
+
+  // Mirrored animations for RTL
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-32px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes slideBack {
+    from { opacity: 0; transform: translateX(32px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+}
+
+

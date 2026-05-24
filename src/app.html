@@ -1,0 +1,43 @@
+<!--
+  =============================================================================
+  VIM — La valigia immateriale · PWA PAGE (full-screen)
+  The real app: no phone skin/frame. Built to dist/index.html.
+  The iPhone-frame version for presentations is src/demo.html → test/.
+  Screens (@screens) and the bar (@file:partials/app-bar.html) are inserted at
+  build time and shared with demo.html.
+  =============================================================================
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- PWA: manifest + icons for add-to-home-screen install -->
+  <link rel="manifest" href="./manifest.json"/>
+  <link rel="apple-touch-icon" href="./icons/icon-180.png"/>
+  <meta name="theme-color" content="#c4763a"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+
+  <title>La valigia immateriale</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="/styles/vim.css"/>
+</head>
+<body class="app">
+
+  <!-- Full-screen container: same rules as .phone-shell but with no frame
+       (see body.app .phone-shell in styles/app-shell.scss). -->
+  <div class="phone-shell">
+    <!-- @file:partials/app-bar.html -->
+    <!-- @screens -->
+  </div>
+
+  <script src="/js/vim.data.js"></script>
+  <script src="/js/vim.navigation.js"></script>
+  <script src="/js/vim.api.js"></script>
+
+</body>
+</html>
