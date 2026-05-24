@@ -98,6 +98,9 @@ function applyUILang() {
   const sub = document.getElementById('home-lang-sub');
   if (sub) sub.textContent = UI_LANGS[currentLangIdx].name;
 
+  // Indicatore connessione (testo nella lingua corrente)
+  if (typeof updateConnectivity === 'function') updateConnectivity();
+
   // Bottoni form (se visibili)
   const btnDraft = document.querySelector('.btn-draft');
   const btnComp  = document.getElementById('btn-complete');

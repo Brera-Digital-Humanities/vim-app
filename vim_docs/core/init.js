@@ -9,3 +9,4 @@ window._fieldIdx = 0;
  * renderLangScreen() popola la lista lingue da UI_LANGS.
  */
 renderLangScreen();
+updateConnectivity();

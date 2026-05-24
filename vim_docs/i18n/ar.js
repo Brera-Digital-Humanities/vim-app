@@ -56,6 +56,7 @@ const VIM_LANG_ar = {
       sendAll:     'إرسال الكل',
       inAttesa:    'في انتظار الإرسال',
       formSavedAt: 'محفوظ في',
-      powered: 'Powered by KoboToolbox',
+      statusOnline:  'متصل',
+      statusOffline: 'لا يوجد اتصال',
     }
 };

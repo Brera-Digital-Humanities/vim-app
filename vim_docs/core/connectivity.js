@@ -1,0 +1,18 @@
+// VIM — online/offline connectivity indicator (home status box)
+
+/**
+ * Updates the home status box from navigator.onLine: green dot + "Connected"
+ * when online, muted dot + "No connection" when offline. Text follows the
+ * current UI language. Call on language change and on online/offline events.
+ */
+function updateConnectivity() {
+  const box = document.getElementById('conn-status');
+  const txt = document.getElementById('conn-text');
+  if (!box || !txt) return;
+  const online = navigator.onLine;
+  box.classList.toggle('offline', !online);
+  txt.textContent = online ? tr().statusOnline : tr().statusOffline;
+}
+
+window.addEventListener('online',  updateConnectivity);
+window.addEventListener('offline', updateConnectivity);

@@ -67,7 +67,8 @@ const VIM_LANG_it = {
       sendAll:     'Invia tutti',
       inAttesa:    'In attesa di invio',
       formSavedAt: 'Salvato il',
-      // — Footer —
-      powered: 'Powered by KoboToolbox',
+      // — Indicatore connessione (home) —
+      statusOnline:  'Connesso',
+      statusOffline: 'Nessuna connessione',
     }
 };

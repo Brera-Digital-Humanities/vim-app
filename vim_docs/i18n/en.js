@@ -56,6 +56,7 @@ const VIM_LANG_en = {
       sendAll:     'Send all',
       inAttesa:    'Waiting to send',
       formSavedAt: 'Saved on',
-      powered: 'Powered by KoboToolbox',
+      statusOnline:  'Connected',
+      statusOffline: 'No connection',
     }
 };

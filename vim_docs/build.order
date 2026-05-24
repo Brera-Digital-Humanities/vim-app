@@ -25,6 +25,7 @@ core/labels.js
 core/relevant.js
 core/router.js
 core/feedback.js
+core/connectivity.js
 screens/lang/lang.js
 screens/form/form.js
 screens/outbox/outbox.js
