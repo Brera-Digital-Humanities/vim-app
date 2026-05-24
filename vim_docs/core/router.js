@@ -18,6 +18,9 @@ function showScreen(id, title, showPill) {
   const isHome = id === 'screen-home' || id === 'screen-lang';
   document.getElementById('bar-back-btn').style.display = isHome ? 'none' : 'inline-flex';
   document.getElementById('prog-track').style.display   = showPill ? '' : 'none';
+  // Il pill "Sezione X/9" appartiene solo al form: nascondilo altrove.
+  const pill = document.getElementById('pill');
+  if (pill) pill.style.display = showPill ? '' : 'none';
 }
 
 /**
