@@ -1,5 +1,33 @@
-// VIM — outbox screen styles (mostly inline in template)
+// VIM — outbox screen styles 
 
-// Stili inline nel HTML — vedi 02_template.html
+.outbox-header-label {
+    padding: 16px;
+    font-size: .65rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
 
+.outbox-list {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 
+    div {
+        padding: 16px;
+    }
+}
+
+.send-all-btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .82rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    cursor: pointer;
+}

@@ -20,10 +20,10 @@
 
   h2 {
     font-family: $font-serif;
+    font-weight: 600;
     font-size: 1.3rem;
-    font-weight: 300;
-    font-style: italic;
     color: var(--ink);
+    margin: 0;
   }
 
   .brand-version {
