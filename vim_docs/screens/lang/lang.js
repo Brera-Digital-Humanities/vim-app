@@ -47,7 +47,7 @@ function confirmLanguage() {
   // (stessa sezione e stesso campo); altrimenti torna alla home.
   if (langReturn === 'form') {
     window._compiling = true;
-    showScreen('screen-form', tr().home, true);
+    showScreen('screen-form', '', true);
     document.getElementById('lang-btn').style.display       = '';
     document.getElementById('form-nav-extra').style.display = 'flex';
     window._fieldIdx = langReturnField;

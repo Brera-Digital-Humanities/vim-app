@@ -56,7 +56,7 @@ function startFillForm() {
   }
   window._fieldIdx = 0;
   window._compiling = true;
-  showScreen('screen-form', tr().home, true);
+  showScreen('screen-form', '', true);
   document.getElementById('lang-btn').style.display     = '';
   document.getElementById('form-nav-extra').style.display = 'flex';
   renderPage(pageIdx);
