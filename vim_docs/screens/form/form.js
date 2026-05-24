@@ -468,7 +468,18 @@ function handleMedia(event, name, kind) {
  * @returns {string} HTML della lista scelte
  */
 function buildChoices(q, listName, kind) {
-  const opts   = CHOICES[listName] || [];
+  let opts = CHOICES[listName] || [];
+
+  // Cascading select: keep only choices matching the filter "col=${field}"
+  // (e.g. file_occasion shows only occasions whose `cat` = chosen category).
+  if (q.choice_filter) {
+    const m = q.choice_filter.match(/(\w+)\s*=\s*\$\{(\w+)\}/);
+    if (m) {
+      const col = m[1], dep = m[2];
+      opts = opts.filter(c => c[col] === answers[dep]);
+    }
+  }
+
   if (!opts.length) return '<p style="font-size:.8rem;color:var(--muted)">—</p>';
   const curVal = answers[q.name] || '';
   let html = '<div class="choices">';

@@ -104,20 +104,26 @@ async function main() {
       hint_ar: pick(row.hint,'ar'),
       required: row.required ? 'yes' : '',
       relevant: row.relevant || '',
+      choice_filter: row.choice_filter || '',   // cascading select (e.g. cat=${file_occasion_cat})
     };
     cur.fields.push(field);
     if (row.relevant) RELEVANT[row.name] = row.relevant;
   }
 
   // ── Build CHOICES from choices ─────────────────────────────────────────────
+  // Besides name + labels, keep any extra scalar columns (e.g. `cat`) used by
+  // cascading-select choice_filters.
+  const CH_SKIP = new Set(['name', 'label', 'list_name', '$kuid', '$autovalue', 'wikidata_q']);
   const CHOICES = {};
   for (const ch of (content.choices || [])) {
     const list = ch.list_name;
     if (!list) continue;
-    (CHOICES[list] = CHOICES[list] || []).push({
+    const o = {
       name: ch.name || ch.$autovalue,
       it: pick(ch.label,'it'), en: pick(ch.label,'en'), ar: pick(ch.label,'ar'),
-    });
+    };
+    for (const k in ch) if (!CH_SKIP.has(k) && typeof ch[k] !== 'object') o[k] = ch[k];
+    (CHOICES[list] = CHOICES[list] || []).push(o);
   }
 
   // ── Write data.js (credentials stay as placeholders) ───────────────────────
