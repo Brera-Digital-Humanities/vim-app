@@ -6,10 +6,10 @@ const VIM_LANG_it = {
     ui: {
       // — Titoli e navigazione —
       appTitle:         'La valigia immateriale',
-      questionnaire:    'Questionario',
+      questionnaire:    'Modulo',
       // — Menu home —
       compilaTitle:     'Compila modulo',
-      compilaSub:       'Avvia il questionario',
+      compilaSub:       'Avvia il modulo',
       scaricaTitle:     'Scarica modulo',
       scaricaSub:       'Aggiorna dalla rete',
       bozzaTitle:       'Modifica bozza',
@@ -33,8 +33,9 @@ const VIM_LANG_it = {
       loading:      'Caricamento…',
       sending:      'Invio in corso…',
       successTitle: 'Grazie!',
-      successMsg:   'Il tuo questionario è stato inviato.',
+      successMsg:   'Il tuo modulo è stato inviato.',
       noBozza:      'Nessuna bozza salvata.',
+      noOutbox:     'Nessun modulo completato',
       noInviati:    'Nessun modulo inviato.',
       noFormDl:     'Scarica prima il modulo.',
       // — Download —

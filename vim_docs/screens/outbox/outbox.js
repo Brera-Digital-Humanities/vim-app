@@ -8,7 +8,7 @@
 function renderOutbox() {
   const list = document.getElementById('outbox-list');
   if (!outbox.length) {
-    list.innerHTML = '<p style="font-size:.82rem;color:var(--muted);padding:8px 0;">' + tr().noBozza + '</p>';
+    list.innerHTML = '<p style="font-size:.82rem;color:var(--muted);padding:8px 0;">' + tr().noOutbox + '</p>';
     return;
   }
   list.innerHTML = '';

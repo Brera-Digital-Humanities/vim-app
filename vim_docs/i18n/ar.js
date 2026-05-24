@@ -5,9 +5,9 @@ const VIM_LANG_ar = {
     rtl: true,  // ← Attiva dir="rtl" su phone-shell e font Noto Naskh Arabic
     ui: {
       appTitle:         'الحقيبة غير المادية',
-      questionnaire:    'الاستبيان',
+      questionnaire:    'نموذج',
       compilaTitle:     'ملء النموذج',
-      compilaSub:       'ابدأ الاستبيان',
+      compilaSub:       'ابدأ النموذج',
       scaricaTitle:     'تنزيل النموذج',
       scaricaSub:       'تحديث من الخادم',
       bozzaTitle:       'تعديل المسودة',
@@ -28,8 +28,9 @@ const VIM_LANG_ar = {
       loading:      'جارٍ التحميل…',
       sending:      'جارٍ الإرسال…',
       successTitle: 'شكراً!',
-      successMsg:   'تم إرسال استبيانك بنجاح.',
+      successMsg:   'تم إرسال النموذج بنجاح.',
       noBozza:      'لا توجد مسودات.',
+      noOutbox:     'لا توجد نماذج مكتملة',
       noInviati:    'لم يتم إرسال أي نموذج.',
       noFormDl:     'يرجى تنزيل النموذج أولاً.',
       dlBtn:     'تنزيل المحدد',
