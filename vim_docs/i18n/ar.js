@@ -5,6 +5,12 @@ const VIM_LANG_ar = {
     rtl: true,  // ← Attiva dir="rtl" su phone-shell e font Noto Naskh Arabic
     ui: {
       appTitle:         'الحقيبة غير المادية',
+      loginTitle: 'دخول المختبِر (beta)',
+      loginName: 'الاسم',
+      loginCode: 'رمز الدخول',
+      loginBtn: 'دخول',
+      loginErrName: 'أدخل اسمك',
+      loginErrCode: 'رمز غير صحيح',
       questionnaire:    'نموذج',
       compilaTitle:     'ملء النموذج',
       compilaSub:       'ابدأ النموذج',

@@ -6,6 +6,12 @@ const VIM_LANG_it = {
     ui: {
       // — Titoli e navigazione —
       appTitle:         'La valigia immateriale',
+      loginTitle: 'Accesso tester (beta)',
+      loginName: 'Nome',
+      loginCode: 'Codice di accesso',
+      loginBtn: 'Entra',
+      loginErrName: 'Inserisci il tuo nome',
+      loginErrCode: 'Codice non valido',
       questionnaire:    'Modulo',
       // — Menu home —
       compilaTitle:     'Compila modulo',

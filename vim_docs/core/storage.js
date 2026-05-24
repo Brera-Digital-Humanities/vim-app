@@ -24,6 +24,15 @@ function saveState() {
   }).catch(() => {});
 }
 
+/** saveAuth() — Persiste lo stato di login del tester (provvisorio). */
+function saveAuth() {
+  if (!('indexedDB' in window)) return;
+  _vimOpenDB().then(db => {
+    const st = db.transaction(VIM_STORE, 'readwrite').objectStore(VIM_STORE);
+    st.put({ loggedIn, testerName }, 'auth');
+  }).catch(() => {});
+}
+
 /** loadState() — Carica lo stato salvato nelle variabili globali. */
 function loadState() {
   if (!('indexedDB' in window)) return Promise.resolve();
@@ -34,10 +43,11 @@ function loadState() {
       q.onsuccess = () => r(q.result);
       q.onerror   = () => r(undefined);
     });
-    Promise.all([get('drafts'), get('outbox'), get('sentForms')]).then(([d, o, s]) => {
+    Promise.all([get('drafts'), get('outbox'), get('sentForms'), get('auth')]).then(([d, o, s, a]) => {
       if (Array.isArray(d)) drafts    = d;
       if (Array.isArray(o)) outbox    = o;
       if (Array.isArray(s)) sentForms = s;
+      if (a && typeof a === 'object') { loggedIn = !!a.loggedIn; testerName = a.testerName || ''; }
       resolve();
     });
   })).catch(() => {});

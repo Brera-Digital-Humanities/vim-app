@@ -2,7 +2,7 @@
 
 
 /** Elenco ID di tutte le schermate disponibili */
-const SCREENS = ['screen-lang', 'screen-home', 'screen-form', 'screen-drafts', 'screen-outbox'];
+const SCREENS = ['screen-login', 'screen-lang', 'screen-home', 'screen-form', 'screen-drafts', 'screen-outbox'];
 
 /**
  * showScreen(id, title, showPill) — Attiva una schermata e aggiorna l'app bar.
@@ -15,7 +15,7 @@ function showScreen(id, title, showPill) {
   SCREENS.forEach(s => document.getElementById(s).classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.getElementById('bar-title').textContent = title;
-  const isHome = id === 'screen-home' || id === 'screen-lang';
+  const isHome = id === 'screen-home' || id === 'screen-lang' || id === 'screen-login';
   document.getElementById('bar-back-btn').style.display = isHome ? 'none' : 'inline-flex';
   document.getElementById('prog-track').style.display   = showPill ? '' : 'none';
   // Il pill "Sezione X/9" appartiene solo al form: nascondilo altrove.

@@ -12,5 +12,7 @@ let drafts         = [];     // Elenco bozze salvate
                              // window._editingDraft = indice della bozza in modifica (null = nuovo modulo)
 let langReturn     = 'home'; // Dove tornare dopo la selezione lingua: 'home' | 'form'
 let langReturnField= 0;      // window._fieldIdx da ripristinare se si torna al form
+let testerName     = '';     // Nome del tester (login provvisorio)
+let loggedIn       = false;  // True dopo il login tester (persistito)
 
 

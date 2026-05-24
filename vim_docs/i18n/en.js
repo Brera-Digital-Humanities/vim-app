@@ -5,6 +5,12 @@ const VIM_LANG_en = {
     rtl: false,
     ui: {
       appTitle:         'The immaterial suitcase',
+      loginTitle: 'Tester access (beta)',
+      loginName: 'Name',
+      loginCode: 'Access code',
+      loginBtn: 'Enter',
+      loginErrName: 'Enter your name',
+      loginErrCode: 'Invalid code',
       questionnaire:    'Form',
       compilaTitle:     'Fill form',
       compilaSub:       'Start the form',
