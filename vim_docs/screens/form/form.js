@@ -156,6 +156,21 @@ function clearDependentFilters(changedName) {
   }));
 }
 
+/**
+ * clearHiddenFields() — Rimuove i valori dei campi non più visibili (la cui
+ * regola `relevant` non è soddisfatta), da answers e mediaFiles. Evita di
+ * inviare a Kobo dati di campi nascosti (es. media_audio dopo aver cambiato
+ * file_type da audio a foto). Come fa Kobo/XForm: relevant off → valore svuotato.
+ */
+function clearHiddenFields() {
+  PAGES.forEach(p => p.fields.forEach(f => {
+    if (!isVisible(f.name)) {
+      if (f.name in answers)   delete answers[f.name];
+      if (mediaFiles[f.name])  delete mediaFiles[f.name];
+    }
+  }));
+}
+
 /** currentField() — Il campo attualmente mostrato (sezione + _fieldIdx). */
 function currentField() {
   const pg = PAGES[pageIdx];
@@ -281,6 +296,8 @@ function openModal(innerHTML, wire) {
  */
 function markComplete() {
   if (!document.getElementById('btn-complete').classList.contains('enabled')) return;
+
+  clearHiddenFields();   // safety net: never submit values of hidden fields
 
   const saved = {
     answers:    JSON.parse(JSON.stringify(answers)),
@@ -531,6 +548,7 @@ function attachListeners(card, q) {
     inp.addEventListener('input', () => {
       answers[q.name] = inp.value;
       clearDependentFilters(q.name);
+      clearHiddenFields();
       updateCompleteBtn();
       updateNextBtnState();
     });
@@ -546,6 +564,7 @@ function attachListeners(card, q) {
       item.classList.add('selected');
       answers[name] = val;
       clearDependentFilters(name);
+      clearHiddenFields();
       updateCompleteBtn();
       updateNextBtnState();
     });
