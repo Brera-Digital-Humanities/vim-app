@@ -8,5 +8,9 @@ window._fieldIdx = 0;
  * Avvio: mostra la schermata di selezione lingua.
  * renderLangScreen() popola la lista lingue da UI_LANGS.
  */
-renderLangScreen();
-updateConnectivity();
+// Carica lo stato persistito (bozze/outbox/inviati) prima di avviare.
+Promise.resolve(loadState()).then(() => {
+  renderLangScreen();
+  updateConnectivity();
+  updateOutboxBadge();
+});

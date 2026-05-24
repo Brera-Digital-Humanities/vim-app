@@ -34,5 +34,6 @@ function renderDrafts() {
 /** deleteDraft(i) — Rimuove una bozza dall'elenco. */
 function deleteDraft(i) {
   drafts.splice(i, 1);
+  saveState();
   renderDrafts();
 }

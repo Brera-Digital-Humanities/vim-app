@@ -47,6 +47,7 @@ async function sendSingle(i) {
   if (ok) {
     sentForms.push({ sentAt: new Date().toLocaleString() });
     outbox.splice(i, 1);
+    saveState();
     updateOutboxBadge();
     renderOutbox();
   } else {
@@ -66,6 +67,7 @@ async function sendAllOutbox() {
       outbox.splice(i, 1);
     }
   }
+  saveState();
   updateOutboxBadge();
   renderOutbox();
 }
@@ -77,6 +79,7 @@ async function sendAllOutbox() {
  */
 function deleteSingle(i) {
   outbox.splice(i, 1);
+  saveState();
   updateOutboxBadge();
   renderOutbox();
 }

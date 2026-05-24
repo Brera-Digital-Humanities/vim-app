@@ -260,6 +260,7 @@ function saveDraftSilent() {
     drafts.push(entry);
     window._editingDraft = drafts.length - 1;
   }
+  saveState();
 }
 
 /**
@@ -328,6 +329,7 @@ function markComplete() {
   }
   window._editingDraft = null;
   updateOutboxBadge();
+  saveState();
 
   // Schermata di conferma
   document.getElementById('form-nav').style.display       = 'none';
