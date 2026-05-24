@@ -81,8 +81,6 @@ echo "▸ Assemble valigia_immateriale.html"
 expand_template > "$TMP_TPL"
 awk -v cssf="$TMP_CSS" -v jsf="$TMP_JS" '
 function inline_file(path) { while ((getline line < path) > 0) print line; close(path) }
-# Drop PWA manifest (local monolith is not an installable PWA)
-/<link rel="manifest"/ { next }
 # Replace CSS link with inline <style>
 /<link rel="stylesheet" href="\/styles\/vim\.css"\/>/ {
   print "  <style>"; inline_file(cssf); print "  </style>"; next
@@ -104,7 +102,13 @@ sed -i \
   -e "s|__VIM_KOBO_BASE__|$VIM_KOBO_BASE|g" \
   "$OUT"
 
-# ── 5. Syntax-check the inlined JS ──────────────────────────────────────────
+# ── 5. PWA assets next to the monolith (served from project root) ───────────
+echo "▸ Copy PWA assets (manifest, service worker, icons)"
+cp "$SRC/manifest.json"          "$ROOT/manifest.json"
+cp "$SRC/pwa/service-worker.js"  "$ROOT/service-worker.js"
+rm -rf "$ROOT/icons" && cp -r "$SRC/pwa/icons" "$ROOT/icons"
+
+# ── 6. Syntax-check the inlined JS ──────────────────────────────────────────
 echo "▸ Syntax check inlined JS"
 awk '/<script>/{p=1;next} /<\/script>/{p=0} p' "$OUT" > "$TMP_JS"
 node --check "$TMP_JS" && echo "    inlined JS OK"

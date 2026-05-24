@@ -19,6 +19,10 @@ package-lock.json
 # - i .bak storici contengono TOKEN compromesso — non committare
 # =============================================================================
 valigia_immateriale.html
+# PWA assets copied to root by build_monolith.sh (sources live in vim_docs/)
+/manifest.json
+/service-worker.js
+/icons/
 *.bak
 *.orig
 

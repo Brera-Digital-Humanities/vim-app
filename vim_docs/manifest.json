@@ -1,74 +1,19 @@
 {
-  "_comment": "=================================================================",
-  "_comment2": "VIM — La valigia immateriale",
-  "_comment3": "manifest.json — Web App Manifest (PWA)",
-  "_comment4": "",
-  "_comment5": "Posizionare questo file nella root del server:",
-  "_comment6": "  https://tuodominio.org/manifest.json",
-  "_comment7": "",
-  "_comment8": "Referenziato in template.html con:",
-  "_comment9": "  <link rel='manifest' href='/manifest.json'/>",
-  "_comment10": "",
-  "_comment11": "Per installare su iPhone:",
-  "_comment12": "  1. Aprire in Safari (non Chrome su iOS)",
-  "_comment13": "  2. Toccare il bottone 'Condividi'",
-  "_comment14": "  3. Selezionare 'Aggiungi a schermata Home'",
-  "_comment15": "",
-  "_comment16": "Requisiti per installazione PWA:",
-  "_comment17": "  - HTTPS obbligatorio",
-  "_comment18": "  - manifest.json con name, icons, start_url",
-  "_comment19": "  - Service Worker registrato",
-  "_comment20": "=================================================================",
-
   "name": "La valigia immateriale",
   "short_name": "Valigia",
-  "description": "Raccolta di patrimonio culturale immateriale — KoboToolbox form app",
-
-  "start_url": "/",
-  "scope": "/",
+  "description": "Raccolta di patrimonio culturale immateriale palestinese",
+  "start_url": "./valigia_immateriale.html",
+  "scope": "./",
   "display": "standalone",
-
   "background_color": "#f7f4ef",
-  "theme_color": "#1c1814",
-
+  "theme_color": "#c4763a",
   "orientation": "portrait",
   "lang": "it",
-
   "icons": [
-    {
-      "_comment": "Icona 192x192 — obbligatoria per installazione Android",
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "_comment": "Icona 512x512 — splash screen Android",
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "_comment": "Icona 180x180 — apple-touch-icon per iPhone (aggiungere anche <link rel='apple-touch-icon'> nell'HTML)",
-      "src": "/icons/icon-180.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    }
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
-
-  "_note_icons": "Per generare le icone dal logo SVG: npx pwa-asset-generator logo.svg ./icons --manifest manifest.json",
-
-  "categories": ["utilities", "productivity"],
-
-  "screenshots": [
-    {
-      "_comment": "Screenshot opzionali per il dialogo di installazione su Android",
-      "src": "/screenshots/home.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Home screen"
-    }
-  ]
+  "categories": ["utilities", "productivity"]
 }

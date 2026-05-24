@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#c4763a"/>
+  <!-- valigia: corpo -->
+  <rect x="100" y="178" width="312" height="216" rx="26" fill="none" stroke="#ffffff" stroke-width="22"/>
+  <!-- manico -->
+  <path d="M192 178 v-28 a24 24 0 0 1 24-24 h80 a24 24 0 0 1 24 24 v28" fill="none" stroke="#ffffff" stroke-width="22"/>
+  <!-- cucitura centrale tratteggiata -->
+  <line x1="256" y1="210" x2="256" y2="362" stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-dasharray="1 30"/>
+</svg>
