@@ -49,6 +49,7 @@ const VIM_LANG_en = {
       draftGoHome:  'Go to home',
       draftStay:    'Continue here',
       resume:       'Resume',
+      draftsHeader: 'Saved drafts',
       exitTitle:    'Leave the form?',
       exitMsg:      "If you leave without saving, you'll lose what you entered so far.",
       exitSave:     'Save draft & exit',

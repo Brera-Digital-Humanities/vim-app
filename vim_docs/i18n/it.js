@@ -59,6 +59,7 @@ const VIM_LANG_it = {
       draftGoHome:  'Vai alla home',
       draftStay:    'Continua qui',
       resume:       'Riprendi',
+      draftsHeader: 'Bozze salvate',
       // — Modal uscita dal form —
       exitTitle:    'Uscire dalla compilazione?',
       exitMsg:      'Se esci senza salvare perdi quello che hai inserito finora.',

@@ -105,6 +105,14 @@ function applyUILang() {
   // Indicatore connessione (testo nella lingua corrente)
   if (typeof updateConnectivity === 'function') updateConnectivity();
 
+  // Intestazioni schermate elenco (outbox / bozze)
+  const outH = document.getElementById('outbox-header-label');
+  if (outH) outH.textContent = s.inAttesa;
+  const draftH = document.getElementById('drafts-header-label');
+  if (draftH) draftH.textContent = s.draftsHeader;
+  const sendAllBtn = document.getElementById('send-all-btn');
+  if (sendAllBtn) sendAllBtn.textContent = s.sendAll;
+
   // Bottoni form (se visibili)
   const btnDraft = document.querySelector('.btn-draft');
   const btnComp  = document.getElementById('btn-complete');

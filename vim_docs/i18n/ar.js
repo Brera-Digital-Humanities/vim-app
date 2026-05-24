@@ -49,6 +49,7 @@ const VIM_LANG_ar = {
       draftGoHome:  'الذهاب إلى الرئيسية',
       draftStay:    'الاستمرار هنا',
       resume:       'استئناف',
+      draftsHeader: 'المسودات المحفوظة',
       exitTitle:    'مغادرة النموذج؟',
       exitMsg:      'إذا غادرت دون حفظ ستفقد ما أدخلته حتى الآن.',
       exitSave:     'حفظ المسودة والخروج',
