@@ -1,14 +1,8 @@
       <!-- ═══════════════════════════════════════════════════════════════
-           SCREEN: HOME
-           Menu principale stile KoBoCollect.
-           
-           Voci menu:
-           - Compila modulo   → startFillForm()
-           - Scarica modulo   → showGetForm()
-           - Cambia lingua    → homeLangChange() [hidden fino al primo download]
-           - Modifica bozza   → showDraft()
-           - Moduli da inviare → showOutbox() [con badge numerico]
-           - Moduli inviati   → showSent()
+           SCREEN: HOME — main menu (KoBoCollect-style)
+           Voci: Compila modulo · Cambia lingua · Modifica bozza ·
+                 Moduli da inviare (badge) · Moduli inviati
+           (Il form è già incorporato dal sync Kobo: nessun "scarica modulo".)
       ══════════════════════════════════════════════════════════════════ -->
       <div class="screen" id="screen-home">
         <div class="home-screen">
@@ -33,20 +27,9 @@
               <span class="mi-arrow">›</span>
             </div>
 
-            <!-- Scarica modulo -->
-            <div class="menu-item" onclick="showGetForm()">
-              <div class="mi-icon">⬇️</div>
-              <div class="mi-body">
-                <div class="mi-title">Scarica modulo</div>
-                <div class="mi-sub">Aggiorna dalla rete</div>
-              </div>
-              <span class="mi-arrow">›</span>
-            </div>
-
             <!--
-              Cambia lingua — nascosta (display:none) fino al primo download.
-              Mostrata da applyUILang() / updateHomeLangLabel().
-              Il testo nel .mi-sub mostra la lingua attiva.
+              Cambia lingua — il testo nel .mi-sub mostra la lingua attiva.
+              Mostrata da applyUILang() dopo la scelta iniziale della lingua.
             -->
             <div class="menu-item" id="home-lang-item" onclick="homeLangChange()" style="display:none">
               <div class="mi-icon">🌐</div>

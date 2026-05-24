@@ -2,7 +2,7 @@
 
 
 /** Elenco ID di tutte le schermate disponibili */
-const SCREENS = ['screen-lang', 'screen-home', 'screen-form', 'screen-download', 'screen-outbox'];
+const SCREENS = ['screen-lang', 'screen-home', 'screen-form', 'screen-outbox'];
 
 /**
  * showScreen(id, title, showPill) — Attiva una schermata e aggiorna l'app bar.
@@ -32,16 +32,10 @@ function goHome() {
 
 /**
  * startFillForm() — Avvia la compilazione del form.
+ * Il form è già incorporato (sync Kobo), quindi si parte subito.
  * Se esiste una bozza, la riprende dal punto salvato.
- * Se il form non è stato scaricato, reindirizza al download.
  */
 function startFillForm() {
-  if (!formDownloaded) {
-    showGetForm();
-    document.getElementById('dl-result').innerHTML =
-      '<p style="font-size:.75rem;color:var(--accent);padding:8px 0;">⚠️ ' + tr().noFormDl + '</p>';
-    return;
-  }
   // Riprendi bozza o inizia nuovo form
   if (draftAnswers) {
     answers = JSON.parse(JSON.stringify(draftAnswers));
@@ -55,9 +49,6 @@ function startFillForm() {
   document.getElementById('form-nav-extra').style.display = 'flex';
   renderPage(pageIdx);
 }
-
-/** showGetForm() — Mostra la schermata download modulo */
-function showGetForm() { showScreen('screen-download', tr().scaricaTitle, false); }
 
 /** changeLang() — Apre la selezione lingua dall'app bar (durante compilazione) */
 function changeLang()     { renderLangScreen(); showScreen('screen-lang', tr().cambiaLinguaTitle, false); }

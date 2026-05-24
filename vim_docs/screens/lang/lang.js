@@ -45,7 +45,7 @@ function confirmLanguage() {
   applyUILang();
   // Determina se l'utente era già nel form
   const inForm = pageIdx > 0 || Object.keys(answers).length > 0;
-  if (formDownloaded && inForm) {
+  if (inForm) {
     showScreen('screen-form', tr().questionnaire, true);
     document.getElementById('lang-btn').style.display       = '';
     document.getElementById('form-nav-extra').style.display = 'flex';
@@ -68,9 +68,9 @@ function applyUILang() {
   document.querySelector('.phone-shell').setAttribute('dir', isRTL ? 'rtl' : 'ltr');
 
   // Aggiorna menu home
+  // Order must match the .menu-item order in home.html (no "scarica modulo").
   const menuDefs = [
     [s.compilaTitle,       s.compilaSub],
-    [s.scaricaTitle,       s.scaricaSub],
     [s.cambiaLinguaTitle,  s.cambiaLinguaSub + ': ' + UI_LANGS[currentLangIdx].name],
     [s.bozzaTitle,         s.bozzaSub],
     [s.outboxTitle,        s.outboxSub],
