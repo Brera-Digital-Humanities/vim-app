@@ -16,7 +16,7 @@ function showScreen(id, title, showPill) {
   document.getElementById(id).classList.add('active');
   document.getElementById('bar-title').textContent = title;
   const isHome = id === 'screen-home' || id === 'screen-lang';
-  document.getElementById('bar-back-btn').style.display = isHome ? 'none' : '';
+  document.getElementById('bar-back-btn').style.display = isHome ? 'none' : 'inline-flex';
   document.getElementById('prog-track').style.display   = showPill ? '' : 'none';
 }
 

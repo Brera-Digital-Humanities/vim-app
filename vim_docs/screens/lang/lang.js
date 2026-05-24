@@ -90,9 +90,11 @@ function applyUILang() {
   const brandH2 = document.querySelector('.home-brand h2');
   if (brandH2) brandH2.textContent = s.appTitle;
 
-  // Frecce navigazione (invertite in RTL)
-  const barBack = document.getElementById('bar-back-btn');
-  if (barBack) barBack.textContent = isRTL ? '→' : '←';
+  // Pulsante indietro nell'app bar: freccia (invertita in RTL) + scritta "Home"
+  const backArrow = document.getElementById('bar-back-arrow');
+  if (backArrow) backArrow.textContent = isRTL ? '→' : '←';
+  const backLabel = document.getElementById('bar-back-label');
+  if (backLabel) backLabel.textContent = s.home;
 
   // Voce "cambia lingua" nella home
   const langItem = document.getElementById('home-lang-item');
