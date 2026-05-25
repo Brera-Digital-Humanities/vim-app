@@ -7,6 +7,7 @@
     "build": "npm run build:app",
     "sync": "node scripts/sync-kobo-form.js",
     "build:app": "./scripts/build-app.sh",
+    "watch": "node scripts/watch.js",
     "start": "http-server dist -p 8765 -c-1 -o /index.html",
     "serve": "http-server dist -p 8765 -c-1",
     "demo": "http-server test -p 8766 -c-1 -o /index.html",
