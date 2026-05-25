@@ -12,7 +12,12 @@
           </div>
           <div class="login-form">
             <input type="text" id="login-name" class="login-input" placeholder="Nome" autocomplete="name"/>
-            <input type="password" id="login-code" class="login-input" placeholder="Codice di accesso"/>
+            <div class="login-pass">
+              <input type="password" id="login-code" class="login-input" placeholder="Codice di accesso"/>
+              <button type="button" class="login-eye" id="login-eye" onclick="toggleLoginCode()" aria-label="Mostra codice">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
             <div id="login-error" class="login-error" style="display:none"></div>
             <button class="login-btn" id="login-btn" onclick="doLogin()">Entra</button>
           </div>

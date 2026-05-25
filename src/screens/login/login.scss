@@ -40,6 +40,45 @@
     box-shadow: 0 0 0 3px rgba(196, 118, 58, .15);
   }
   &::placeholder { color: var(--muted); }
+
+  // Neutralize the browser autofill styling (otherwise the field renders with
+  // the browser's own background/look until the user interacts).
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--ink);
+    -webkit-box-shadow: 0 0 0 1000px var(--surface) inset;
+    box-shadow: 0 0 0 1000px var(--surface) inset;
+    border: 1px solid var(--border);
+    caret-color: var(--ink);
+  }
+}
+
+// Password field + show/hide eye toggle
+.login-pass {
+  position: relative;
+}
+.login-pass .login-input {
+  padding-right: 2.8rem;   // room for the eye button
+}
+.login-eye {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color $transition-fast;
+
+  &:hover { color: var(--ink); }
+  svg { width: 20px; height: 20px; }
 }
 
 .login-error {
