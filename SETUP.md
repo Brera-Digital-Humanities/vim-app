@@ -21,7 +21,7 @@ l'interfaccia di KoBoCollect su schermo mobile.
 
 - **Backend dati:** KoboToolbox (server `eu.kobotoolbox.org`, UID form `<FORM-UID>`)
 - **Definizione form:** presa da Kobo via `npm run sync` (rigenera `data.js`)
-- **Target:** app web statica, PWA installabile su iPhone/Android (offline in sviluppo)
+- **Target:** app web statica, PWA installabile su iPhone/Android, funziona offline
 
 ---
 
@@ -205,10 +205,12 @@ Se entrambi i comandi terminano senza errori, l'ambiente è pronto.
 | Navigazione tra schermate | `src/core/router.js` | showScreen, goHome… |
 | Rendering campi, bozze, completamento | `src/screens/form/form.js` | renderPage, nextField, updateCompleteBtn (required+visibili) |
 | Campi condizionali | `RELEVANT` in `data.js` (da Kobo); logica in `core/relevant.js` | sintassi XLSForm: `${campo}='valore'` |
-| Endpoint o formato submit | `src/api.js` → `doSubmit` | invio diretto a KoboToolbox (vedi nodo token, sez. 8) |
+| Endpoint o formato submit | `src/api.js` → `doSubmit` | invio diretto a KoboToolbox (vedi nodo token, sez. 9) |
 | Definizione form (campi, ordine, scelte) | **su Kobo**, poi `npm run sync` | NON si edita `data.js` a mano |
 | Aggiungere/togliere campi del form | `src/data.js` → `PAGES` e `CHOICES` | meglio rigenerare da XLSForm aggiornato |
 | Nome/icone PWA | `src/manifest.json` | |
+| Persistenza offline / coda invii | `src/core/storage.js` (IndexedDB), `src/screens/outbox/outbox.js` (`autoSync`) | record per modulo, instanceID, auto-invio — vedi sez. 7 |
+| Cache offline / service worker | `src/pwa/service-worker.js` | HTML network-first, asset/font cache-first; cache versionata `vim-vN` |
 | Ordine di concatenazione / nuovo file | `src/build.order` | aggiungi il path nella sezione `[js]` o `[scss]` |
 
 ### 4.3 Test locale (PWA + demo)
@@ -277,14 +279,68 @@ rendering. Deployarla significa **servire il file su un host HTTPS**.
 - **HTTPS obbligatorio** per: installazione come PWA e accesso
   fotocamera/microfono su iOS (non funziona su `http://` da remoto).
 - **Invii:** l'app invia i dati a KoboToolbox. La gestione del token è il
-  punto da curare — vedi sez. 8 (Sicurezza).
-- **Offline / PWA installabile:** già attivi — service worker (`src/pwa/`,
-  cachea l'app shell) + IndexedDB (bozze/outbox/login persistenti). Su HTTPS
-  l'app si installa su iPhone/Android ("Aggiungi a schermata Home") e si apre
-  senza rete.
+  punto da curare — vedi sez. 9 (Sicurezza).
+- **Offline / PWA:** service worker + IndexedDB già attivi — vedi sez. 7
+  (Offline, storage e sincronizzazione). Su HTTPS la PWA si installa su
+  iPhone/Android ("Aggiungi a schermata Home").
+
 ---
 
-## 7. Troubleshooting
+## 7. Offline, storage e sincronizzazione
+
+L'app è una PWA pensata per l'uso sul campo, anche senza rete. Lo storage locale
+è un **buffer**: la fonte di verità resta KoboToolbox, su cui i moduli vengono
+inviati appena c'è connessione.
+
+### 7.1 Apertura offline (service worker)
+
+`src/pwa/service-worker.js` (servito da `dist/`) gestisce la cache:
+- **HTML**: *network-first* → online prendi sempre l'ultimo build, offline ricadi
+  sulla cache (così i tester ricevono gli aggiornamenti senza restare bloccati su
+  una versione vecchia).
+- **Asset statici + Google Font**: *cache-first* (i font funzionano offline dopo
+  un primo caricamento online).
+- Le richieste a Kobo (invii) passano sempre dalla rete.
+
+Richiede HTTPS o `localhost`. La cache è versionata (`vim-vN`): alzando la
+versione la vecchia viene ripulita all'attivazione del nuovo service worker.
+
+### 7.2 Dati persistenti (IndexedDB)
+
+`src/core/storage.js` salva su IndexedDB (DB `vim`, versione 2):
+- **un record per bozza e per modulo in coda** (store `drafts` / `outbox`, chiave =
+  instanceID) → scritture mirate, niente rewrite dell'intero elenco, i media
+  (Blob) sopravvivono.
+- singoletti (moduli inviati, login, lingua) nello store `state`.
+- **storage persistente**: all'avvio l'app chiama `navigator.storage.persist()`
+  per non farsi cancellare i dati; avvisa nella home se l'uso supera il 90%.
+
+C'è una migrazione automatica dai dati del vecchio schema (v1) ai record (v2),
+così non si perdono bozze/outbox già salvati.
+
+### 7.3 Invio e idempotenza
+
+- Ogni modulo ha un **instanceID** stabile (`uuid:…`), generato all'inizio della
+  compilazione e mantenuto da bozza fino all'invio. Finisce in
+  `<meta><instanceID>` dell'XML OpenRosa → Kobo **deduplica** i re-invii: niente
+  doppioni anche con i retry.
+- **Auto-invio** (`autoSync` in `src/screens/outbox/outbox.js`): svuota la coda
+  quando torna la rete, all'avvio e dopo aver completato un modulo, con retry
+  periodico. Restano disponibili l'invio manuale ("Invia" / "Invia tutti").
+
+### 7.4 Su iOS
+
+Per ridurre il rischio che Safari cancelli i dati (eviction dopo ~7 giorni di
+inutilizzo), **installa la PWA su Home** e servi in **HTTPS**: lo storage
+persistente diventa più affidabile.
+
+> Perché non SQLite? In un browser non esiste SQLite "vero"; IndexedDB è il
+> database nativo ed è la scelta corretta. SQLite-WASM persisterebbe sullo stesso
+> storage (stesse regole di cancellazione), senza vantaggi di durabilità.
+
+---
+
+## 8. Troubleshooting
 
 | Problema | Diagnosi | Soluzione |
 |---|---|---|
@@ -301,9 +357,9 @@ rendering. Deployarla significa **servire il file su un host HTTPS**.
 
 ---
 
-## 8. Sicurezza e produzione
+## 9. Sicurezza e produzione
 
-### 8.1 Credenziali nel repo
+### 9.1 Credenziali nel repo
 
 - **TOKEN API KoboToolbox:** vive **solo** in `.env` (gitignored). I sorgenti
   in `src/data.js` usano i placeholder `__VIM_KOBO_TOKEN__` ecc., che
@@ -317,7 +373,7 @@ rendering. Deployarla significa **servire il file su un host HTTPS**.
   (a) un mini-proxy che tiene il token server-side, (b) o usare un backend che
   inoltra gli invii. Per un uso interno/fidato + CORS configurato può bastare.
 
-### 8.2 In produzione
+### 9.2 In produzione
 
 - **HTTPS obbligatorio** per accesso camera/microfono da iOS e per
   installazione PWA.
@@ -327,7 +383,7 @@ rendering. Deployarla significa **servire il file su un host HTTPS**.
 
 ---
 
-## 9. Aggiornare il form
+## 10. Aggiornare il form
 
 Il form vive su KoboToolbox ed è la fonte di verità della sua struttura.
 
@@ -343,7 +399,7 @@ rendering custom vanno aggiunti una volta — vedi `src/README.md`.)
 
 ---
 
-## 10. Risorse
+## 11. Risorse
 
 - **Documentazione tecnica dettagliata:** `src/README.md`
 - **KoboToolbox API v2:** https://kobo.kobotoolbox.org/api/v2/
