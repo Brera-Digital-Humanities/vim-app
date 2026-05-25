@@ -257,6 +257,13 @@
   display: none; // Shown via JS after capture
 }
 
+// Large-file warning under a media field (shown via JS over MAX_MEDIA_MB)
+.media-warn {
+  margin-top: 6px;
+  font-size: .72rem;
+  color: var(--error);
+}
+
 
 
 

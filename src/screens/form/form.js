@@ -1,5 +1,8 @@
 // VIM — form screen: rendering, navigation, drafts, question/choice builders, completion
 
+// Soft warning threshold for media size (server may reject larger attachments).
+const MAX_MEDIA_MB = 10;
+
 // --- field rendering & navigation ---
 
 /** renderPage(idx) — Render the current section, one field at a time (window._fieldIdx). */
@@ -451,6 +454,8 @@ function buildMediaField(q, kind) {
       <input type="file" id="media_upl_${q.name}" accept="${uplAccept}"
         style="display:none" onchange="handleMedia(event,'${q.name}','${kind}')"/>
       ${capInfo}
+      <!-- Large-file warning: filled by handleMedia() when over MAX_MEDIA_MB -->
+      <div id="media-warn-${q.name}" class="media-warn" style="display:none"></div>
       <!-- Preview area: filled by handleMedia() -->
       <div id="media-preview-${q.name}" class="media-preview"></div>
     </div>`;
@@ -466,6 +471,15 @@ function handleMedia(event, name, kind) {
   if (!file) return;
   mediaFiles[name] = file;
   answers[name]    = file.name;
+
+  // Large-file warning (soft: the server may reject very large attachments)
+  const warn = document.getElementById('media-warn-' + name);
+  if (warn) {
+    const mb = file.size / (1024 * 1024);
+    const big = mb > MAX_MEDIA_MB;
+    warn.style.display = big ? '' : 'none';
+    if (big) warn.textContent = `(${mb.toFixed(0)} MB) ` + tr().mediaLargeWarn;
+  }
 
   // Inline preview
   const preview = document.getElementById('media-preview-' + name);

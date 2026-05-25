@@ -25,9 +25,14 @@
  * @param {Object} ans          - fieldName → answer value (from answers)
  * @param {Object} mf           - fieldName → File object (from mediaFiles)
  * @param {string} [instanceId] - stable OpenRosa instanceID
- * @returns {Promise<boolean>} true on success
+ * @returns {Promise<{ok: boolean, permanent: boolean}>} permanent=true when a
+ *          retry can't help (e.g. file too large / bad request / unauthorized).
  */
+const SUBMIT_TIMEOUT_MS = 120000;   // abort a stalled upload so the queue isn't blocked
+
 async function doSubmit(ans, mf, instanceId) {
+  const ctrl  = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), SUBMIT_TIMEOUT_MS);
   try {
 
     // ── Build OpenRosa XML ───────────────────────────────────────────────
@@ -82,18 +87,28 @@ async function doSubmit(ans, mf, instanceId) {
 
     // ── API call ──────────────────────────────────────────────────────────
     // POST /api/v2/assets/{uid}/submissions/ (KoboToolbox API v2).
-    // Expected: 201/200 ok · 400 bad XML · 401 bad token · 403 forbidden · 503 down.
+    // Expected: 201/200 ok · 400 bad XML · 401 bad token · 403 forbidden ·
+    // 413 too large · 5xx server down.
     const response = await fetch(`${BASE}/api/v2/assets/${UID}/submissions/`, {
       method:  'POST',
       headers: { 'Authorization': `Token ${TOKEN}` },
       body:    formData,
+      signal:  ctrl.signal,
     });
+    clearTimeout(timer);
 
-    return response.ok || response.status === 201;
+    if (response.ok || response.status === 201) return { ok: true, permanent: false };
+    // 4xx (bad request / too large / unauthorized) won't succeed on retry;
+    // 408/429 and 5xx are transient.
+    const s = response.status;
+    const permanent = s >= 400 && s < 500 && s !== 408 && s !== 429;
+    console.error('[VIM API] submit failed:', s);
+    return { ok: false, permanent };
 
   } catch (error) {
-    // Network errors (offline, timeout, CORS)
-    console.error('[VIM API] submit error:', error);
-    return false;
+    // Network error, CORS, or timeout (abort) → transient, retry later.
+    clearTimeout(timer);
+    console.error('[VIM API] submit error:', error && error.name);
+    return { ok: false, permanent: false };
   }
 }

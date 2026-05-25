@@ -86,6 +86,9 @@ const VIM_LANG_it = {
       sendAll:     'Invia tutti',
       inAttesa:    'In attesa di invio',
       formSavedAt: 'Salvato il',
+      retry:       'Riprova',
+      sendFailed:  'Invio non riuscito — riprova o elimina.',
+      mediaLargeWarn: 'File grande, l’invio potrebbe non riuscire.',
       // — Connectivity indicator (home) —
       statusOnline:  'Connesso',
       statusOffline: 'Nessuna connessione',

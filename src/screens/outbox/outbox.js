@@ -12,13 +12,18 @@ function renderOutbox() {
   outbox.forEach((item, i) => {
     const el = document.createElement('div');
     el.style.cssText = 'padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;';
+    // Permanently-failed items (e.g. rejected by the server) show a note and
+    // stop auto-retrying; the user can retry manually or delete them.
+    const failNote = item.failed
+      ? `<div style="font-size:.7rem;color:var(--error);margin-top:4px">⚠️ ${tr().sendFailed}</div>` : '';
     el.innerHTML = `
       <div style="font-size:.88rem;font-weight:500;color:var(--ink)">${item.label}</div>
       <div style="font-size:.7rem;color:var(--muted);margin-top:2px">${tr().formSavedAt} ${item.savedAt}</div>
+      ${failNote}
       <div style="display:flex;gap:8px;margin-top:10px">
         <button onclick="sendSingle(${i})"
           style="flex:1;padding:8px;border:none;border-radius:8px;background:var(--ink);color:var(--bg);font-size:.75rem;cursor:pointer;">
-          ${tr().invia}
+          ${item.failed ? tr().retry : tr().invia}
         </button>
         <button onclick="deleteSingle(${i})"
           style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:none;font-size:.75rem;cursor:pointer;color:var(--error)">
@@ -29,51 +34,56 @@ function renderOutbox() {
   });
 }
 
-// Send one queued item (by reference); on success move it to sentForms and drop
-// its record. Returns the submit result. instanceID makes the send idempotent.
+// Send one queued item (by reference). On success move it to sentForms and drop
+// its record; on a permanent failure flag it so we stop auto-retrying. Returns
+// the doSubmit result. instanceID makes the send idempotent.
 async function _sendItem(item) {
-  const ok = await doSubmit(item.answers, item.mediaFiles, item.id);
-  if (ok) {
+  const res = await doSubmit(item.answers, item.mediaFiles, item.id);
+  if (res.ok) {
     sentForms.push({ sentAt: new Date().toLocaleString() });
     const i = outbox.indexOf(item);
     if (i > -1) outbox.splice(i, 1);
     removeOutboxRecord(item.id);
     saveState();              // persist the sent-forms log
     updateOutboxBadge();
+  } else if (res.permanent) {
+    item.failed = true;       // won't auto-retry; persist the flag
+    saveOutboxRecord(item);
   }
-  return ok;
+  return res;
 }
 
-/** sendSingle(i) — Manually send one queued form; refresh the list on success. */
+/** sendSingle(i) — Manually send one queued form (clears any failed flag). */
 async function sendSingle(i) {
   const item = outbox[i];
   if (!item) return;
+  delete item.failed;         // a manual send is a fresh attempt
   const btns = document.getElementById('outbox-list').querySelectorAll('button');
   if (btns[i * 2]) btns[i * 2].textContent = '…';   // sending feedback
-  const ok = await _sendItem(item);
-  if (ok) renderOutbox();
-  else if (btns[i * 2]) btns[i * 2].textContent = '⚠️ ' + tr().invia;
+  await _sendItem(item);
+  renderOutbox();
 }
 
 let _autoSyncing = false;
 
 /**
- * autoSync() — Send queued forms automatically when online. Guarded against
- * re-entry; if any item remains and we're still online, retries after a delay.
+ * autoSync() — Send queued forms automatically when online. Skips items that
+ * permanently failed; guarded against re-entry; retries the rest after a delay.
  * Triggered on connectivity, at startup and after completing a form.
  */
 async function autoSync() {
-  if (_autoSyncing || !navigator.onLine || !outbox.length) return;
+  const pending = () => outbox.filter(it => !it.failed);
+  if (_autoSyncing || !navigator.onLine || !pending().length) return;
   _autoSyncing = true;
   try {
-    for (const item of [...outbox]) await _sendItem(item);
+    for (const item of pending()) await _sendItem(item);
   } finally {
     _autoSyncing = false;
   }
   if (document.getElementById('outbox-list')) renderOutbox();
-  if (outbox.length && navigator.onLine) {
+  if (pending().length && navigator.onLine) {
     clearTimeout(window._syncRetry);
-    window._syncRetry = setTimeout(autoSync, 30000);   // simple retry
+    window._syncRetry = setTimeout(autoSync, 30000);   // simple retry (transient errors only)
   }
 }
 
