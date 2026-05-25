@@ -40,8 +40,9 @@ function barBack() {
 
 /** startFillForm() — Start a NEW form from scratch (resume happens via drafts). */
 function startFillForm() {
-  window._editingDraft = null;   // new form, not a draft
-  window._instanceId   = newId();  // fresh instanceID for this form
+  window._editingDraft    = null;   // new form, not a draft
+  window._editingOutboxId = null;   // not editing a queued form
+  window._instanceId      = newId();  // fresh instanceID for this form
   answers = {}; mediaFiles = {}; pageIdx = 0;
   openForm();
 }
@@ -50,8 +51,9 @@ function startFillForm() {
 function resumeDraft(i) {
   const d = drafts[i];
   if (!d) return;
-  window._editingDraft = i;
-  window._instanceId   = d.id;     // keep the draft's instanceID through to submit
+  window._editingDraft    = i;
+  window._editingOutboxId = null;
+  window._instanceId      = d.id;  // keep the draft's instanceID through to submit
   answers    = JSON.parse(JSON.stringify(d.answers));
   mediaFiles = Object.assign({}, d.mediaFiles || {});
   pageIdx    = d.pageIdx || 0;

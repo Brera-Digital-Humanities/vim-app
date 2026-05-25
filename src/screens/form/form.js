@@ -219,6 +219,7 @@ function saveDraft() {
   openModal(`
       <div class="modal-title">${s.draftTitle}</div>
       <div class="modal-msg">${s.draftMsg}</div>
+      <div class="modal-note-danger">${s.persistNote}</div>
       <div class="modal-actions">
         <button class="modal-btn-primary"  id="modal-home-btn">${s.draftGoHome}</button>
         <button class="modal-btn-secondary" id="modal-stay-btn">${s.draftStay}</button>
@@ -293,34 +294,58 @@ function openModal(innerHTML, wire) {
 }
 
 /**
- * markComplete() — Mark the form complete and push it to the outbox queue.
- * Requires btn-complete to be .enabled (set by updateCompleteBtn). Then it
- * clears the edited draft, updates the outbox badge and shows a confirmation.
+ * markComplete() — Ask how to send the completed form (auto when online vs
+ * manual), then finalize. Requires btn-complete to be .enabled.
  */
 function markComplete() {
   if (!document.getElementById('btn-complete').classList.contains('enabled')) return;
+  const s = tr();
+  openModal(`
+      <div class="modal-title">${s.completeHow}</div>
+      <div class="modal-note-danger">${s.persistNote}</div>
+      <div class="modal-actions">
+        <button class="modal-btn-primary"   id="complete-auto-btn">${s.sendAuto}</button>
+        <button class="modal-btn-secondary" id="complete-manual-btn">${s.sendManual}</button>
+      </div>`, close => {
+    document.getElementById('complete-auto-btn').onclick   = () => { close(); _finalizeComplete(true); };
+    document.getElementById('complete-manual-btn').onclick = () => { close(); _finalizeComplete(false); };
+  });
+}
 
+/**
+ * _finalizeComplete(autoSend) — Snapshot the form into the outbox and show the
+ * confirmation. The OpenRosa XML is built now and stored, so the queued
+ * submission is immune to later schema changes. `autoSend` chooses whether it
+ * is sent automatically when online or only on manual request.
+ */
+function _finalizeComplete(autoSend) {
   clearHiddenFields();   // safety net: never submit values of hidden fields
-
+  const id = window._instanceId || newId();   // stable instanceID for dedup
   const saved = {
-    id:         window._instanceId || newId(),   // stable instanceID for dedup
+    id,
     answers:    JSON.parse(JSON.stringify(answers)),
     mediaFiles: mediaFiles,
+    xml:        buildSubmissionXml(answers, mediaFiles, id),   // snapshot (schema-proof)
+    schemaSig:  schemaSig(),                                   // detect later schema changes
+    autoSend:   autoSend !== false,
     savedAt:    new Date().toLocaleString(),
-    // Identifying label: use the expression name when available
-    label: answers['name_english'] || answers['local_name'] || ('Modulo ' + (outbox.length + 1))
+    label:      answers['name_english'] || answers['local_name'] || ('Modulo ' + (outbox.length + 1)),
   };
-  outbox.push(saved);
+  // Replace in place if re-editing an outbox item, otherwise append.
+  const ix = window._editingOutboxId ? outbox.findIndex(o => o.id === window._editingOutboxId) : -1;
+  if (ix > -1) outbox[ix] = saved; else outbox.push(saved);
   saveOutboxRecord(saved);
   // If a draft was being completed, remove it (same instanceID is now in outbox).
   if (window._editingDraft != null && drafts[window._editingDraft]) {
     removeDraftRecord(drafts[window._editingDraft].id);
     drafts.splice(window._editingDraft, 1);
   }
-  window._editingDraft = null;
-  window._instanceId   = null;
+  window._editingDraft    = null;
+  window._editingOutboxId = null;
+  window._instanceId      = null;
+  window._compiling       = false;   // form is done — allow auto-sync
   updateOutboxBadge();
-  if (typeof autoSync === 'function') autoSync();   // send now if online
+  if (saved.autoSend && typeof autoSync === 'function') autoSync();   // send now if online
 
   // Confirmation screen
   const isRTL = !!UI_LANGS[currentLangIdx].rtl;
@@ -339,6 +364,18 @@ function markComplete() {
         ${isRTL ? '→' : '←'} ${tr().home}
       </button>
     </div>`;
+}
+
+/**
+ * schemaSig() — Short signature of the current form schema (field names+types),
+ * stored with a completed form to detect whether the form changed before a
+ * later re-edit (see editOutbox).
+ */
+function schemaSig() {
+  const str = PAGES.flatMap(p => p.fields.map(f => f.name + ':' + f.type)).join('|');
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+  return String(h >>> 0);
 }
 
 

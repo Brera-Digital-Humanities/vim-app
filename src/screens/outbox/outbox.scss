@@ -13,8 +13,28 @@
     flex-direction: column;
     gap: 10px;
 
-    div {
+    > div {
         padding: 16px;
+    }
+}
+
+// Per-item auto-send toggle chip (under the form name)
+.ob-auto {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: none;
+    font-size: .68rem;
+    color: var(--muted);
+    cursor: pointer;
+
+    &.on {
+        color: var(--accent2);
+        border-color: var(--accent2);
     }
 }
 

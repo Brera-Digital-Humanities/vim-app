@@ -2,6 +2,9 @@
 
 /** renderDrafts() — Populate the saved-drafts list (label + date + Resume/Delete). */
 function renderDrafts() {
+  const note = document.getElementById('drafts-persist-note');
+  if (note) note.textContent = drafts.length ? tr().persistNote : '';
+
   const list = document.getElementById('drafts-list');
   if (!drafts.length) {
     list.innerHTML = '<p style="font-size:.82rem;color:var(--muted);padding:8px 0;">' + tr().noBozza + '</p>';

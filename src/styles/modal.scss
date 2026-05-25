@@ -56,6 +56,15 @@
   line-height: 1.5;
 }
 
+// Red caveat inside a modal (e.g. persistence warning on save/complete)
+.modal-note-danger {
+  font-size: .75rem;
+  color: var(--error);
+  text-align: center;
+  padding: 0 24px 14px;
+  line-height: 1.45;
+}
+
 .modal-actions {
   display: flex;
   flex-direction: column;

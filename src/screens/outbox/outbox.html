@@ -11,6 +11,8 @@
       <div class="screen" id="screen-outbox">
         <div class="home-screen" id="outbox-list-wrap">
           <div style="color:var(--muted);" id="outbox-header-label" class="outbox-header-label">In attesa di invio</div>
+          <!-- Persistence note (set by renderOutbox) -->
+          <div id="outbox-persist-note" class="persist-note"></div>
           <!-- Items populated by renderOutbox() -->
           <div id="outbox-list" class="outbox-list"></div>
           <div>

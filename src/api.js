@@ -16,67 +16,55 @@
 
 
 /**
- * doSubmit(ans, mf, instanceId) — Submit a completed form to KoboToolbox.
+ * buildSubmissionXml(ans, mf, instanceId) — Build the OpenRosa/XForm XML for a
+ * submission: <data id="{uid}"><field>value</field>…<meta><instanceID>…</data>.
+ * Media fields carry only the filename (the binary is sent as a separate part).
+ * Built once at completion and stored, so a queued submission is immune to
+ * later changes of the form schema.
+ */
+function buildSubmissionXml(ans, mf, instanceId) {
+  const xmlParts = [`<?xml version="1.0" ?><data id="${UID}">`];
+  PAGES.forEach(pg => {
+    pg.fields.forEach(q => {
+      const v = ans[q.name];
+      if (v === undefined || v === null || v === '' ||
+          (Array.isArray(v) && v.length === 0)) return;   // skip empty
+      const val = Array.isArray(v) ? v.join(' ') : v;
+      if (mf[q.name]) {
+        xmlParts.push(`<${q.name}>${mf[q.name].name}</${q.name}>`);   // filename only
+      } else {
+        const escaped = String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        xmlParts.push(`<${q.name}>${escaped}</${q.name}>`);
+      }
+    });
+  });
+  // OpenRosa meta: stable instanceID → server-side dedup of re-sent forms
+  if (instanceId) xmlParts.push(`<meta><instanceID>${instanceId}</instanceID></meta>`);
+  xmlParts.push('</data>');
+  return xmlParts.join('');
+}
+
+/**
+ * doSubmit(xml, mf) — Submit a completed form (prebuilt OpenRosa XML + media).
  *
- * Sends multipart/form-data: an OpenRosa/XForm XML (xml_submission_file) plus
- * one part per media file. instanceId goes in <meta><instanceID> so a re-sent
- * form is deduplicated server-side (idempotent).
- *
- * @param {Object} ans          - fieldName → answer value (from answers)
- * @param {Object} mf           - fieldName → File object (from mediaFiles)
- * @param {string} [instanceId] - stable OpenRosa instanceID
+ * @param {string} xml - the OpenRosa XML (from buildSubmissionXml)
+ * @param {Object} mf  - fieldName → File object
  * @returns {Promise<{ok: boolean, permanent: boolean}>} permanent=true when a
  *          retry can't help (e.g. file too large / bad request / unauthorized).
  */
 const SUBMIT_TIMEOUT_MS = 120000;   // abort a stalled upload so the queue isn't blocked
 
-async function doSubmit(ans, mf, instanceId) {
+async function doSubmit(xml, mf) {
   const ctrl  = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), SUBMIT_TIMEOUT_MS);
   try {
-
-    // ── Build OpenRosa XML ───────────────────────────────────────────────
-    // <data id="{uid}"><field>value</field><mediaField>filename</mediaField>…</data>
-    // Media fields carry only the filename here; the binary goes as a separate
-    // multipart part below.
-    const xmlParts = [`<?xml version="1.0" ?><data id="${UID}">`];
-
-    PAGES.forEach(pg => {
-      pg.fields.forEach(q => {
-        const v = ans[q.name];
-
-        // Skip empty fields
-        if (v === undefined || v === null || v === '' ||
-            (Array.isArray(v) && v.length === 0)) return;
-
-        const val = Array.isArray(v) ? v.join(' ') : v;
-
-        if (mf[q.name]) {
-          // Media field: only the filename goes in the XML
-          xmlParts.push(`<${q.name}>${mf[q.name].name}</${q.name}>`);
-        } else {
-          // Text/select field: escape XML-special characters
-          const escaped = String(val)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-          xmlParts.push(`<${q.name}>${escaped}</${q.name}>`);
-        }
-      });
-    });
-
-    // OpenRosa meta: stable instanceID → server-side dedup of re-sent forms
-    if (instanceId) xmlParts.push(`<meta><instanceID>${instanceId}</instanceID></meta>`);
-    xmlParts.push('</data>');
-    const xmlString = xmlParts.join('');
-
     // ── Build multipart FormData ──────────────────────────────────────────
     const formData = new FormData();
 
     // The XML is the main part of the submission
     formData.append(
       'xml_submission_file',
-      new Blob([xmlString], { type: 'text/xml' }),
+      new Blob([xml], { type: 'text/xml' }),
       'submission.xml'
     );
 

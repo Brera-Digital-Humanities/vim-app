@@ -14,4 +14,14 @@
   }
 }
 
+// Grey persistence note shown on the drafts / outbox screens (text set via JS)
+.persist-note {
+  padding: 0 16px 8px;
+  font-size: .68rem;
+  line-height: 1.4;
+  color: var(--muted);
+
+  &:empty { display: none; }
+}
+
 
