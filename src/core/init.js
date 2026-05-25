@@ -4,8 +4,8 @@
 /** Current field index within the section (reset on every navigation) */
 window._fieldIdx = 0;
 
-// Registra il service worker (apertura offline + installabilità PWA).
-// Richiede contesto sicuro: funziona su https e su localhost.
+// Register the service worker (offline open + PWA install). Needs a secure
+// context: works on https and on localhost.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
@@ -31,4 +31,6 @@ Promise.resolve(loadState()).then(() => {
   }
   updateConnectivity();
   updateOutboxBadge();
+  persistStorage();         // ask the browser not to evict our offline data
+  updateStorageWarning();   // warn on the home if storage is nearly full
 });

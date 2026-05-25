@@ -89,5 +89,6 @@ const VIM_LANG_it = {
       // — Connectivity indicator (home) —
       statusOnline:  'Connesso',
       statusOffline: 'Nessuna connessione',
+      storageLow:    'Spazio quasi esaurito: invia i moduli appena hai connessione.',
     }
 };

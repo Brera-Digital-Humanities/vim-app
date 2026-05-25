@@ -75,5 +75,6 @@ const VIM_LANG_en = {
       formSavedAt: 'Saved on',
       statusOnline:  'Connected',
       statusOffline: 'No connection',
+      storageLow:    'Storage almost full: send your forms as soon as you are online.',
     }
 };

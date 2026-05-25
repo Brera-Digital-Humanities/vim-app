@@ -75,5 +75,6 @@ const VIM_LANG_ar = {
       formSavedAt: 'محفوظ في',
       statusOnline:  'متصل',
       statusOffline: 'لا يوجد اتصال',
+      storageLow:    'مساحة التخزين شبه ممتلئة: أرسل النماذج فور توفر الاتصال.',
     }
 };

@@ -136,4 +136,17 @@
   }
 }
 
+// Low-storage warning (hidden unless storage is nearly full)
+.home-warn {
+  margin: 0 16px 16px;
+  padding: 10px 14px;
+  background: rgba(192, 57, 43, .08);
+  border: 1px solid rgba(192, 57, 43, .35);
+  border-radius: 10px;
+  font-size: .72rem;
+  line-height: 1.4;
+  color: var(--error);
+  flex-shrink: 0;
+}
+
 

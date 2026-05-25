@@ -65,3 +65,37 @@ function loadState() {
     });
   })).catch(() => {});
 }
+
+/**
+ * persistStorage() — Ask the browser to keep our data (not evict it under
+ * storage pressure / after inactivity). Best-effort: returns true if granted
+ * or already persisted, false otherwise. Idempotent.
+ */
+function persistStorage() {
+  if (!navigator.storage || !navigator.storage.persist) return Promise.resolve(false);
+  return navigator.storage.persisted()
+    .then(already => already ? true : navigator.storage.persist())
+    .catch(() => false);
+}
+
+/** storageEstimate() — { usage, quota, pct } or null if unsupported. */
+function storageEstimate() {
+  if (!navigator.storage || !navigator.storage.estimate) return Promise.resolve(null);
+  return navigator.storage.estimate()
+    .then(({ usage = 0, quota = 0 }) => quota > 0 ? { usage, quota, pct: usage / quota } : null)
+    .catch(() => null);
+}
+
+/**
+ * updateStorageWarning() — Show the home warning when storage is nearly full
+ * (>= 90% used), so the tester knows to send forms before running out of space.
+ */
+function updateStorageWarning() {
+  const el = document.getElementById('storage-warn');
+  if (!el) return Promise.resolve();
+  return storageEstimate().then(est => {
+    const low = !!(est && est.pct >= 0.9);
+    el.style.display = low ? '' : 'none';
+    if (low) el.textContent = tr().storageLow;
+  });
+}
