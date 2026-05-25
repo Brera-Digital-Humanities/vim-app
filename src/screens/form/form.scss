@@ -94,13 +94,14 @@
   font-style: italic;
 }
 
-// Text, number, date inputs
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="date"],
-textarea,
-select {
+// Text, number, date inputs (scoped to the form area so they don't leak to
+// other screens, e.g. the login fields which are styled by .login-input)
+.form-area input[type="text"],
+.form-area input[type="number"],
+.form-area input[type="email"],
+.form-area input[type="date"],
+.form-area textarea,
+.form-area select {
   width: 100%;
   padding: 10px 14px;
   font-family: $font-sans;
@@ -120,14 +121,14 @@ select {
   }
 }
 
-textarea {
+.form-area textarea {
   resize: vertical;
   min-height: 90px;
   line-height: 1.5;
 }
 
 // Select with custom arrow
-select {
+.form-area select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a8070' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;

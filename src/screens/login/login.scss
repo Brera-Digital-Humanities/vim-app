@@ -29,7 +29,7 @@
   font-family: $font-sans;
   font-size: 1rem;
   color: var(--ink);
-  background: var(--surface);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   transition: border-color $transition-fast, box-shadow $transition-fast;
@@ -47,8 +47,8 @@
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus {
     -webkit-text-fill-color: var(--ink);
-    -webkit-box-shadow: 0 0 0 1000px var(--surface) inset;
-    box-shadow: 0 0 0 1000px var(--surface) inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+    box-shadow: 0 0 0 1000px var(--bg) inset;
     border: 1px solid var(--border);
     caret-color: var(--ink);
   }
