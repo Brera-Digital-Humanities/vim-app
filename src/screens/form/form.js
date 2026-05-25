@@ -230,7 +230,9 @@ function saveDraft() {
  * draft being edited (window._editingDraft) or appends a new one to `drafts`.
  */
 function saveDraftSilent() {
+  const editing = window._editingDraft != null && drafts[window._editingDraft];
   const entry = {
+    id:         editing ? drafts[window._editingDraft].id : (window._instanceId ||= newId()),
     answers:    JSON.parse(JSON.stringify(answers)),
     mediaFiles: Object.assign({}, mediaFiles),
     pageIdx:    pageIdx,
@@ -238,13 +240,13 @@ function saveDraftSilent() {
     savedAt:    new Date().toLocaleString(),
     label:      answers['name_english'] || answers['local_name'] || ('Bozza ' + (drafts.length + 1)),
   };
-  if (window._editingDraft != null && drafts[window._editingDraft]) {
+  if (editing) {
     drafts[window._editingDraft] = entry;
   } else {
     drafts.push(entry);
     window._editingDraft = drafts.length - 1;
   }
-  saveState();
+  saveDraftRecord(entry);   // persist just this draft (not the whole list)
 }
 
 /**
@@ -298,6 +300,7 @@ function markComplete() {
   clearHiddenFields();   // safety net: never submit values of hidden fields
 
   const saved = {
+    id:         window._instanceId || newId(),   // stable instanceID for dedup
     answers:    JSON.parse(JSON.stringify(answers)),
     mediaFiles: mediaFiles,
     savedAt:    new Date().toLocaleString(),
@@ -305,13 +308,16 @@ function markComplete() {
     label: answers['name_english'] || answers['local_name'] || ('Modulo ' + (outbox.length + 1))
   };
   outbox.push(saved);
-  // If a draft was being completed, remove it from the drafts list.
+  saveOutboxRecord(saved);
+  // If a draft was being completed, remove it (same instanceID is now in outbox).
   if (window._editingDraft != null && drafts[window._editingDraft]) {
+    removeDraftRecord(drafts[window._editingDraft].id);
     drafts.splice(window._editingDraft, 1);
   }
   window._editingDraft = null;
+  window._instanceId   = null;
   updateOutboxBadge();
-  saveState();
+  if (typeof autoSync === 'function') autoSync();   // send now if online
 
   // Confirmation screen
   const isRTL = !!UI_LANGS[currentLangIdx].rtl;

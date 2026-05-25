@@ -16,17 +16,18 @@
 
 
 /**
- * doSubmit(ans, mf) — Submit a completed form to KoboToolbox.
+ * doSubmit(ans, mf, instanceId) — Submit a completed form to KoboToolbox.
  *
  * Sends multipart/form-data: an OpenRosa/XForm XML (xml_submission_file) plus
- * one part per media file. OpenRosa is the standard used by ODK/KoBoCollect/
- * Enketo, so it works against any KoboToolbox/Enketo Express server.
+ * one part per media file. instanceId goes in <meta><instanceID> so a re-sent
+ * form is deduplicated server-side (idempotent).
  *
- * @param {Object} ans - fieldName → answer value (from answers)
- * @param {Object} mf  - fieldName → File object (from mediaFiles)
+ * @param {Object} ans          - fieldName → answer value (from answers)
+ * @param {Object} mf           - fieldName → File object (from mediaFiles)
+ * @param {string} [instanceId] - stable OpenRosa instanceID
  * @returns {Promise<boolean>} true on success
  */
-async function doSubmit(ans, mf) {
+async function doSubmit(ans, mf, instanceId) {
   try {
 
     // ── Build OpenRosa XML ───────────────────────────────────────────────
@@ -59,6 +60,8 @@ async function doSubmit(ans, mf) {
       });
     });
 
+    // OpenRosa meta: stable instanceID → server-side dedup of re-sent forms
+    if (instanceId) xmlParts.push(`<meta><instanceID>${instanceId}</instanceID></meta>`);
     xmlParts.push('</data>');
     const xmlString = xmlParts.join('');
 

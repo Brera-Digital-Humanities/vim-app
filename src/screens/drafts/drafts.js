@@ -28,9 +28,11 @@ function renderDrafts() {
   });
 }
 
-/** deleteDraft(i) — Remove a draft from the list. */
+/** deleteDraft(i) — Remove a draft from the list (and its stored record). */
 function deleteDraft(i) {
+  const item = drafts[i];
+  if (!item) return;
+  removeDraftRecord(item.id);
   drafts.splice(i, 1);
-  saveState();
   renderDrafts();
 }

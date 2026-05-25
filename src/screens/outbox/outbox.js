@@ -29,42 +29,63 @@ function renderOutbox() {
   });
 }
 
-/** sendSingle(i) — Send one queued form (via doSubmit); on success update the queue. */
-async function sendSingle(i) {
-  const item = outbox[i];
-  // Update the button text while sending
-  const btns = document.getElementById('outbox-list').querySelectorAll('button');
-  if (btns[i * 2]) btns[i * 2].textContent = '…';
-  const ok = await doSubmit(item.answers, item.mediaFiles);
+// Send one queued item (by reference); on success move it to sentForms and drop
+// its record. Returns the submit result. instanceID makes the send idempotent.
+async function _sendItem(item) {
+  const ok = await doSubmit(item.answers, item.mediaFiles, item.id);
   if (ok) {
     sentForms.push({ sentAt: new Date().toLocaleString() });
-    outbox.splice(i, 1);
-    saveState();
+    const i = outbox.indexOf(item);
+    if (i > -1) outbox.splice(i, 1);
+    removeOutboxRecord(item.id);
+    saveState();              // persist the sent-forms log
     updateOutboxBadge();
-    renderOutbox();
-  } else {
-    if (btns[i * 2]) btns[i * 2].textContent = '⚠️ ' + tr().invia;
+  }
+  return ok;
+}
+
+/** sendSingle(i) — Manually send one queued form; refresh the list on success. */
+async function sendSingle(i) {
+  const item = outbox[i];
+  if (!item) return;
+  const btns = document.getElementById('outbox-list').querySelectorAll('button');
+  if (btns[i * 2]) btns[i * 2].textContent = '…';   // sending feedback
+  const ok = await _sendItem(item);
+  if (ok) renderOutbox();
+  else if (btns[i * 2]) btns[i * 2].textContent = '⚠️ ' + tr().invia;
+}
+
+let _autoSyncing = false;
+
+/**
+ * autoSync() — Send queued forms automatically when online. Guarded against
+ * re-entry; if any item remains and we're still online, retries after a delay.
+ * Triggered on connectivity, at startup and after completing a form.
+ */
+async function autoSync() {
+  if (_autoSyncing || !navigator.onLine || !outbox.length) return;
+  _autoSyncing = true;
+  try {
+    for (const item of [...outbox]) await _sendItem(item);
+  } finally {
+    _autoSyncing = false;
+  }
+  if (document.getElementById('outbox-list')) renderOutbox();
+  if (outbox.length && navigator.onLine) {
+    clearTimeout(window._syncRetry);
+    window._syncRetry = setTimeout(autoSync, 30000);   // simple retry
   }
 }
 
-/** sendAllOutbox() — Send all queued forms (iterate backwards to splice safely). */
-async function sendAllOutbox() {
-  for (let i = outbox.length - 1; i >= 0; i--) {
-    const ok = await doSubmit(outbox[i].answers, outbox[i].mediaFiles);
-    if (ok) {
-      sentForms.push({ sentAt: new Date().toLocaleString() });
-      outbox.splice(i, 1);
-    }
-  }
-  saveState();
-  updateOutboxBadge();
-  renderOutbox();
-}
+/** sendAllOutbox() — "Send all" button: flush the queue now (if online). */
+function sendAllOutbox() { autoSync(); }
 
 /** deleteSingle(i) — Remove a form from the queue without sending it. */
 function deleteSingle(i) {
+  const item = outbox[i];
+  if (!item) return;
+  removeOutboxRecord(item.id);
   outbox.splice(i, 1);
-  saveState();
   updateOutboxBadge();
   renderOutbox();
 }

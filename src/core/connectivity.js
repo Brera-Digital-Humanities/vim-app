@@ -6,12 +6,14 @@
  * current UI language. Call on language change and on online/offline events.
  */
 function updateConnectivity() {
+  const online = navigator.onLine;
   const box = document.getElementById('conn-status');
   const txt = document.getElementById('conn-text');
-  if (!box || !txt) return;
-  const online = navigator.onLine;
-  box.classList.toggle('offline', !online);
-  txt.textContent = online ? tr().statusOnline : tr().statusOffline;
+  if (box && txt) {
+    box.classList.toggle('offline', !online);
+    txt.textContent = online ? tr().statusOnline : tr().statusOffline;
+  }
+  if (online && typeof autoSync === 'function') autoSync();   // flush queued forms
 }
 
 window.addEventListener('online',  updateConnectivity);
