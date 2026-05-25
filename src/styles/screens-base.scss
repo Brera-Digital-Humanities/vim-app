@@ -14,6 +14,44 @@
   }
 }
 
+// Scrollable screen body (login, lang, home, drafts, outbox, sent)
+.screen-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+}
+
+// Small uppercase header label of a list screen (drafts / outbox / sent)
+.list-header {
+  padding: 16px;
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+// Vertical list container of a list screen
+.list {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+// A single list card (draft / queued / sent item)
+.list-card {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
 // Grey persistence note shown on the drafts / outbox screens (text set via JS)
 .persist-note {
   padding: 0 16px 8px;

@@ -1,22 +1,5 @@
-// VIM — outbox screen styles 
-
-.outbox-header-label {
-    padding: 16px;
-    font-size: .65rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-}
-
-.outbox-list {
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    >div {
-        padding: 16px;
-    }
-}
+// VIM — outbox screen styles
+// (header + list use the shared .list-header / .list / .list-card)
 
 // Per-item auto-send toggle chip (under the form name)
 .ob-auto {

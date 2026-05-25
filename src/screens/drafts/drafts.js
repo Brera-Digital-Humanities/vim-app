@@ -13,7 +13,7 @@ function renderDrafts() {
   list.innerHTML = '';
   drafts.forEach((item, i) => {
     const el = document.createElement('div');
-    el.style.cssText = 'padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;';
+    el.className = 'list-card';
     el.innerHTML = `
       <div style="font-size:.88rem;font-weight:500;color:var(--ink)">${item.label}</div>
       <div style="font-size:.7rem;color:var(--muted);margin-top:2px">${tr().formSavedAt} ${item.savedAt}</div>

@@ -1,15 +1,5 @@
 // VIM — home screen styles
-
-
-.home-screen {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-}
-
+// (the scrollable wrapper uses the shared .screen-scroll in screens-base.scss)
 
 
 // Section label (e.g. "Main actions", "Archive")

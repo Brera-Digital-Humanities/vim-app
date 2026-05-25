@@ -14,7 +14,8 @@ function renderSent() {
   list.innerHTML = '';
   sentForms.forEach((f, i) => {
     const el = document.createElement('div');
-    el.style.cssText = 'padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;cursor:pointer;';
+    el.className = 'list-card';
+    el.style.cursor = 'pointer';
     el.onclick = () => showSentDetail(i);
     el.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">

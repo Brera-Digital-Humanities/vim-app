@@ -1,16 +1,5 @@
 // VIM — tester login screen
-
-.login-screen {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-
-  &::-webkit-scrollbar { width: 4px; }
-  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-}
+// (the scrollable wrapper uses the shared .screen-scroll in screens-base.scss)
 
 
 
