@@ -1,6 +1,6 @@
 {
   "name": "La valigia immateriale",
-  "short_name": "Valigia",
+  "short_name": "VIM",
   "description": "Raccolta di patrimonio culturale immateriale palestinese",
   "start_url": "./index.html",
   "scope": "./",
