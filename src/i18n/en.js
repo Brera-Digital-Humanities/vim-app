@@ -83,7 +83,7 @@ const VIM_LANG_en = {
       sendManual:  'Send manually',
       autoSendLabel: 'Auto-send',
       autoOn:      'on',
-      autoOff:     'manual',
+      autoOff:     'off',
       persistNote: 'Data stays on the device but is subject to storage and OS limits (on iOS open the app at least every ~7 days). Send as soon as you can.',
       schemaChangedTitle: 'Form changed',
       schemaChangedMsg:   'The form was changed after this was filled in: re-editing it may lose some data.',

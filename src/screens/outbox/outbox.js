@@ -22,12 +22,12 @@ function renderOutbox() {
     const failNote = item.failed ? `<div class="card-warn">⚠️ ${s.sendFailed}</div>` : '';
     const el = document.createElement('div');
     el.className = 'list-card';
-    el.innerHTML = `
-      <div class="card-title">${item.label}</div>
-      <div class="card-meta">${s.formSavedAt} ${item.savedAt}</div>
+    el.innerHTML = `<div class="outbox-card-header">
+      <div><div class="card-title">${item.label}</div>
+      <div class="card-meta">${s.formSavedAt} ${item.savedAt}</div></div>
       <button class="ob-auto ${auto ? 'on' : ''}" onclick="toggleAutoSend(${i})">
-        ${auto ? '⚡' : '✋'} ${s.autoSendLabel}: ${auto ? s.autoOn : s.autoOff}
-      </button>
+        ${auto ? '<span class="green"></span>' : '<span class="red"></span>'} ${s.autoSendLabel}: ${auto ? s.autoOn : s.autoOff}
+      </button></div>
       ${failNote}
       <div class="card-actions">
         <button class="card-btn" onclick="editOutbox(${i})">✎ ${s.editForm}</button>

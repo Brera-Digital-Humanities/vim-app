@@ -2,22 +2,45 @@
 // (header + list use the shared .list-header / .list / .list-card)
 
 // Per-item auto-send toggle chip (under the form name)
-.ob-auto {
-    margin-top: 8px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background: none;
-    font-size: .68rem;
-    color: var(--muted);
-    cursor: pointer;
 
-    &.on {
-        color: var(--accent2);
-        border-color: var(--accent2);
+
+.outbox-card-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: start;
+
+    .red{
+        display:inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: var(--error);
+    }
+    .green{
+        display:inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: var(--accent2);
+    }
+    .ob-auto {
+        margin-top: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: none;
+        font-size: .68rem;
+        color: var(--muted);
+        cursor: pointer;
+    
+        &.on {
+            color: var(--accent2);
+            border-color: var(--accent2);
+        }
     }
 }
 
