@@ -13,7 +13,7 @@
     flex-direction: column;
     gap: 10px;
 
-    > div {
+    >div {
         padding: 16px;
     }
 }
@@ -38,16 +38,21 @@
     }
 }
 
-.send-all-btn {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 10px;
-    background: var(--ink);
-    color: var(--bg);
-    font-family: 'DM Sans', sans-serif;
-    font-size: .82rem;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    cursor: pointer;
+.send-all-box {
+    padding: 16px;
+
+    .send-all-btn {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 10px;
+        background: var(--ink);
+        color: var(--bg);
+        font-family: 'DM Sans', sans-serif;
+        font-size: .82rem;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
 }
