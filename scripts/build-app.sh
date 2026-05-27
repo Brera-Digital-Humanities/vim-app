@@ -3,7 +3,7 @@
 # build-app.sh
 # Build the VIM app as self-contained single-file HTML pages from src/:
 #   • dist/index.html  — the real PWA, full-screen (body.app), + manifest/SW/icons
-#   • test/index.html  — the demo with the iPhone skin (body.demo), for presentations
+#   • demo-desktop/index.html  — the demo with the iPhone skin (body.demo), for presentations
 # Both pages share the same screens / JS / CSS; only the outer shell differs.
 #
 # Requires: node >= 18, sass, perl  (sass via `npm install`)
@@ -15,7 +15,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"   # project root (parent of scripts/)
 SRC="$ROOT/src"
 DIST_OUT="$ROOT/dist/index.html"
-DEMO_OUT="$ROOT/test/index.html"
+DEMO_OUT="$ROOT/demo-desktop/index.html"
 TMP_CSS="$(mktemp --suffix=.css)"
 TMP_JS="$(mktemp --suffix=.js)"
 TMP_TPL="$(mktemp --suffix=.html)"
@@ -127,7 +127,7 @@ trap 'rm -f "$TMP_CSS" "$TMP_JS" "$TMP_TPL" "$TMP_LOGO"' EXIT
 # ── 4. Build both pages from shared CSS/JS ──────────────────────────────────
 echo "▸ Assemble dist/index.html (PWA, full-screen)"
 build_page "app.html"  "$DIST_OUT"
-echo "▸ Assemble test/index.html (demo, phone skin)"
+echo "▸ Assemble demo-desktop/index.html (demo, phone skin)"
 build_page "demo.html" "$DEMO_OUT"
 
 # ── 5. PWA assets next to the app (served from dist/) ───────────────────────
@@ -146,6 +146,6 @@ node --check "$TMP_JS" && echo "    inlined JS OK"
 echo
 echo "▸ Built:"
 echo "    dist/index.html  ($(($(wc -c < "$DIST_OUT") / 1024)) KB)  — PWA"
-echo "    test/index.html  ($(($(wc -c < "$DEMO_OUT") / 1024)) KB)  — demo (phone skin)"
+echo "    demo-desktop/index.html  ($(($(wc -c < "$DEMO_OUT") / 1024)) KB)  — demo (phone skin)"
 echo "  Test PWA:   npm start   (serves dist/ on http://localhost:8765)"
-echo "  Test demo:  npm run demo (serves test/ on http://localhost:8766)"
+echo "  Test demo:  npm run demo (serves demo-desktop/ on http://localhost:8766)"
