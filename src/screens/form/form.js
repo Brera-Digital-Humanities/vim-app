@@ -3,6 +3,8 @@
 // Soft warning threshold for media size (server may reject larger attachments).
 const MAX_MEDIA_MB = 10;
 
+let activeAudioRecording = null;
+
 // --- field rendering & navigation ---
 
 /** renderPage(idx) — Render the current section, one field at a time (window._fieldIdx). */
@@ -462,7 +464,7 @@ function buildMediaField(q, kind) {
   }
 
   const capAttr  = recCapture ? `capture="${recCapture}"` : '';
-  const capInfo  = cap ? `<div style="font-size:.72rem;color:var(--accent2);margin-top:6px">✓ ${cap.name}</div>` : '';
+  const capInfo  = cap ? `✓ ${cap.name}` : '';
   const captured = cap ? ' captured' : '';
 
   // Upload icon
@@ -472,14 +474,22 @@ function buildMediaField(q, kind) {
     <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
   </svg>`;
 
+  const recordControl = kind === 'audio'
+    ? `<button type="button" id="media_rec_btn_${q.name}" class="media-btn${captured}" style="flex:1"
+          onclick="toggleAudioRecording('${q.name}')">
+          <span class="mb-icon">${icon}</span>
+          <span class="mb-text">${recLabel}</span>
+        </button>`
+    : `<label class="media-btn${captured}" for="media_rec_${q.name}" style="flex:1">
+          <span class="mb-icon">${icon}</span>
+          <span class="mb-text">${recLabel}</span>
+        </label>`;
+
   return `
     <div class="media-field">
       <div style="display:flex;gap:8px">
-        <!-- Button 1: record/capture (capture attr for mobile) -->
-        <label class="media-btn${captured}" for="media_rec_${q.name}" style="flex:1">
-          <span class="mb-icon">${icon}</span>
-          <span class="mb-text">${recLabel}</span>
-        </label>
+        <!-- Button 1: record/capture -->
+        ${recordControl}
         <!-- Button 2: upload from file -->
         <label class="media-btn${captured}" for="media_upl_${q.name}" style="flex:1">
           <span class="mb-icon">${uploadIcon}</span>
@@ -491,7 +501,8 @@ function buildMediaField(q, kind) {
         style="display:none" onchange="handleMedia(event,'${q.name}','${kind}')"/>
       <input type="file" id="media_upl_${q.name}" accept="${uplAccept}"
         style="display:none" onchange="handleMedia(event,'${q.name}','${kind}')"/>
-      ${capInfo}
+      <div id="media-file-${q.name}" class="media-file-name" style="${cap ? '' : 'display:none'}">${capInfo}</div>
+      ${kind === 'audio' ? `<div id="audio-recorder-${q.name}" class="audio-recorder-status" style="display:none"></div>` : ''}
       <!-- Large-file warning: filled by handleMedia() when over MAX_MEDIA_MB -->
       <div id="media-warn-${q.name}" class="media-warn" style="display:none"></div>
       <!-- Preview area: filled by handleMedia() -->
@@ -507,8 +518,18 @@ function buildMediaField(q, kind) {
 function handleMedia(event, name, kind) {
   const file = event.target.files[0];
   if (!file) return;
+  storeMediaFile(name, kind, file);
+}
+
+function storeMediaFile(name, kind, file) {
   mediaFiles[name] = file;
   answers[name]    = file.name;
+
+  const fileName = document.getElementById('media-file-' + name);
+  if (fileName) {
+    fileName.style.display = '';
+    fileName.textContent = '✓ ' + file.name;
+  }
 
   // Large-file warning (soft: the server may reject very large attachments)
   const warn = document.getElementById('media-warn-' + name);
@@ -530,11 +551,165 @@ function handleMedia(event, name, kind) {
   }
 
   // Mark both buttons as "captured"
-  document.querySelectorAll(`[for="media_rec_${name}"], [for="media_upl_${name}"]`)
+  document.querySelectorAll(`#media_rec_btn_${name}, [for="media_rec_${name}"], [for="media_upl_${name}"]`)
     .forEach(el => el.classList.add('captured'));
 
   updateCompleteBtn();
   updateNextBtnState();
+}
+
+async function toggleAudioRecording(name) {
+  if (activeAudioRecording && activeAudioRecording.name === name) {
+    stopAudioRecording();
+    return;
+  }
+
+  if (activeAudioRecording) {
+    stopAudioRecording();
+  }
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+    fallbackAudioCapture(name);
+    return;
+  }
+
+  let stream = null;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mimeType = preferredAudioMimeType();
+    const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+    const state = {
+      name,
+      stream,
+      recorder,
+      chunks: [],
+      startedAt: Date.now(),
+      timer: null,
+      mimeType: recorder.mimeType || mimeType || 'audio/webm',
+      cleaned: false,
+      failed: false,
+    };
+
+    recorder.ondataavailable = event => {
+      if (event.data && event.data.size > 0) state.chunks.push(event.data);
+    };
+    recorder.onstop = () => finishAudioRecording(state);
+    recorder.onerror = () => failAudioRecording(state, tr().audioRecordError);
+
+    activeAudioRecording = state;
+    recorder.start();
+    setAudioRecordingUi(name, true);
+    updateAudioRecordingStatus(state);
+    state.timer = setInterval(() => updateAudioRecordingStatus(state), 500);
+  } catch (error) {
+    if (stream) stream.getTracks().forEach(track => track.stop());
+    showAudioRecordingStatus(name, tr().audioPermissionError, true);
+  }
+}
+
+function stopAudioRecording() {
+  if (!activeAudioRecording) return;
+
+  const state = activeAudioRecording;
+  if (state.recorder.state !== 'inactive') {
+    state.recorder.stop();
+  }
+}
+
+function finishAudioRecording(state) {
+  if (state.failed) return;
+
+  cleanupAudioRecording(state);
+
+  if (!state.chunks.length) {
+    showAudioRecordingStatus(state.name, tr().audioRecordError, true);
+    return;
+  }
+
+  const blob = new Blob(state.chunks, { type: state.mimeType });
+  const file = new File([blob], audioFileName(state.name, state.mimeType), { type: blob.type });
+
+  storeMediaFile(state.name, 'audio', file);
+  showAudioRecordingStatus(state.name, tr().audioRecorded, false);
+}
+
+function failAudioRecording(state, message) {
+  state.failed = true;
+  cleanupAudioRecording(state);
+  showAudioRecordingStatus(state.name, message, true);
+}
+
+function cleanupAudioRecording(state) {
+  if (state.cleaned) return;
+
+  state.cleaned = true;
+  if (state.timer) clearInterval(state.timer);
+  state.stream.getTracks().forEach(track => track.stop());
+  setAudioRecordingUi(state.name, false);
+
+  if (activeAudioRecording === state) {
+    activeAudioRecording = null;
+  }
+}
+
+function setAudioRecordingUi(name, recording) {
+  const btn = document.getElementById('media_rec_btn_' + name);
+  if (!btn) return;
+
+  btn.classList.toggle('recording', recording);
+  const text = btn.querySelector('.mb-text');
+  if (text) text.textContent = recording ? tr().audioStop : tr().tapRecord;
+}
+
+function updateAudioRecordingStatus(state) {
+  const seconds = Math.floor((Date.now() - state.startedAt) / 1000);
+  showAudioRecordingStatus(state.name, `${tr().audioRecording} ${formatAudioDuration(seconds)}`, false);
+}
+
+function showAudioRecordingStatus(name, message, isError) {
+  const status = document.getElementById('audio-recorder-' + name);
+  if (!status) return;
+
+  status.style.display = '';
+  status.textContent = message;
+  status.classList.toggle('error', !!isError);
+}
+
+function fallbackAudioCapture(name) {
+  const input = document.getElementById('media_rec_' + name);
+  if (input) input.click();
+}
+
+function preferredAudioMimeType() {
+  const types = [
+    'audio/mp4',
+    'audio/webm;codecs=opus',
+    'audio/webm',
+    'audio/ogg;codecs=opus',
+  ];
+
+  if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return '';
+
+  return types.find(type => MediaRecorder.isTypeSupported(type)) || '';
+}
+
+function audioFileName(name, mimeType) {
+  const ext = audioFileExtension(mimeType);
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  return `${name}-${stamp}.${ext}`;
+}
+
+function audioFileExtension(mimeType) {
+  if (mimeType.includes('mp4')) return 'm4a';
+  if (mimeType.includes('ogg')) return 'ogg';
+  if (mimeType.includes('wav')) return 'wav';
+  return 'webm';
+}
+
+function formatAudioDuration(totalSeconds) {
+  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+  const seconds = String(totalSeconds % 60).padStart(2, '0');
+  return `${minutes}:${seconds}`;
 }
 
 

@@ -216,6 +216,7 @@
 
 // Media button (label wrapping input[type=file])
 .media-btn {
+  appearance: none;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -240,6 +241,12 @@
     background: rgba(122,158,138,.06);
   }
 
+  &.recording {
+    border-style: solid;
+    border-color: var(--error);
+    background: rgba(192, 57, 43, .08);
+  }
+
   .mb-icon {
     flex-shrink: 0;
     color: var(--muted);
@@ -248,6 +255,24 @@
 
   .mb-text { flex: 1; font-size: .83rem; }
   .mb-check { color: var(--accent2); }
+}
+
+.media-file-name,
+.audio-recorder-status {
+  font-size: .72rem;
+  margin-top: 6px;
+}
+
+.media-file-name {
+  color: var(--accent2);
+}
+
+.audio-recorder-status {
+  color: var(--muted);
+
+  &.error {
+    color: var(--error);
+  }
 }
 
 .media-preview {

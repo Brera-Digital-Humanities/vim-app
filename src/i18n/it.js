@@ -92,6 +92,11 @@ const VIM_LANG_it = {
       tapUploadVideo:  'Carica video',
       tapFile:         'Carica file',
       captured:        '✓ Acquisito',
+      audioStop:       'Interrompi',
+      audioRecording:  'Registrazione',
+      audioRecorded:   'Audio registrato',
+      audioRecordError: 'Registrazione audio non riuscita.',
+      audioPermissionError: 'Microfono non disponibile o permesso negato.',
       // — Outbox —
       sendAll:     'Invia tutti',
       inAttesa:    'In attesa di invio',
