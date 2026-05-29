@@ -140,7 +140,12 @@ echo "▸ Copy PWA assets into dist/ (manifest, service worker, icons)"
 DIST_DIR="$(dirname "$DIST_OUT")"
 cp "$SRC/manifest.json"          "$DIST_DIR/manifest.json"
 cp "$SRC/pwa/service-worker.js"  "$DIST_DIR/service-worker.js"
+cp "$SRC/assets/logo.svg"        "$DIST_DIR/favicon.svg"
 rm -rf "$DIST_DIR/icons" && cp -r "$SRC/pwa/icons" "$DIST_DIR/icons"
+
+echo "▸ Copy demo favicon"
+DEMO_DIR="$(dirname "$DEMO_OUT")"
+cp "$SRC/assets/logo.svg"        "$DEMO_DIR/favicon.svg"
 
 # ── 6. Syntax-check the inlined JS (same bundle in both pages) ──────────────
 echo "▸ Syntax check inlined JS"

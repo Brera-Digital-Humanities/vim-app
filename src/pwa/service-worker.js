@@ -3,8 +3,8 @@
 // online, falling back to cache offline); cache-first for static same-origin
 // assets and Google Fonts. Everything else (e.g. form submissions) → network.
 
-const CACHE = 'vim-v2';
-const CORE = ['./index.html', './manifest.json'];
+const CACHE = 'vim-v3';
+const CORE = ['./index.html', './manifest.json', './favicon.svg'];
 const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', e => {
