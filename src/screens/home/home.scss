@@ -4,20 +4,21 @@
 
 // Section label (e.g. "Main actions", "Archive")
 .home-section-label {
-  padding: 12px 20px 4px;
-  font-size: .65rem;
+  padding: 16px var(--page-pad) 6px;
+  font-size: .78rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--muted);
   flex-shrink: 0;
+  line-height: 1.35;
 }
 
 // Menu items container
 .home-menu {
-  padding: 8px 16px;
+  padding: 8px var(--page-pad);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
@@ -26,7 +27,8 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 16px;
+  min-height: 72px;
+  padding: 16px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -49,7 +51,7 @@
   }
 
   .mi-icon {
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
     border-radius: 10px;
     background: rgba(196,118,58,.1);
     display: flex; align-items: center; justify-content: center;
@@ -76,19 +78,20 @@
   .mi-body { flex: 1; }
 
   .mi-title {
-    font-size: .88rem;
+    font-size: 1rem;
     font-weight: 500;
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   .mi-sub {
-    font-size: .72rem;
+    font-size: .86rem;
     color: var(--muted);
-    margin-top: 2px;
+    margin-top: 4px;
+    line-height: 1.35;
   }
 
   .mi-arrow {
-    font-size: .8rem;
+    font-size: 1.1rem;
     color: var(--muted);
     flex-shrink: 0;
   }
@@ -98,18 +101,19 @@
 .menu-badge {
   background: var(--accent);
   color: #fff;
-  font-size: .6rem;
+  font-size: .78rem;
   font-weight: 600;
-  border-radius: 10px;
-  padding: 1px 6px;
-  min-width: 18px;
+  border-radius: 12px;
+  padding: 3px 8px;
+  min-width: 24px;
+  line-height: 1.2;
   text-align: center;
 }
 
 // Connectivity status bar at the bottom of home
 .home-status {
-  margin: 8px 16px 16px;
-  padding: 12px 16px;
+  margin: 10px var(--page-pad) 18px;
+  padding: 14px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -127,8 +131,9 @@
   }
 
   .hs-text {
-    font-size: .75rem;
+    font-size: .9rem;
     color: var(--muted);
+    line-height: 1.35;
 
     strong { color: var(--ink); font-weight: 500; }
   }
@@ -142,14 +147,13 @@
 
 // Low-storage warning (hidden unless storage is nearly full)
 .home-warn {
-  margin: 0 16px 16px;
-  padding: 10px 14px;
+  margin: 0 var(--page-pad) 18px;
+  padding: 12px 14px;
   background: rgba(192, 57, 43, .08);
   border: 1px solid rgba(192, 57, 43, .35);
   border-radius: 10px;
-  font-size: .72rem;
-  line-height: 1.4;
+  font-size: .86rem;
+  line-height: 1.45;
   color: var(--error);
   flex-shrink: 0;
 }
-

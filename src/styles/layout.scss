@@ -60,7 +60,7 @@
 // Shared brand header (login, lang, home)
 .brand {
   background: var(--surface);
-  padding: 18px;
+  padding: 20px var(--page-pad);
   text-align: center;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
@@ -68,8 +68,8 @@
   // Logo from assets/logo.svg. Data-URI injected once at build time
   // (__VIM_LOGO__ → base64 of the SVG).
   .brand-logo {
-    width: 64px;
-    height: 64px;
+    width: 68px;
+    height: 68px;
     margin: 0 auto;
     background: url("__VIM_LOGO__") center / contain no-repeat;
   }
@@ -77,16 +77,17 @@
   h2 {
     font-family: $font-serif;
     font-weight: 600;
-    font-size: 1.3rem;
+    font-size: 1.45rem;
+    line-height: 1.15;
     color: var(--ink);
     margin: 0;
   }
 
   p {
-    margin-top: 6px;
-    font-size: .72rem;
+    margin-top: 8px;
+    font-size: .84rem;
     color: var(--muted);
     letter-spacing: .08em;
+    line-height: 1.3;
   }
 }
-

@@ -365,11 +365,10 @@ function _finalizeComplete(autoSend) {
     <div class="state-success">
       <div class="icon">📤</div>
       <h2>${tr().completato}</h2>
-      <p style="margin-top:8px;font-size:.82rem;color:var(--muted)">
+      <p style="margin-top:8px">
         ${tr().outboxSavedMsg}
       </p>
-      <button onclick="goHome()"
-        style="margin-top:20px;padding:10px 24px;border:none;border-radius:8px;background:var(--ink);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;">
+      <button class="state-action" onclick="goHome()">
         ${isRTL ? '→' : '←'} ${tr().home}
       </button>
     </div>`;
@@ -481,23 +480,23 @@ function buildMediaField(q, kind) {
   </svg>`;
 
   const recordControl = kind === 'audio'
-    ? `<button type="button" id="media_rec_btn_${q.name}" class="media-btn${captured}" style="flex:1"
+    ? `<button type="button" id="media_rec_btn_${q.name}" class="media-btn${captured}"
           onclick="toggleAudioRecording('${q.name}')">
           <span class="mb-icon">${icon}</span>
           <span class="mb-text">${recLabel}</span>
         </button>`
-    : `<label class="media-btn${captured}" for="media_rec_${q.name}" style="flex:1">
+    : `<label class="media-btn${captured}" for="media_rec_${q.name}">
           <span class="mb-icon">${icon}</span>
           <span class="mb-text">${recLabel}</span>
         </label>`;
 
   return `
     <div class="media-field">
-      <div style="display:flex;gap:8px">
+      <div class="media-actions">
         <!-- Button 1: record/capture -->
         ${recordControl}
         <!-- Button 2: upload from file -->
-        <label class="media-btn${captured}" for="media_upl_${q.name}" style="flex:1">
+        <label class="media-btn${captured}" for="media_upl_${q.name}">
           <span class="mb-icon">${uploadIcon}</span>
           <span class="mb-text">${uplLabel}</span>
         </label>
@@ -740,7 +739,7 @@ function buildChoices(q, listName, kind) {
     }
   }
 
-  if (!opts.length) return '<p style="font-size:.8rem;color:var(--muted)">—</p>';
+  if (!opts.length) return '<p class="choices-empty">—</p>';
   const curVal = answers[q.name] || '';
   let html = '<div class="choices">';
   for (const c of opts) {

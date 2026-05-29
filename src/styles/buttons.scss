@@ -3,7 +3,7 @@
 
 // Primary row: back + next
 .form-nav {
-  padding: 16px 24px 12px;
+  padding: 14px var(--page-pad) 10px;
   display: flex;
   gap: 10px;
   flex-shrink: 0;
@@ -13,11 +13,13 @@
 // Shared base for all nav buttons
 .btn {
   flex: 1;
-  padding: 12px;
+  min-height: var(--tap-min);
+  padding: 12px 14px;
   border: none;
   border-radius: 10px;
   font-family: $font-sans;
-  font-size: .82rem;
+  font-size: .94rem;
+  line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
   cursor: pointer;
@@ -32,7 +34,8 @@
   background: var(--bg);
   color: var(--muted);
   border: 1px solid var(--border);
-  flex: 0 0 48px;
+  flex: 0 0 58px;
+  font-size: 1.15rem;
 }
 
 // Next button — dark bg, light text
@@ -43,7 +46,7 @@
 
 // Secondary row: save draft + complete
 .form-nav-row {
-  padding: 0 24px 14px;
+  padding: 0 var(--page-pad) 14px;
   display: flex;
   gap: 10px;
   flex-shrink: 0;
@@ -52,13 +55,15 @@
 // Save draft — outlined, neutral tone
 .btn-draft {
   flex: 1;
-  padding: 11px 12px;
+  min-height: var(--tap-min);
+  padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--surface);
   color: var(--ink);
   font-family: $font-sans;
-  font-size: .78rem;
+  font-size: .9rem;
+  line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
   cursor: pointer;
@@ -71,13 +76,15 @@
 // Complete — disabled until required+visible fields are filled
 .btn-complete {
   flex: 1;
-  padding: 11px 12px;
+  min-height: var(--tap-min);
+  padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--surface);
   color: var(--muted);
   font-family: $font-sans;
-  font-size: .78rem;
+  font-size: .9rem;
+  line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
   cursor: not-allowed;
@@ -96,5 +103,4 @@
 
   &.enabled:active { transform: scale(.98); }
 }
-
 

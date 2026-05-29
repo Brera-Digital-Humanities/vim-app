@@ -22,7 +22,7 @@
   width: 100%;
   background: var(--surface);
   border-radius: 20px 20px 0 0;
-  padding: 0 0 12px;
+  padding: 0 0 14px;
   animation: slideUp .2s cubic-bezier(.22,.68,0,1.1);
 }
 
@@ -40,53 +40,56 @@
 
 .modal-title {
   font-family: $font-serif;
-  font-size: 1.1rem;
+  font-size: 1.28rem;
   font-weight: 400;
   font-style: italic;
   color: var(--ink);
   text-align: center;
-  padding: 0 24px 4px;
+  padding: 0 var(--page-pad) 6px;
+  line-height: 1.25;
 }
 
 .modal-msg {
-  font-size: .8rem;
+  font-size: .94rem;
   color: var(--muted);
   text-align: center;
-  padding: 0 24px 16px;
+  padding: 0 var(--page-pad) 18px;
   line-height: 1.5;
 }
 
 // Red caveat inside a modal (e.g. persistence warning on save/complete)
 .modal-note-danger {
-  font-size: .75rem;
+  font-size: .9rem;
   color: var(--error);
   text-align: center;
-  padding: 0 24px 14px;
+  padding: 0 var(--page-pad) 16px;
   line-height: 1.45;
 }
 
 .modal-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 0 20px 8px;
+  gap: 10px;
+  padding: 0 var(--page-pad) 8px;
 }
 
 .modal-btn-primary {
-  width: 100%; padding: 13px;
+  width: 100%; min-height: 52px; padding: 13px 16px;
   border: none; border-radius: 10px;
   background: var(--ink); color: var(--bg);
-  font-family: $font-sans; font-size: .82rem;
+  font-family: $font-sans; font-size: .94rem;
+  line-height: 1.2;
   letter-spacing: .06em; text-transform: uppercase;
   cursor: pointer;
   transition: opacity $transition-fast;
 }
 
 .modal-btn-secondary {
-  width: 100%; padding: 13px;
+  width: 100%; min-height: 52px; padding: 13px 16px;
   border: 1px solid var(--border); border-radius: 10px;
   background: transparent; color: var(--muted);
-  font-family: $font-sans; font-size: .82rem;
+  font-family: $font-sans; font-size: .94rem;
+  line-height: 1.2;
   letter-spacing: .06em; text-transform: uppercase;
   cursor: pointer;
   transition: border-color $transition-fast, color $transition-fast;
@@ -96,15 +99,15 @@
 
 // Destructive action (e.g. "exit without saving") — outlined in error red
 .modal-btn-danger {
-  width: 100%; padding: 13px;
+  width: 100%; min-height: 52px; padding: 13px 16px;
   border: 1px solid var(--error); border-radius: 10px;
   background: transparent; color: var(--error);
-  font-family: $font-sans; font-size: .82rem;
+  font-family: $font-sans; font-size: .94rem;
+  line-height: 1.2;
   letter-spacing: .06em; text-transform: uppercase;
   cursor: pointer;
   transition: background $transition-fast, color $transition-fast;
 
   &:hover { background: var(--error); color: var(--bg); }
 }
-
 

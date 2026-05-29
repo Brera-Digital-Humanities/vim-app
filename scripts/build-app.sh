@@ -75,7 +75,7 @@ build_page() {
 }
 
 # ── 0. Prerequisites ────────────────────────────────────────────────────────
-command -v sass >/dev/null 2>&1 || { echo "ERROR: sass missing. Run 'npm install' in the project root."; exit 1; }
+[ -f "$ROOT/node_modules/sass/sass.node.js" ] || { echo "ERROR: sass missing. Run 'npm install' in the project root."; exit 1; }
 command -v perl >/dev/null 2>&1 || { echo "ERROR: perl missing."; exit 1; }
 for f in data.js app.html demo.html api.js build.order partials/app-bar.html; do
   [ -f "$SRC/$f" ] || { echo "ERROR: src/$f missing"; exit 1; }
@@ -99,7 +99,12 @@ for f in $(order scss); do
   [ -f "$SRC/$f" ] || { echo "ERROR: src/$f listed in build.order but missing"; exit 1; }
   cat "$SRC/$f" >> "$TMP_CSS.scss"; printf '\n' >> "$TMP_CSS.scss"
 done
-sass --no-source-map --style=expanded "$TMP_CSS.scss" "$TMP_CSS"
+SASS_ROOT="$ROOT" SASS_IN="$TMP_CSS.scss" SASS_OUT="$TMP_CSS" node -e '
+  const fs = require("fs");
+  const sass = require(process.env.SASS_ROOT + "/node_modules/sass/sass.node.js");
+  const result = sass.compile(process.env.SASS_IN, { style: "expanded", sourceMap: false });
+  fs.writeFileSync(process.env.SASS_OUT, result.css);
+'
 rm -f "$TMP_CSS.scss"
 
 # ── 2. Concatenate JS: data.js + (build.order [js]) + api.js ────────────────

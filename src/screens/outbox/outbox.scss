@@ -4,20 +4,20 @@
 // Per-item auto-send toggle chip (under the form name)
 
 .outbox-debug {
-    margin: 0 16px 12px;
+    margin: 0 var(--page-pad) 12px;
     padding: 12px 14px;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--surface);
     color: var(--muted);
     font-family: 'DM Sans', sans-serif;
-    font-size: .75rem;
+    font-size: .86rem;
     line-height: 1.45;
 
     .odb-title {
         margin-bottom: 6px;
         color: var(--ink);
-        font-size: .68rem;
+        font-size: .78rem;
         letter-spacing: .12em;
         text-transform: uppercase;
     }
@@ -39,15 +39,16 @@
         background: rgba(0,0,0,.04);
         color: var(--ink);
         font-family: 'DM Mono', monospace;
-        font-size: .68rem;
+        font-size: .78rem;
     }
 }
 
 .outbox-card-header{
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
-    align-items: start;
+    margin-bottom: 16px;
+    align-items: flex-start;
+    gap: 12px;
 
     .red{
         display:inline-block;
@@ -68,11 +69,13 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 5px 10px;
+        min-height: 40px;
+        padding: 7px 10px;
         border: 1px solid var(--border);
         border-radius: 20px;
         background: none;
-        font-size: .68rem;
+        font-size: .82rem;
+        line-height: 1.2;
         color: var(--muted);
         cursor: pointer;
     
@@ -94,17 +97,19 @@
 }
 
 .send-all-box {
-    padding: 16px;
+    padding: 16px var(--page-pad) 20px;
 
     .send-all-btn {
         width: 100%;
-        padding: 13px;
+        min-height: 52px;
+        padding: 13px 16px;
         border: none;
         border-radius: 10px;
         background: var(--ink);
         color: var(--bg);
         font-family: 'DM Sans', sans-serif;
-        font-size: .82rem;
+        font-size: .94rem;
+        line-height: 1.2;
         letter-spacing: .06em;
         text-transform: uppercase;
         cursor: pointer;

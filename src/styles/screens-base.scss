@@ -29,60 +29,123 @@
 
 // Small uppercase header label of a list screen (drafts / outbox / sent)
 .list-header {
-  padding: 16px;
-  font-size: .65rem;
+  padding: 18px var(--page-pad) 10px;
+  font-size: .78rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--muted);
+  line-height: 1.35;
 }
 
 // Vertical list container of a list screen
 .list {
-  padding: 0 16px;
+  padding: 0 var(--page-pad);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 // A single list card (draft / queued / sent item)
 .list-card {
-  padding: 14px 16px;
+  padding: 16px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
 }
 
 // Shared bits inside a list card (title, date, actions row, buttons, warning)
-.card-title { font-size: .88rem; font-weight: 500; color: var(--ink); }
-.card-meta  { font-size: .7rem;  color: var(--muted); margin-top: 2px; }
-.card-warn  { font-size: .7rem;  color: var(--error); margin-top: 4px; }
-.card-actions { display: flex; gap: 8px; margin-top: 10px; }
+.card-title { font-size: 1rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+.card-meta  { font-size: .84rem; color: var(--muted); margin-top: 4px; line-height: 1.35; }
+.card-warn  { font-size: .86rem; color: var(--error); margin-top: 8px; line-height: 1.4; }
+.card-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 
 // Card button: outlined by default, with .primary (filled) and .danger variants
 .card-btn {
-  padding: 8px 12px;
+  min-height: 44px;
+  padding: 10px 13px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: none;
   color: var(--ink);
-  font-size: .75rem;
+  font-size: .9rem;
+  line-height: 1.2;
   cursor: pointer;
+  flex: 1 1 auto;
 
-  &.primary { flex: 1; padding: 8px; border: none; background: var(--ink); color: var(--bg); }
+  &.primary { flex: 1 1 46%; padding: 10px 13px; border: none; background: var(--ink); color: var(--bg); }
   &.danger  { color: var(--error); }
+
+  &:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+  }
 }
 
 // Empty-state message of a list screen
-.list-empty { font-size: .82rem; color: var(--muted); padding: 8px 0; }
+.list-empty { font-size: .95rem; color: var(--muted); padding: 10px 0; line-height: 1.45; }
 
 // Grey persistence note shown on the drafts / outbox screens (text set via JS)
 .persist-note {
-  padding: 0 16px 8px;
-  font-size: .68rem;
-  line-height: 1.4;
+  padding: 0 var(--page-pad) 12px;
+  font-size: .84rem;
+  line-height: 1.45;
   color: var(--muted);
 
   &:empty { display: none; }
 }
 
+.sent-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
 
+.sent-arrow {
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.sent-detail-back {
+  min-height: 44px;
+  padding: 8px 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .95rem;
+}
+
+.sent-detail-title {
+  margin: 6px 0 3px;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.sent-detail-meta {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: .86rem;
+  line-height: 1.35;
+}
+
+.sent-detail-row {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sent-detail-label {
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.35;
+}
+
+.sent-detail-value {
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: .96rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}

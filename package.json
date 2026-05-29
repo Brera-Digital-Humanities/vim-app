@@ -12,7 +12,7 @@
     "serve": "http-server dist -p 8765 -c-1",
     "demo": "http-server demo-desktop -p 8766 -c-1 -o /index.html",
     "clean": "rm -rf dist demo-desktop",
-    "test": "node --test 'tests/**/*.test.js'",
+    "test": "node --test tests/**/*.test.js",
     "check": "find src -name '*.js' | sort | while read f; do node --check \"$f\" && echo \"OK $f\"; done",
     "prebuild": "npm run check"
   },

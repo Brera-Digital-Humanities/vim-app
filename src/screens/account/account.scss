@@ -2,8 +2,8 @@
 
 
 .account-panel {
-  margin: 18px 16px;
-  padding: 22px 18px;
+  margin: 20px var(--page-pad);
+  padding: 24px 18px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -11,9 +11,9 @@
 }
 
 .account-avatar {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 12px;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
   border: 1px solid var(--border);
   border-radius: 50%;
   display: grid;
@@ -27,7 +27,7 @@
 }
 
 .account-label {
-  font-size: .68rem;
+  font-size: .8rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--muted);
@@ -35,29 +35,33 @@
 
 .account-name {
   margin-top: 8px;
-  font-size: 1.08rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: var(--ink);
+  line-height: 1.3;
   overflow-wrap: anywhere;
 }
 
 .account-username {
-  margin-top: 3px;
+  margin-top: 4px;
   min-height: 1.1em;
-  font-size: .78rem;
+  font-size: .92rem;
   color: var(--muted);
+  line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
 .account-logout-btn {
   width: 100%;
-  margin-top: 22px;
+  min-height: 52px;
+  margin-top: 24px;
   padding: 13px 16px;
   border: none;
   border-radius: 8px;
   background: var(--ink);
   color: var(--bg);
   font-family: $font-sans;
-  font-size: .85rem;
+  font-size: .96rem;
+  line-height: 1.2;
   cursor: pointer;
 }

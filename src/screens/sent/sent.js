@@ -18,12 +18,12 @@ function renderSent() {
     el.style.cursor = 'pointer';
     el.onclick = () => showSentDetail(i);
     el.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div class="sent-card-row">
         <div>
           <div class="card-title">${f.label || ('#' + (i + 1))}</div>
           <div class="card-meta">${f.sentAt}</div>
         </div>
-        <span style="color:var(--muted)">›</span>
+        <span class="sent-arrow">›</span>
       </div>`;
     list.appendChild(el);
   });
@@ -38,16 +38,16 @@ function showSentDetail(i) {
   PAGES.forEach(pg => pg.fields.forEach(q => {
     const v = f.answers ? f.answers[q.name] : undefined;
     if (v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0)) return;
-    rows += `<div style="padding:8px 0;border-bottom:1px solid var(--border)">
-      <div style="font-size:.7rem;color:var(--muted)">${getLabel(q)}</div>
-      <div style="font-size:.84rem;color:var(--ink)">${_sentValueText(q, v)}</div>
+    rows += `<div class="sent-detail-row">
+      <div class="sent-detail-label">${getLabel(q)}</div>
+      <div class="sent-detail-value">${_sentValueText(q, v)}</div>
     </div>`;
   }));
-  if (!rows) rows = '<p style="color:var(--muted);font-size:.82rem">—</p>';
+  if (!rows) rows = '<p class="list-empty">—</p>';
   document.getElementById('sent-list').innerHTML = `
-    <button onclick="renderSent()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;padding:8px 0">‹ ${tr().back}</button>
-    <div style="font-weight:500;font-size:.9rem;margin:4px 0 2px;color:var(--ink)">${f.label || ('#' + (i + 1))}</div>
-    <div style="color:var(--muted);font-size:.72rem;margin-bottom:10px">${f.sentAt}</div>
+    <button class="sent-detail-back" onclick="renderSent()">‹ ${tr().back}</button>
+    <div class="sent-detail-title">${f.label || ('#' + (i + 1))}</div>
+    <div class="sent-detail-meta">${f.sentAt}</div>
     ${rows}`;
 }
 

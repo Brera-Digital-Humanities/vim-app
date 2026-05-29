@@ -3,10 +3,10 @@
 
 
 .lang-list {
-  padding: 16px;
+  padding: 20px var(--page-pad);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
@@ -15,7 +15,8 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 18px;
+  min-height: 60px;
+  padding: 16px 18px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -32,14 +33,15 @@
   .li-body { flex: 1; }
 
   .li-name {
-    font-size: .9rem;
+    font-size: 1rem;
     font-weight: 500;
     color: var(--ink);
+    line-height: 1.3;
   }
 
   // Custom radio button
   .li-check {
-    width: 20px; height: 20px;
+    width: 22px; height: 22px;
     border: 2px solid var(--border);
     border-radius: 50%;
     display: flex;
@@ -63,20 +65,22 @@
 }
 
 .lang-confirm-wrap {
-  padding: 0 16px 16px;
+  padding: 0 var(--page-pad) 18px;
   flex-shrink: 0;
 }
 
 // Language confirm button
 .lang-confirm {
   width: 100%;
-  padding: 13px;
+  min-height: 52px;
+  padding: 13px 16px;
   border: none;
   border-radius: 10px;
   background: var(--ink);
   color: var(--bg);
   font-family: $font-sans;
-  font-size: .82rem;
+  font-size: .94rem;
+  line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
   cursor: pointer;
@@ -87,5 +91,4 @@
     cursor: not-allowed;
   }
 }
-
 

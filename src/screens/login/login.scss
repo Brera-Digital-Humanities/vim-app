@@ -4,23 +4,25 @@
 
 
 .login-form {
-  padding: 16px;
+  padding: 20px var(--page-pad);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
 .login-input {
   width: 100%;
   box-sizing: border-box;
-  padding: .8rem .9rem;
+  min-height: 52px;
+  padding: .9rem 1rem;
   font-family: $font-sans;
   font-size: 1rem;
   color: var(--ink);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  line-height: 1.25;
   transition: border-color $transition-fast, box-shadow $transition-fast;
 
   &:focus {
@@ -48,14 +50,14 @@
   position: relative;
 }
 .login-pass .login-input {
-  padding-right: 2.8rem;   // room for the eye button
+  padding-right: 3.25rem;   // room for the eye button
 }
 .login-eye {
   position: absolute;
   top: 0;
   right: 0;
   height: 100%;
-  width: 2.8rem;
+  width: 3.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,24 +69,27 @@
   transition: color $transition-fast;
 
   &:hover { color: var(--ink); }
-  svg { width: 20px; height: 20px; }
+  svg { width: 22px; height: 22px; }
 }
 
 .login-error {
-  font-size: .8rem;
+  font-size: .9rem;
   color: var(--error);
   padding: 2px 2px;
+  line-height: 1.35;
 }
 
 .login-btn {
   width: 100%;
-  padding: .85rem;
+  min-height: 52px;
+  padding: .9rem 1rem;
   border: none;
   border-radius: var(--radius);
   background: var(--ink);
   color: var(--bg);
   font-family: $font-sans;
-  font-size: .9rem;
+  font-size: .98rem;
+  line-height: 1.2;
   letter-spacing: .04em;
   cursor: pointer;
   transition: background $transition-fast;

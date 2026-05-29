@@ -26,19 +26,33 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.state-loading p { font-size: .8rem; color: var(--muted); letter-spacing: .08em; }
-.state-error p   { color: var(--error); font-size: .85rem; }
+.state-loading p { font-size: .94rem; color: var(--muted); letter-spacing: .08em; line-height: 1.45; }
+.state-error p   { color: var(--error); font-size: .96rem; line-height: 1.45; }
 
 .state-success {
   .icon { font-size: 2.5rem; }
 
   h2 {
     font-family: $font-serif;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 300;
+    line-height: 1.2;
   }
 
-  p { font-size: .82rem; color: var(--muted); }
+  p { font-size: .96rem; color: var(--muted); line-height: 1.45; }
 }
 
+.state-action {
+  min-height: 48px;
+  margin-top: 20px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: $font-sans;
+  font-size: .94rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
 
