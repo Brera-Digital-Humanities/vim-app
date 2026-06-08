@@ -23,9 +23,9 @@ function updateUserBar() {
     return;
   }
 
-  // Keep the bar cleaner while filling the form.
-  const formActive = document.getElementById('screen-form');
-  if (formActive && formActive.classList.contains('active')) {
+  // Hide on screens where the account button would just be noise (form, lang).
+  const hideOn = ['screen-form', 'screen-lang'];
+  if (hideOn.some(id => document.getElementById(id) && document.getElementById(id).classList.contains('active'))) {
     btn.style.display = 'none';
     return;
   }
