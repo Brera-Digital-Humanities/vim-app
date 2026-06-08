@@ -80,13 +80,14 @@
   font-size: var(--text-md);
 }
 
+// Account button — icon only (tooltip via aria-label)
 .bar-user-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  max-width: 42%;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 6px 9px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: none;
@@ -97,22 +98,9 @@
 .bar-user-icon {
   width: 18px;
   height: 18px;
-  flex: 0 0 18px;
   color: var(--accent);
 
-  svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.bar-user-name {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: var(--text-base);
+  svg { display: block; width: 100%; height: 100%; }
 }
 
 // Progress bar track (thin line under the app bar)

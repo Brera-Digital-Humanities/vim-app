@@ -14,12 +14,10 @@ function currentUsername() {
 
 function updateUserBar() {
   const btn = document.getElementById('bar-user-btn');
-  const name = document.getElementById('bar-user-name');
-  if (!btn || !name) return;
+  if (!btn) return;
 
   if (!isLoggedIn()) {
     btn.style.display = 'none';
-    name.textContent = '';
     return;
   }
 
@@ -30,7 +28,9 @@ function updateUserBar() {
     return;
   }
 
-  name.textContent = currentUserDisplayName();
+  // Icon-only button: the user name is exposed to screen readers via aria-label.
+  const displayName = currentUserDisplayName();
+  btn.setAttribute('aria-label', displayName ? (tr().accountTitle + ' — ' + displayName) : tr().accountTitle);
   btn.style.display = 'inline-flex';
 }
 
