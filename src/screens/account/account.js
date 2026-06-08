@@ -23,6 +23,13 @@ function updateUserBar() {
     return;
   }
 
+  // Keep the bar cleaner while filling the form.
+  const formActive = document.getElementById('screen-form');
+  if (formActive && formActive.classList.contains('active')) {
+    btn.style.display = 'none';
+    return;
+  }
+
   name.textContent = currentUserDisplayName();
   btn.style.display = 'inline-flex';
 }
