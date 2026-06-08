@@ -550,8 +550,8 @@ function storeMediaFile(name, kind, file) {
   if (preview) {
     const url = URL.createObjectURL(file);
     preview.style.display = 'block';
-    if      (kind === 'image') preview.innerHTML = `<img src="${url}" style="width:100%;max-height:180px;object-fit:contain;border-radius:8px"/>`;
-    else if (kind === 'video') preview.innerHTML = `<video src="${url}" controls style="width:100%;max-height:180px;border-radius:8px"></video>`;
+    if      (kind === 'image') preview.innerHTML = `<img src="${url}" style="width:100%;max-height:180px;object-fit:contain;border-radius:var(--radius-sm)"/>`;
+    else if (kind === 'video') preview.innerHTML = `<video src="${url}" controls style="width:100%;max-height:180px;border-radius:var(--radius-sm)"></video>`;
     else if (kind === 'audio') preview.innerHTML = `<audio src="${url}" controls style="width:100%;margin-top:4px"></audio>`;
   }
 

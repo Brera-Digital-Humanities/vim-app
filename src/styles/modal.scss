@@ -40,7 +40,7 @@
 
 .modal-title {
   font-family: $font-serif;
-  font-size: 1.28rem;
+  font-size: var(--text-xl);
   font-weight: 400;
   font-style: italic;
   color: var(--ink);
@@ -50,7 +50,7 @@
 }
 
 .modal-msg {
-  font-size: .94rem;
+  font-size: var(--text-md);
   color: var(--muted);
   text-align: center;
   padding: 0 var(--page-pad) 18px;
@@ -59,7 +59,7 @@
 
 // Red caveat inside a modal (e.g. persistence warning on save/complete)
 .modal-note-danger {
-  font-size: .9rem;
+  font-size: var(--text-base);
   color: var(--error);
   text-align: center;
   padding: 0 var(--page-pad) 16px;
@@ -75,9 +75,9 @@
 
 .modal-btn-primary {
   width: 100%; min-height: 52px; padding: 13px 16px;
-  border: none; border-radius: 10px;
+  border: none; border-radius: var(--radius-md);
   background: var(--ink); color: var(--bg);
-  font-family: $font-sans; font-size: .94rem;
+  font-family: $font-sans; font-size: var(--text-md);
   line-height: 1.2;
   letter-spacing: .06em; text-transform: uppercase;
   cursor: pointer;
@@ -86,9 +86,9 @@
 
 .modal-btn-secondary {
   width: 100%; min-height: 52px; padding: 13px 16px;
-  border: 1px solid var(--border); border-radius: 10px;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
   background: transparent; color: var(--muted);
-  font-family: $font-sans; font-size: .94rem;
+  font-family: $font-sans; font-size: var(--text-md);
   line-height: 1.2;
   letter-spacing: .06em; text-transform: uppercase;
   cursor: pointer;
@@ -100,9 +100,9 @@
 // Destructive action (e.g. "exit without saving") — outlined in error red
 .modal-btn-danger {
   width: 100%; min-height: 52px; padding: 13px 16px;
-  border: 1px solid var(--error); border-radius: 10px;
+  border: 1px solid var(--error); border-radius: var(--radius-md);
   background: transparent; color: var(--error);
-  font-family: $font-sans; font-size: .94rem;
+  font-family: $font-sans; font-size: var(--text-md);
   line-height: 1.2;
   letter-spacing: .06em; text-transform: uppercase;
   cursor: pointer;

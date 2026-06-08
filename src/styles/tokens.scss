@@ -1,7 +1,7 @@
-// VIM — design tokens (CSS variables, SCSS vars)
+// VIM — design tokens (CSS variables + SCSS vars)
 
 
-// — SCSS variables (used only within SCSS) —
+// — SCSS variables (compile-time, used only within SCSS) —
 $font-serif:   'Cormorant Garamond', serif;
 $font-sans:    'DM Sans', sans-serif;
 $font-mono:    'DM Mono', monospace;
@@ -13,26 +13,38 @@ $phone-radius: 44px;
 
 $transition-fast:   .15s ease;
 $transition-medium: .2s ease;
-$transition-spring: .28s cubic-bezier(.22,.68,0,1.2);
+$transition-spring: .28s cubic-bezier(.22, .68, 0, 1.2);
+
 
 // — CSS variables (runtime; overridable from JS) —
 :root {
-  // Color palette
+  // — Color palette —
   --bg:       #f7f4ef;   // Page background — ivory paper
   --surface:  #ffffff;   // Elevated surfaces (card, modal)
   --border:   #e0d9ce;   // Borders, dividers
   --ink:      #1c1814;   // Primary text, primary buttons
   --muted:    #8a8070;   // Secondary text, placeholder
-  --accent:   #c4763a;   // Terracotta orange — brand color
+  --accent:   #c4763a;   // Terracotta orange — brand
   --accent2:  #7a9e8a;   // Sage green — confirm, completed
   --error:    #c0392b;   // Error red
 
-  // Geometry
-  --radius:   12px;
+  // — Font sizes (use these instead of raw rem) —
+  --text-xs:   0.72rem;                       // badges, meta, captions
+  --text-sm:   0.8rem;                        // secondary text, hints
+  --text-base: 0.88rem;                       // body, card titles, nav buttons
+  --text-md:   1rem;                          // emphasized body, inputs
+  --text-lg:   1.15rem;                       // section titles (brand h2)
+  --text-xl:   1.35rem;                       // larger titles
+  --text-hero: clamp(2.6rem, 9vw, 4rem);      // hero h1
+
+  // — Border radius —
+  --radius-sm:   8px;     // small buttons, choice items
+  --radius-md:   10px;    // standard buttons, status box, modal
+  --radius-lg:   12px;    // cards, menu items
+  --radius-pill: 999px;   // chips, pills
+
+  // — Layout —
   --max-w:    520px;
   --tap-min:  48px;
   --page-pad: 20px;
-  --control-font: 1rem;
-  --small-font: .86rem;
 }
-

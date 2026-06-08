@@ -7,17 +7,17 @@
     margin: 0 var(--page-pad) 12px;
     padding: 12px 14px;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     background: var(--surface);
     color: var(--muted);
     font-family: 'DM Sans', sans-serif;
-    font-size: .86rem;
+    font-size: var(--text-base);
     line-height: 1.45;
 
     .odb-title {
         margin-bottom: 6px;
         color: var(--ink);
-        font-size: .78rem;
+        font-size: var(--text-sm);
         letter-spacing: .12em;
         text-transform: uppercase;
     }
@@ -39,7 +39,7 @@
         background: rgba(0,0,0,.04);
         color: var(--ink);
         font-family: 'DM Mono', monospace;
-        font-size: .78rem;
+        font-size: var(--text-sm);
     }
 }
 
@@ -64,25 +64,19 @@
         border-radius: 5px;
         background-color: var(--accent2);
     }
+    // Auto-send toggle — chip-based, with larger touch target
     .ob-auto {
+        @include chip-base;
         margin-top: 8px;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
         min-height: 40px;
         padding: 7px 10px;
         border: 1px solid var(--border);
-        border-radius: 20px;
         background: none;
-        font-size: .82rem;
-        line-height: 1.2;
+        font-size: var(--text-sm);
         color: var(--muted);
         cursor: pointer;
-    
-        &.on {
-            color: var(--accent2);
-            border-color: var(--accent2);
-        }
+
+        &.on { color: var(--accent2); border-color: var(--accent2); }
     }
 }
 
@@ -104,11 +98,11 @@
         min-height: 52px;
         padding: 13px 16px;
         border: none;
-        border-radius: 10px;
+        border-radius: var(--radius-md);
         background: var(--ink);
         color: var(--bg);
         font-family: 'DM Sans', sans-serif;
-        font-size: .94rem;
+        font-size: var(--text-md);
         line-height: 1.2;
         letter-spacing: .06em;
         text-transform: uppercase;

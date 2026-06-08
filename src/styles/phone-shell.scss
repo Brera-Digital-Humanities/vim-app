@@ -65,7 +65,7 @@
 
   .time {
     font-family: $font-mono;
-    font-size: .75rem;
+    font-size: var(--text-xs);
     color: var(--ink);
   }
 
@@ -98,3 +98,58 @@
 }
 
 
+
+
+// ── Full-screen PWA shell (body.app) ────────────────────────────────────────
+// The PWA (dist/index.html) uses <body class="app"> — the .phone-shell fills
+// the whole viewport with no frame/shadow/island. The demo (demo-desktop/)
+// uses <body class="demo"> and keeps the hero + iPhone frame above.
+
+body.app {
+  padding: 0;
+  display: block;
+  background-image: none;
+  min-height: 100dvh;
+}
+
+body.app .phone-shell {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;       // real viewport height (Safari iOS included)
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+// No decorative side buttons in the PWA
+body.app .phone-shell::before,
+body.app .phone-shell::after { display: none; }
+
+
+// ── Responsive (small viewports) ────────────────────────────────────────────
+
+@media (max-width: 430px) {
+  :root { --page-pad: 16px; }
+
+  // On small screens drop the phone frame
+  .phone-shell {
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    height: 100dvh;
+  }
+
+  .hero { padding: 24px 0 16px; }
+
+  .outbox-card-header {
+    flex-direction: column;
+    align-items: stretch;
+    .ob-auto { align-self: flex-start; }
+  }
+}
+
+@media (max-width: 360px) {
+  .media-actions { flex-direction: column; }
+  .form-nav, .form-nav-row { gap: 8px; }
+}

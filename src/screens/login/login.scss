@@ -17,11 +17,11 @@
   min-height: 52px;
   padding: .9rem 1rem;
   font-family: $font-sans;
-  font-size: 1rem;
+  font-size: var(--text-md);
   color: var(--ink);
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   line-height: 1.25;
   transition: border-color $transition-fast, box-shadow $transition-fast;
 
@@ -73,7 +73,7 @@
 }
 
 .login-error {
-  font-size: .9rem;
+  font-size: var(--text-base);
   color: var(--error);
   padding: 2px 2px;
   line-height: 1.35;
@@ -84,11 +84,11 @@
   min-height: 52px;
   padding: .9rem 1rem;
   border: none;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--ink);
   color: var(--bg);
   font-family: $font-sans;
-  font-size: .98rem;
+  font-size: var(--text-md);
   line-height: 1.2;
   letter-spacing: .04em;
   cursor: pointer;

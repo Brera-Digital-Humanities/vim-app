@@ -13,7 +13,7 @@
   &::before {
     content: '✦';
     display: block;
-    font-size: 1rem;
+    font-size: var(--text-md);
     color: var(--accent);
     margin-bottom: 20px;
     letter-spacing: .3em;
@@ -21,7 +21,7 @@
 
   h1 {
     font-family: $font-serif;
-    font-size: clamp(2.6rem, 9vw, 4rem); // Responsive: min 2.6rem, ideale 9vw, max 4rem
+    font-size: var(--text-hero); // Responsive: min 2.6rem, ideale 9vw, max 4rem
     font-weight: 300;
     line-height: 1.1;
     letter-spacing: .02em;
@@ -77,7 +77,7 @@
   h2 {
     font-family: $font-serif;
     font-weight: 600;
-    font-size: 1.45rem;
+    font-size: var(--text-xl);
     line-height: 1.15;
     color: var(--ink);
     margin: 0;
@@ -85,7 +85,7 @@
 
   p {
     margin-top: 8px;
-    font-size: .84rem;
+    font-size: var(--text-sm);
     color: var(--muted);
     letter-spacing: .08em;
     line-height: 1.3;

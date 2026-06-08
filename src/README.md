@@ -94,7 +94,6 @@ queue, auto-send and idempotency.
 
 - Vanilla JS ES6+, no framework, no runtime deps.
 - **CSS variables only** (`var(--accent)`, never raw hex).
-- **Code comments in English, short and essential.**
 - Shared list/card styles live in `styles/screens-base.scss` (`.list`,
   `.list-card`, `.card-*`) — don't inline repeated styles in JS.
 - Modals are appended inside `.phone-shell`.

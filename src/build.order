@@ -51,7 +51,6 @@ styles/tokens.scss
 styles/base.scss
 styles/layout.scss
 styles/phone-shell.scss
-styles/app-shell.scss
 styles/app-bar.scss
 styles/screens-base.scss
 screens/login/login.scss
@@ -64,4 +63,3 @@ styles/buttons.scss
 styles/modal.scss
 styles/feedback.scss
 styles/rtl.scss
-styles/responsive.scss

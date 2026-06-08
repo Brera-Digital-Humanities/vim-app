@@ -16,9 +16,9 @@
   min-height: var(--tap-min);
   padding: 12px 14px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-family: $font-sans;
-  font-size: .94rem;
+  font-size: var(--text-md);
   line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -35,7 +35,7 @@
   color: var(--muted);
   border: 1px solid var(--border);
   flex: 0 0 58px;
-  font-size: 1.15rem;
+  font-size: var(--text-lg);
 }
 
 // Next button — dark bg, light text
@@ -58,11 +58,11 @@
   min-height: var(--tap-min);
   padding: 12px 14px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   color: var(--ink);
   font-family: $font-sans;
-  font-size: .9rem;
+  font-size: var(--text-base);
   line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -79,11 +79,11 @@
   min-height: var(--tap-min);
   padding: 12px 14px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   color: var(--muted);
   font-family: $font-sans;
-  font-size: .9rem;
+  font-size: var(--text-base);
   line-height: 1.2;
   letter-spacing: .06em;
   text-transform: uppercase;
