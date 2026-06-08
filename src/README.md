@@ -103,4 +103,5 @@ queue, auto-send and idempotency.
 ## External references
 
 - KoboToolbox API: https://eu.kobotoolbox.org/api/v2/
+- OpenRosa (XForm submission standard, used by `buildSubmissionXml`): https://docs.getodk.org/openrosa/
 - XLSForm: https://xlsform.org/
