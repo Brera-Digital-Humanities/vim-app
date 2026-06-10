@@ -295,6 +295,22 @@ function openModal(innerHTML, wire) {
   wire(close);
 }
 
+/** showInfo(name) — Open a modal with the field's hint for the current language. */
+function showInfo(name) {
+  const f = PAGES.flatMap(p => p.fields).find(x => x.name === name);
+  if (!f) return;
+  const text = getHint(f);
+  if (!text) return;
+  const esc = String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  openModal(`
+      <div class="modal-msg" style="white-space:pre-wrap;text-align:left;padding:6px var(--page-pad) 18px">${esc}</div>
+      <div class="modal-actions">
+        <button class="modal-btn-secondary" id="info-close-btn">${tr().close || 'OK'}</button>
+      </div>`, close => {
+    document.getElementById('info-close-btn').onclick = close;
+  });
+}
+
 /**
  * markComplete() — Ask how to send the completed form (auto when online vs
  * manual), then finalize. Requires btn-complete to be .enabled.
@@ -403,11 +419,12 @@ function buildQuestion(q) {
   const t        = q.type;
   const listName = t.startsWith('select_') ? t.split(' ')[1] : null;
 
-  // Question text + optional hint
-  let html = `<div class="q-text">${label}${req}</div>`;
-  if (q.hint_it && langKey().startsWith('Italian')) {
-    html += `<div class="q-hint">${q.hint_it}</div>`;
-  }
+  // Question text + optional info button (hint opens in a modal)
+  const hint = getHint(q);
+  const info = hint
+    ? `<button type="button" class="q-info" onclick="showInfo('${q.name}')" aria-label="${tr().info || 'Info'}">i</button>`
+    : '';
+  let html = `<div class="q-text">${label}${req}${info}</div>`;
 
   // Render by type
   if      (t === 'text')                 html += `<textarea name="${q.name}" rows="3" placeholder="…">${val}</textarea>`;

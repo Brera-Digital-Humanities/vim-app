@@ -106,6 +106,8 @@ const VIM_LANG_ar = {
       form:        'النموذج',
       mediaLargeWarn: 'ملف كبير، قد يفشل الإرسال.',
       editForm:    'تعديل',
+      info:        'معلومات',
+      close:       'إغلاق',
       completeHow: 'كيف تريد إرسال النموذج؟',
       sendAuto:    'إرسال تلقائي (عند توفر الاتصال)',
       sendManual:  'إرسال يدوي',

@@ -91,14 +91,28 @@
 // Required asterisk
 .q-required { color: var(--accent); margin-left: 2px; }
 
-// Hint text below the question
-.q-hint {
-  font-size: var(--text-base);
-  color: var(--muted);
-  margin-bottom: 14px;
-  font-style: italic;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
+// Info button — small accent circle next to the question; opens hint in a modal
+.q-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin: 0 8px;
+  vertical-align: middle;
+  padding: 0;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  background: none;
+  color: var(--accent);
+  font-family: $font-sans;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  line-height: 1;
+  cursor: pointer;
+  transition: background $transition-fast, color $transition-fast;
+
+  &:hover { background: var(--accent); color: #fff; }
 }
 
 // Text, number, date inputs (scoped to the form area so they don't leak to

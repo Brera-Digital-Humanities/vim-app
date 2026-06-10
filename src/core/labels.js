@@ -19,6 +19,15 @@ function getChoiceLabel(choice) {
   return choice.it || choice.name;
 }
 
+/** getHint(field) — Optional field hint in the current language (hint_it/en/ar). */
+function getHint(field) {
+  const k = langKey();
+  if (k.startsWith('Italian')) return field.hint_it || '';
+  if (k.startsWith('English')) return field.hint_en || '';
+  if (k.startsWith('Arabic'))  return field.hint_ar || '';
+  return field.hint_it || '';
+}
+
 /** getGroupLabel(page) — Section label in the current language. */
 function getGroupLabel(page) {
   const k = langKey();

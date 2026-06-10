@@ -119,6 +119,8 @@ const VIM_LANG_it = {
       form:        'Modulo',
       mediaLargeWarn: 'File grande, l’invio potrebbe non riuscire.',
       editForm:    'Modifica',
+      info:        'Info',
+      close:       'Chiudi',
       completeHow: 'Come vuoi inviare il modulo?',
       sendAuto:    'Invia automaticamente (appena c’è rete)',
       sendManual:  'Invia manualmente',

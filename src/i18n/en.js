@@ -106,6 +106,8 @@ const VIM_LANG_en = {
       form:        'Form',
       mediaLargeWarn: 'Large file, the upload may fail.',
       editForm:    'Edit',
+      info:        'Info',
+      close:       'Close',
       completeHow: 'How do you want to send the form?',
       sendAuto:    'Send automatically (when online)',
       sendManual:  'Send manually',
