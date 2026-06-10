@@ -295,7 +295,8 @@ function openModal(innerHTML, wire) {
   wire(close);
 }
 
-/** showInfo(name) — Open a modal with the field's hint for the current language. */
+/** showInfo(name) — Open a modal with the field's hint for the current language.
+ *  Close via the × in the top-right or by tapping outside (openModal default). */
 function showInfo(name) {
   const f = PAGES.flatMap(p => p.fields).find(x => x.name === name);
   if (!f) return;
@@ -303,12 +304,10 @@ function showInfo(name) {
   if (!text) return;
   const esc = String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   openModal(`
-      <div class="modal-msg" style="white-space:pre-wrap;text-align:left;padding:6px var(--page-pad) 18px">${esc}</div>
-      <div class="modal-actions">
-        <button class="modal-btn-secondary" id="info-close-btn">${tr().close || 'OK'}</button>
-      </div>`, close => {
-    document.getElementById('info-close-btn').onclick = close;
-  });
+      <button class="modal-close-x" id="info-close-btn" type="button" aria-label="${tr().close || 'Close'}">×</button>
+      <div class="modal-msg" style="white-space:pre-wrap;text-align:left;padding:18px var(--page-pad) 2rem">${esc}</div>`,
+    close => { document.getElementById('info-close-btn').onclick = close; }
+  );
 }
 
 /**
@@ -424,7 +423,7 @@ function buildQuestion(q) {
   const info = hint
     ? `<button type="button" class="q-info" onclick="showInfo('${q.name}')" aria-label="${tr().info || 'Info'}">i</button>`
     : '';
-  let html = `<div class="q-text">${label}${req}${info}</div>`;
+  let html = `<div class="q-text">${info}${label}${req}</div>`;
 
   // Render by type
   if      (t === 'text')                 html += `<textarea name="${q.name}" rows="3" placeholder="…">${val}</textarea>`;

@@ -96,12 +96,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
-  margin: 0 8px;
+  width: 20px;
+  height: 20px;
+  margin: 0 8px 5px 0;
   vertical-align: middle;
   padding: 0;
-  border: 1.5px solid var(--accent);
+  border: 2px solid var(--accent);
   border-radius: 50%;
   background: none;
   color: var(--accent);
