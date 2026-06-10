@@ -89,7 +89,7 @@
 }
 
 // Required asterisk
-.q-required { color: var(--accent); margin-left: 2px; }
+.q-required { color: var(--accent); margin-inline-start: 2px; }
 
 // Info button — small accent circle next to the question; opens hint in a modal
 .q-info {
@@ -98,7 +98,8 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  margin: 0 8px 5px 0;
+  margin: 0 0 5px;
+  margin-inline-end: 8px;   // right in LTR, left in RTL — no overrides needed
   vertical-align: middle;
   padding: 0;
   border: 2px solid var(--accent);
