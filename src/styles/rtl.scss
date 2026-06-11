@@ -33,12 +33,15 @@
   // Chevron glyphs that read as direction indicators (› means "enter" in LTR)
   // visually flip in RTL → ‹. scaleX(-1) mirrors the glyph in place without
   // needing a different character in markup/JS.
+  // Text chevrons (› in home/sent cards) — mirror the glyph in place.
+  // NB: we do NOT mirror .bb-arrow (uses ‹ U+2039): U+2039 is a Bidi_Mirrored
+  // character per Unicode, so browsers auto-flip it in RTL contexts. Adding
+  // scaleX(-1) on top would double-flip it back to left.
   .mi-arrow,
-  .sent-arrow,
-  .bb-arrow { display: inline-block; transform: scaleX(-1); }
+  .sent-arrow { display: inline-block; transform: scaleX(-1); }
 
-  // SVG back-arrows in the app-bar and bottom-nav Home button mirror via the
-  // same trick (the markup no longer carries a directional character).
+  // SVG back arrows (top app-bar, bottom-nav Home) — no directional character
+  // in markup, so we mirror the whole SVG.
   .bar-back-arrow svg,
   .btn-home-arrow svg { transform: scaleX(-1); }
 
