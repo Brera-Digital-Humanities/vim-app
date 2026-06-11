@@ -9,11 +9,16 @@
           <div id="sent-header-label" class="list-header">Moduli inviati</div>
           <div id="sent-list" class="list"></div>
         </div>
-        <!-- Bottom nav: Home (50% width, end-aligned, RTL-aware) -->
+        <!-- Bottom nav: Home (left) + Back-to-list (right, only on detail) -->
         <div class="screen-nav">
           <button class="btn-home" type="button" onclick="goHome()">
             <span class="btn-home-arrow">←</span>
             <span class="btn-home-label">Home</span>
+          </button>
+          <button class="btn-back-detail" id="sent-back-btn" type="button"
+                  onclick="renderSent()" style="display:none">
+            <span class="bb-arrow">‹</span>
+            <span class="bb-label">Back</span>
           </button>
         </div>
       </div>

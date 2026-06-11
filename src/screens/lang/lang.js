@@ -97,6 +97,10 @@ function applyUILang() {
   document.querySelectorAll('.btn-home-arrow').forEach(el => { el.textContent = isRTL ? '→' : '←'; });
   document.querySelectorAll('.btn-home-label').forEach(el => { el.textContent = s.home; });
 
+  // Sent: bottom-bar "back to list" button (visible only in detail view)
+  const bbLabel = document.querySelector('#sent-back-btn .bb-label');
+  if (bbLabel) bbLabel.textContent = s.back;
+
   // Account: "Change language" button label
   const accLang = document.querySelector('#account-lang-btn .btn-lang-label');
   if (accLang) accLang.textContent = s.cambiaLinguaTitle;

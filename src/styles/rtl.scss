@@ -35,7 +35,7 @@
   // needing a different character in markup/JS.
   .mi-arrow,
   .sent-arrow,
-  .sd-back-arrow { display: inline-block; transform: scaleX(-1); }
+  .bb-arrow { display: inline-block; transform: scaleX(-1); }
 
   // Mirrored animations for RTL
   @keyframes slideIn {

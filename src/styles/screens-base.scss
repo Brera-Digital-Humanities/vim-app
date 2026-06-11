@@ -114,26 +114,6 @@
   font-size: var(--text-lg);
 }
 
-// Back link at the top of a sent-detail view — returns to the sent list
-.sent-detail-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  padding: 8px 0;
-  border: none;
-  background: none;
-  color: var(--muted);
-  cursor: pointer;
-  font-family: $font-sans;
-  font-size: var(--text-md);
-  line-height: 1;
-
-  &:hover { color: var(--ink); }
-
-  .sd-back-arrow { font-size: var(--text-lg); line-height: 1; }
-}
-
 .sent-detail-title {
   margin: 6px 0 3px;
   color: var(--ink);

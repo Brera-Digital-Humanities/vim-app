@@ -5,6 +5,9 @@
 function renderSent() {
   const header = document.getElementById('sent-header-label');
   if (header) header.textContent = tr().sentHeader;
+  // Hide the detail-only back button when we go back to the list
+  const backBtn = document.getElementById('sent-back-btn');
+  if (backBtn) backBtn.style.display = 'none';
 
   const list = document.getElementById('sent-list');
   if (!sentForms.length) {
@@ -45,12 +48,12 @@ function showSentDetail(i) {
   }));
   if (!rows) rows = '<p class="list-empty">—</p>';
   document.getElementById('sent-list').innerHTML = `
-    <button class="sent-detail-back" onclick="renderSent()" type="button">
-      <span class="sd-back-arrow">‹</span> ${tr().back}
-    </button>
     <div class="sent-detail-title">${f.label || ('#' + (i + 1))}</div>
     <div class="sent-detail-meta">${f.sentAt}</div>
     ${rows}`;
+  // Reveal the bottom-bar back button (returns to the sent list)
+  const backBtn = document.getElementById('sent-back-btn');
+  if (backBtn) backBtn.style.display = '';
 }
 
 // Display text for a sent value: resolve choice labels; text/date/media shown as-is.

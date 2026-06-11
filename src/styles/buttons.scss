@@ -101,24 +101,53 @@
 }
 
 // ── Secondary screens bottom nav ───────────────────────────────────────────
-// Drafts / outbox / sent / account: a fixed bar at the bottom of the screen
-// with a single Home button. .screen-scroll above stays scrollable. The
-// button is 50% wide and end-aligned (right in LTR, left in RTL).
+// Drafts / outbox / sent / account: a fixed bar at the bottom of the screen.
+// Hosts the Home button (always present) and an optional second action
+// (e.g. sent-detail back). With one button it sits end-aligned (50% wide);
+// with two buttons they share the row with a small gap (~50% each).
 .screen-nav {
   padding: 14px var(--page-pad);
   display: flex;
+  gap: 8px;
   justify-content: flex-end;
   flex-shrink: 0;
   border-top: 1px solid var(--border);
   background: var(--surface);
 }
 
-// Bottom-nav Home button: shared outline look, 50% width, end-aligned by the
-// parent .screen-nav.
+// Bottom-nav Home button: shared outline look. Width compensates the
+// .screen-nav gap so that with a second button they tile evenly at ~50% each
+// without overflow.
 .btn-home {
   @include btn-outline;
-  flex: 0 0 50%;
+  flex: 0 0 calc(50% - 4px);
 }
+
+// Back-to-list button on a detail view (sent-detail). Dark fill / light text,
+// sits next to .btn-home in the bottom nav. Same typography stack (text-base)
+// so the two buttons read consistently.
+.btn-back-detail {
+  flex: 0 0 calc(50% - 4px);
+  min-height: var(--tap-min);
+  padding: 12px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--ink);
+  color: var(--bg);
+  @include btn-typography(var(--text-base));
+  cursor: pointer;
+  transition: background $transition-fast, transform .1s;
+
+  &:hover  { background: #2c2620; }
+  &:active { transform: scale(.98); }
+}
+
+.bb-arrow { font-size: var(--text-lg); line-height: 1; }
+.bb-label { line-height: 1.2; }
 
 .btn-home-arrow { font-size: var(--text-lg); line-height: 1; }
 .btn-home-label { line-height: 1.2; }
