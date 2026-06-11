@@ -50,9 +50,7 @@
   border-radius: var(--radius-sm);
   background: var(--ink);
   color: var(--bg);
-  font-family: $font-sans;
-  font-size: var(--text-md);
-  line-height: 1.2;
+  @include btn-typography;
   cursor: pointer;
 }
 

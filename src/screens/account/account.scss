@@ -51,17 +51,25 @@
   overflow-wrap: anywhere;
 }
 
+// "Change language" — shares the .btn-home outline look, full width, sits
+// just above the logout button. SVG globe icon (currentColor).
+.btn-lang-change {
+  @include btn-outline;
+  width: 100%;
+  margin-top: 24px;
+
+  .lang-icon { font-size: var(--text-md); line-height: 1; }
+}
+
 .account-logout-btn {
   width: 100%;
   min-height: 52px;
-  margin-top: 24px;
+  margin-top: 12px;
   padding: 13px 16px;
   border: none;
   border-radius: var(--radius-sm);
   background: var(--ink);
   color: var(--bg);
-  font-family: $font-sans;
-  font-size: var(--text-md);
-  line-height: 1.2;
+  @include btn-typography;
   cursor: pointer;
 }

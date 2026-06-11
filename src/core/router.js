@@ -12,8 +12,11 @@ function showScreen(id, title, showPill) {
   SCREENS.forEach(s => document.getElementById(s).classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.getElementById('bar-title').textContent = title;
-  const isHome = id === 'screen-home' || id === 'screen-lang' || id === 'screen-login';
-  document.getElementById('bar-back-btn').style.display = isHome ? 'none' : 'inline-flex';
+  // Top back button: only on the form screen (where it triggers the exit
+  // confirmation). Secondary screens (drafts/outbox/sent/account) use the
+  // bottom .screen-nav with their own Home button.
+  const showTopBack = id === 'screen-form';
+  document.getElementById('bar-back-btn').style.display = showTopBack ? 'inline-flex' : 'none';
   document.getElementById('prog-track').style.display   = showPill ? '' : 'none';
   if (typeof updateUserBar === 'function') updateUserBar();
   // The "Section X/9" pill belongs to the form only: hide it elsewhere.

@@ -116,12 +116,13 @@
   &:hover { background: var(--accent); color: #fff; }
 }
 
-// Text, number, date inputs (scoped to the form area so they don't leak to
-// other screens, e.g. the login fields which are styled by .login-input)
+// Text, number, email, textarea, select (scoped to the form area so they
+// don't leak to other screens, e.g. login fields styled by .login-input).
+// NB: input[type="date"] is handled separately below — appearance:none would
+// hide the native calendar picker indicator on Chrome desktop.
 .form-area input[type="text"],
 .form-area input[type="number"],
 .form-area input[type="email"],
-.form-area input[type="date"],
 .form-area textarea,
 .form-area select {
   width: 100%;
@@ -143,6 +144,32 @@
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(196,118,58,.1);
   }
+}
+
+// Date input — same look as the others, but we keep the native appearance so
+// the calendar picker indicator stays clickable (Chrome desktop especially).
+.form-area input[type="date"] {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 13px 15px;
+  font-family: $font-sans;
+  font-size: var(--text-md);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  line-height: 1.35;
+
+  &:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(196,118,58,.1);
+  }
+
+  // Slight accent tint on the calendar picker icon (Chrome/Edge)
+  &::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .7; }
+  &::-webkit-calendar-picker-indicator:hover { opacity: 1; }
 }
 
 .form-area textarea {

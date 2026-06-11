@@ -67,13 +67,21 @@
   border-radius: var(--radius-sm);
   background: none;
   color: var(--ink);
-  font-size: var(--text-base);
-  line-height: 1.2;
+  @include btn-typography(var(--text-base));  // share .btn-home text stack
   cursor: pointer;
   flex: 1 1 auto;
 
-  &.primary { flex: 1 1 46%; padding: 10px 13px; border: none; background: var(--ink); color: var(--bg); }
-  &.danger  { color: var(--error); }
+  &.primary {
+    flex: 1 1 46%;
+    padding: 10px 13px;
+    border: none;
+    background: var(--ink);
+    color: var(--bg);
+    @include btn-typography;  // share .btn-next typography for primary CTAs
+  }
+  // Danger variant: only the ✕ delete button on drafts/outbox cards.
+  // Bump just the icon size — base typography stays for the other variants.
+  &.danger { color: var(--error); font-size: var(--text-lg); }
 
   &:disabled {
     opacity: .45;
@@ -104,16 +112,6 @@
 .sent-arrow {
   color: var(--muted);
   font-size: var(--text-lg);
-}
-
-.sent-detail-back {
-  min-height: 44px;
-  padding: 8px 0;
-  border: none;
-  background: none;
-  color: var(--muted);
-  cursor: pointer;
-  font-size: var(--text-md);
 }
 
 .sent-detail-title {

@@ -13,7 +13,18 @@
             <div class="account-label" id="account-label">Utente loggato</div>
             <div class="account-name" id="account-name"></div>
             <div class="account-username" id="account-username"></div>
+            <button class="btn-lang-change" id="account-lang-btn" type="button" onclick="homeLangChange()">
+              <span class="lang-icon" aria-hidden="true">🌐</span>
+              <span class="btn-lang-label">Cambia lingua</span>
+            </button>
             <button class="account-logout-btn" id="account-logout-btn" onclick="logout()">Disconnetti</button>
           </div>
+        </div>
+        <!-- Bottom nav: Home (50% width, end-aligned, RTL-aware) -->
+        <div class="screen-nav">
+          <button class="btn-home" type="button" onclick="goHome()">
+            <span class="btn-home-arrow">←</span>
+            <span class="btn-home-label">Home</span>
+          </button>
         </div>
       </div>

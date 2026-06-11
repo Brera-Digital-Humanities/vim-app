@@ -244,7 +244,7 @@ function saveDraftSilent() {
     pageIdx:    pageIdx,
     fieldIdx:   window._fieldIdx || 0,
     savedAt:    new Date().toLocaleString(),
-    label:      answers['name_english'] || answers['local_name'] || ('Bozza ' + (drafts.length + 1)),
+    label:      answers['name_english'] || answers['local_name'] || (tr().draftLabel + ' ' + (drafts.length + 1)),
   };
   if (editing) {
     drafts[window._editingDraft] = entry;
@@ -305,7 +305,7 @@ function showInfo(name) {
   const esc = String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   openModal(`
       <button class="modal-close-x" id="info-close-btn" type="button" aria-label="${tr().close || 'Close'}">×</button>
-      <div class="modal-msg" style="white-space:pre-wrap;text-align:left;padding:18px var(--page-pad) 2rem">${esc}</div>`,
+      <div class="modal-msg" style="white-space:pre-wrap;text-align:left;padding:18px 2rem 2rem">${esc}</div>`,
     close => { document.getElementById('info-close-btn').onclick = close; }
   );
 }
@@ -347,7 +347,7 @@ function _finalizeComplete(autoSend) {
     schemaSig:  schemaSig(),                                   // detect later schema changes
     autoSend:   autoSend !== false,
     savedAt:    new Date().toLocaleString(),
-    label:      answers['name_english'] || answers['local_name'] || ('Modulo ' + (outbox.length + 1)),
+    label:      answers['name_english'] || answers['local_name'] || (tr().form + ' ' + (outbox.length + 1)),
   };
   // Replace in place if re-editing an outbox item, otherwise append.
   const ix = window._editingOutboxId ? outbox.findIndex(o => o.id === window._editingOutboxId) : -1;

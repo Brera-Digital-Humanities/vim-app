@@ -17,11 +17,7 @@
   padding: 12px 14px;
   border: none;
   border-radius: var(--radius-md);
-  font-family: $font-sans;
-  font-size: var(--text-md);
-  line-height: 1.2;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  @include btn-typography;
   cursor: pointer;
   transition: opacity $transition-fast, transform .1s;
 
@@ -103,4 +99,27 @@
 
   &.enabled:active { transform: scale(.98); }
 }
+
+// ── Secondary screens bottom nav ───────────────────────────────────────────
+// Drafts / outbox / sent / account: a fixed bar at the bottom of the screen
+// with a single Home button. .screen-scroll above stays scrollable. The
+// button is 50% wide and end-aligned (right in LTR, left in RTL).
+.screen-nav {
+  padding: 14px var(--page-pad);
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+// Bottom-nav Home button: shared outline look, 50% width, end-aligned by the
+// parent .screen-nav.
+.btn-home {
+  @include btn-outline;
+  flex: 0 0 50%;
+}
+
+.btn-home-arrow { font-size: var(--text-lg); line-height: 1; }
+.btn-home-label { line-height: 1.2; }
 

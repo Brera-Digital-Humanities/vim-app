@@ -71,6 +71,7 @@ const VIM_LANG_it = {
       home:         'Home',
       back:         'Indietro',
       // — Save-draft modal —
+      draftLabel:   'Bozza',  // fallback label for an unnamed draft (e.g. "Bozza 3")
       draftTitle:   'Bozza salvata',
       draftMsg:     'Vuoi tornare alla home o continuare la compilazione?',
       draftGoHome:  'Vai alla home',
@@ -100,6 +101,7 @@ const VIM_LANG_it = {
       // — Outbox —
       sendAll:     'Invia tutti',
       inAttesa:    'In attesa di invio',
+      sentHeader:  'Elenco inviati',
       formSavedAt: 'Salvato il',
       retry:       'Riprova',
       sendFailed:  'Invio non riuscito — riprova o elimina.',

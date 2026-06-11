@@ -16,6 +16,41 @@ $transition-medium: .2s ease;
 $transition-spring: .28s cubic-bezier(.22, .68, 0, 1.2);
 
 
+// Shared button typography. Size is parameterized so primary CTAs (.btn-next,
+// account-logout-btn, card-btn.primary, state-action) can use --text-md while
+// secondary buttons (.btn-home, .card-btn for "edit") share the same family/
+// spacing/case at --text-base. Keeps the type stack consistent everywhere.
+@mixin btn-typography($size: var(--text-md)) {
+  font-family: $font-sans;
+  font-size: $size;
+  line-height: 1.2;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+// Shared outline button (surface bg, ink text, accent border on hover) used
+// by .btn-home (bottom-nav, 50%) and .btn-lang-change (account, 100%). Width
+// is set by the consumer so the look stays consistent at any size.
+@mixin btn-outline {
+  min-height: var(--tap-min);
+  padding: 12px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  @include btn-typography(var(--text-base));
+  cursor: pointer;
+  transition: border-color $transition-fast, transform .1s;
+
+  &:hover  { border-color: var(--accent); }
+  &:active { transform: scale(.98); }
+}
+
+
 // — CSS variables (runtime; overridable from JS) —
 :root {
   // — Color palette —

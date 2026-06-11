@@ -93,6 +93,14 @@ function applyUILang() {
   const backLabel = document.getElementById('bar-back-label');
   if (backLabel) backLabel.textContent = s.home;
 
+  // Bottom-nav Home button on secondary screens (drafts/outbox/sent/account)
+  document.querySelectorAll('.btn-home-arrow').forEach(el => { el.textContent = isRTL ? '→' : '←'; });
+  document.querySelectorAll('.btn-home-label').forEach(el => { el.textContent = s.home; });
+
+  // Account: "Change language" button label
+  const accLang = document.querySelector('#account-lang-btn .btn-lang-label');
+  if (accLang) accLang.textContent = s.cambiaLinguaTitle;
+
   // "Change language" item on home
   const langItem = document.getElementById('home-lang-item');
   if (langItem) langItem.style.display = '';
@@ -102,11 +110,13 @@ function applyUILang() {
   // Connectivity indicator (text in current language)
   if (typeof updateConnectivity === 'function') updateConnectivity();
 
-  // List-screen headers (outbox / drafts)
+  // List-screen headers (outbox / drafts / sent)
   const outH = document.getElementById('outbox-header-label');
   if (outH) outH.textContent = s.inAttesa;
   const draftH = document.getElementById('drafts-header-label');
   if (draftH) draftH.textContent = s.draftsHeader;
+  const sentH = document.getElementById('sent-header-label');
+  if (sentH) sentH.textContent = s.sentHeader;
   const sendAllBtn = document.getElementById('send-all-btn');
   if (sendAllBtn) sendAllBtn.textContent = s.sendAll;
   updateOutboxHomeStatus();

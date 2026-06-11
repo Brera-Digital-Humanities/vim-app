@@ -25,6 +25,9 @@
 }
 
 .bar-back-btn {
+  // display:inline-flex must be set in CSS (not only inline via JS) so that
+  // align-items keeps working when the button is initially hidden/shown.
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 44px;
@@ -37,11 +40,21 @@
   color: var(--muted);
   cursor: pointer;
   font-family: $font-sans;
+  line-height: 1;   // single source of truth for both children
+}
+
+// Both spans share the same line-height and are centered as inline-flex boxes
+// so font-metrics differences (arrow glyph vs label baseline in DM Sans) don't
+// shift one above the other.
+.bar-back-arrow,
+.bar-back-label {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 
 .bar-back-arrow {
   font-size: var(--text-xl);
-  line-height: 1;
 }
 
 .bar-back-label {

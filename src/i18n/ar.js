@@ -61,6 +61,7 @@ const VIM_LANG_ar = {
       fieldRequired: 'هذا الحقل مطلوب',
       home:         'الرئيسية',
       back:         'رجوع',
+      draftLabel:   'مسودة',  // fallback label for an unnamed draft (e.g. "مسودة 3")
       draftTitle:   'تم حفظ المسودة',
       draftMsg:     'هل تريد العودة إلى الرئيسية أم الاستمرار في التعبئة؟',
       draftGoHome:  'الذهاب إلى الرئيسية',
@@ -87,6 +88,7 @@ const VIM_LANG_ar = {
       audioPermissionError: 'الميكروفون غير متاح أو تم رفض الإذن.',
       sendAll:     'إرسال الكل',
       inAttesa:    'في انتظار الإرسال',
+      sentHeader:  'قائمة المرسلة',
       formSavedAt: 'محفوظ في',
       retry:       'إعادة المحاولة',
       sendFailed:  'فشل الإرسال — أعد المحاولة أو احذف.',

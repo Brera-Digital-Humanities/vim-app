@@ -4,7 +4,7 @@
  *  read-only detail. Same card style as drafts/outbox. */
 function renderSent() {
   const header = document.getElementById('sent-header-label');
-  if (header) header.textContent = tr().inviatiTitle;
+  if (header) header.textContent = tr().sentHeader;
 
   const list = document.getElementById('sent-list');
   if (!sentForms.length) {
@@ -45,7 +45,6 @@ function showSentDetail(i) {
   }));
   if (!rows) rows = '<p class="list-empty">—</p>';
   document.getElementById('sent-list').innerHTML = `
-    <button class="sent-detail-back" onclick="renderSent()">‹ ${tr().back}</button>
     <div class="sent-detail-title">${f.label || ('#' + (i + 1))}</div>
     <div class="sent-detail-meta">${f.sentAt}</div>
     ${rows}`;
