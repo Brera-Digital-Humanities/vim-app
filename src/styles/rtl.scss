@@ -23,13 +23,18 @@
     font-family: $font-arabic; // Replaces Cormorant Garamond for Arabic
   }
 
-  // Mirror component layout
-  .choice-item  { flex-direction: row-reverse; }
-  .menu-item    { flex-direction: row-reverse; }
-  .app-bar      { flex-direction: row-reverse; }
-  .status-bar   { flex-direction: row-reverse; }
+  // NB: flex containers already mirror automatically under dir="rtl" — adding
+  // flex-direction: row-reverse here would CANCEL the native mirror (double
+  // reverse). So we don't touch flex-direction at all for .menu-item /
+  // .app-bar / .choice-item: dir="rtl" handles it natively.
 
   .home-section-label { text-align: right; }
+
+  // Chevron glyphs that read as direction indicators (› means "enter" in LTR)
+  // visually flip in RTL → ‹. scaleX(-1) mirrors the glyph in place without
+  // needing a different character in markup/JS.
+  .mi-arrow,
+  .sent-arrow { display: inline-block; transform: scaleX(-1); }
 
   // Mirrored animations for RTL
   @keyframes slideIn {
