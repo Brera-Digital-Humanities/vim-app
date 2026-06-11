@@ -45,6 +45,9 @@ function showSentDetail(i) {
   }));
   if (!rows) rows = '<p class="list-empty">—</p>';
   document.getElementById('sent-list').innerHTML = `
+    <button class="sent-detail-back" onclick="renderSent()" type="button">
+      <span class="sd-back-arrow">‹</span> ${tr().back}
+    </button>
     <div class="sent-detail-title">${f.label || ('#' + (i + 1))}</div>
     <div class="sent-detail-meta">${f.sentAt}</div>
     ${rows}`;

@@ -34,7 +34,8 @@
   // visually flip in RTL → ‹. scaleX(-1) mirrors the glyph in place without
   // needing a different character in markup/JS.
   .mi-arrow,
-  .sent-arrow { display: inline-block; transform: scaleX(-1); }
+  .sent-arrow,
+  .sd-back-arrow { display: inline-block; transform: scaleX(-1); }
 
   // Mirrored animations for RTL
   @keyframes slideIn {
