@@ -135,3 +135,107 @@
   &:hover { background: var(--error); color: var(--bg); }
 }
 
+
+// ── Welcome / consent popup ────────────────────────────────────────────────
+// Distinct from the bottom-sheet .modal-sheet: this one is centered, has a
+// larger corner radius and a single full-width approve button. Shown on the
+// first language confirmation and from the home link afterwards.
+.consent-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 24, 20, .6);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn .15s ease;
+}
+
+// Box flex column with a max-height. Title and CTA stay fixed; the inner
+// .consent-text takes the leftover space and scrolls when content overflows.
+.consent-modal-box {
+  width: 100%;
+  max-height: 85%;
+  padding: 24px 22px 20px;
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, .18);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: consentPop .22s cubic-bezier(.22, .68, 0, 1.1);
+  overflow: hidden;   // children manage their own scroll
+}
+
+@keyframes consentPop {
+  from { opacity: 0; transform: scale(.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.consent-title {
+  flex-shrink: 0;
+  font-family: $font-serif;
+  font-size: var(--text-xl);
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.25;
+}
+
+// Scrollable body of the popup — h3/p sections come from the i18n HTML.
+.consent-text {
+  flex: 1;
+  min-height: 0;          // allow flex child to actually scroll
+  overflow-y: auto;
+  padding-inline-end: 6px; // small breathing space for the scrollbar
+  font-size: var(--text-base);
+  color: var(--ink);
+  line-height: 1.5;
+  text-align: start;       // left in LTR, right in RTL
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  h3 {
+    margin: 14px 0 6px;
+    font-family: $font-serif;
+    font-size: var(--text-lg);
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.3;
+
+    &:first-child { margin-top: 0; }
+  }
+
+  p {
+    margin: 0 0 10px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+
+  // Final consent line: stronger, dark ink — visually flags it's actionable.
+  p.consent-cta {
+    margin-top: 12px;
+    color: var(--ink);
+  }
+
+  strong { font-weight: 600; }
+}
+
+.consent-approve {
+  flex-shrink: 0;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 4px;
+  padding: 13px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--ink);
+  color: var(--bg);
+  @include btn-typography;
+  cursor: pointer;
+  transition: opacity $transition-fast;
+
+  &:hover { opacity: .92; }
+}
+

@@ -108,6 +108,25 @@ const VIM_LANG_en = {
       form:        'Form',
       mediaLargeWarn: 'Large file, the upload may fail.',
       removeFile:    'Remove file',
+      // Welcome popup shown once after the first language choice; reopened
+      // from the home via the disclaimerLink. disclaimerText is rendered as
+      // HTML (controlled content) so it can carry <h3>/<p> structure.
+      disclaimerTitle:   'Information',
+      disclaimerText: `
+<h3>What is this app for?</h3>
+<p>VIM – Valigia Immateriale is a digital platform dedicated to documenting and safeguarding traditions and intangible cultural heritage. Through the collection of testimonies, recordings, images and descriptive information, the app helps preserve cultural practices, knowledge and traditions that represent an important part of the memory and identity of both individuals and the community.</p>
+
+<h3>What can you document?</h3>
+<p>You can contribute to the documentation of a practice or cultural expression, for example: a song, a piece of music, a dance, an oral tale, a celebration, a ritual, a craft technique, a food-related practice or any other knowledge passed down over time.</p>
+<p>The application has been built using institutional but equally community-based categorisations to make it as inclusive as possible (UNESCO).</p>
+
+<h3>Where does the data go? Who owns it?</h3>
+<p>This specific data collection, carried out between June and July 2026, is mainly aimed at fine-tuning the tool. The data will be temporarily collected on the project’s VIM servers, located in Switzerland; at the end of the testing phase it will be donated to the Palestinian National Museum.</p>
+<p>The whole project is carried out by the Accademia di Belle Arti di Brera, as part of the PNRR JERUS-IT-ARTS project funded by the European Union.</p>
+
+<p class="consent-cta"><strong>Before you start you must agree to take part in the test!</strong></p>`,
+      disclaimerApprove: 'Approve',
+      disclaimerLink:    'Terms of use',
       editForm:    'Edit',
       info:        'Info',
       close:       'Close',

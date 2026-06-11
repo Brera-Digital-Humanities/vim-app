@@ -36,6 +36,7 @@ function syncLangConfirmBtn() {
  * UI texts, then resume the form at the same field (if coming from it) or go home.
  */
 function confirmLanguage() {
+  const wasFirstLangChoice = !langChosen;
   currentLangIdx = selectedLangIdx;
   langChosen     = true;   // from now on the language screen is skipped at startup
   saveLang();
@@ -44,14 +45,41 @@ function confirmLanguage() {
   // (same section and field); otherwise go home.
   if (langReturn === 'form') {
     window._compiling = true;
-    showScreen('screen-form', tr().questionnaire, true);
+    showScreen('screen-form', '', true);
     document.getElementById('lang-btn').style.display       = '';
     document.getElementById('form-nav-extra').style.display = 'flex';
     window._fieldIdx = langReturnField;
     renderPage(pageIdx); // re-render with new labels, same field
   } else {
     goHome();
+    // First language choice ever: open the welcome popup on top of the home.
+    // (showDisclaimer also runs the dismissal-persistence path.)
+    if (wasFirstLangChoice && !disclaimerSeen) showDisclaimer();
   }
+}
+
+/** showDisclaimer() — Overlay the welcome popup on the current screen. Dismissed
+ *  via the Approve button → flag persisted so it won't reappear. Also reachable
+ *  from the home link (clicking it after dismissal just shows it again, no
+ *  state change). Markup is built here so we don't add a static partial. */
+function showDisclaimer() {
+  // Don't stack a second copy if it's already open
+  if (document.querySelector('.consent-modal-overlay')) return;
+  const s = tr();
+  // disclaimerText is curated HTML from i18n (h3/p/strong), inject as-is.
+  const overlay = document.createElement('div');
+  overlay.className = 'consent-modal-overlay';
+  overlay.innerHTML = `
+    <div class="consent-modal-box" role="dialog" aria-modal="true" aria-labelledby="consent-title">
+      <div class="consent-title" id="consent-title">${s.disclaimerTitle}</div>
+      <div class="consent-text">${s.disclaimerText}</div>
+      <button class="consent-approve" type="button">${s.disclaimerApprove}</button>
+    </div>`;
+  (document.querySelector('.phone-shell') || document.body).appendChild(overlay);
+  overlay.querySelector('.consent-approve').onclick = () => {
+    overlay.remove();
+    if (!disclaimerSeen) { disclaimerSeen = true; saveLang(); }
+  };
 }
 
 /**
@@ -110,6 +138,10 @@ function applyUILang() {
 
   // Connectivity indicator (text in current language)
   if (typeof updateConnectivity === 'function') updateConnectivity();
+
+  // Home: welcome-popup link text
+  const dl = document.getElementById('home-disclaimer-link');
+  if (dl) dl.textContent = s.disclaimerLink;
 
   // List-screen headers (outbox / drafts / sent)
   const outH = document.getElementById('outbox-header-label');

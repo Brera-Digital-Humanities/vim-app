@@ -121,6 +121,25 @@ const VIM_LANG_it = {
       form:        'Modulo',
       mediaLargeWarn: 'File grande, l’invio potrebbe non riuscire.',
       removeFile:    'Rimuovi file',
+      // Welcome popup shown once after the first language choice; reopened
+      // from the home via the disclaimerLink. disclaimerText is rendered as
+      // HTML (controlled content) so it can carry <h3>/<p> structure.
+      disclaimerTitle:   'Informativa',
+      disclaimerText: `
+<h3>A cosa serve questa app?</h3>
+<p>VIM – Valigia Immateriale è una piattaforma digitale dedicata alla documentazione e alla salvaguardia delle tradizioni e del patrimonio culturale immateriale. Attraverso la raccolta di testimonianze, registrazioni, immagini e informazioni descrittive, l’app contribuisce a conservare pratiche culturali, conoscenze e tradizioni che rappresentano una parte importante della memoria e dell’identità sia delle singole persone che della collettività.</p>
+
+<h3>Che cosa puoi documentare?</h3>
+<p>Puoi contribuire alla documentazione di una pratica o espressione culturale, ad esempio: un canto, una musica, una danza, un racconto orale, una festa, un rituale, una tecnica artigianale, una pratica legata al cibo o qualsiasi altra conoscenza trasmessa nel tempo.</p>
+<p>L’applicazione è stata costruita utilizzando categorizzazioni istituzionali ma ugualmente comunitarie per renderla il più inclusiva possibile (UNESCO).</p>
+
+<h3>Dove vanno i dati? Di chi è la proprietà?</h3>
+<p>Questa specifica raccolta di informazioni fatta tra giugno-luglio 2026 è finalizzata principalmente alla messa a punto dello strumento. I dati saranno temporaneamente raccolti nei server VIM del progetto risiedenti in Svizzera, quindi alla fine della fase di test saranno poi donati al Museo Nazionale Palestinese.</p>
+<p>L’intero progetto è realizzato dall’Accademia di Belle Arti di Brera, nell’ambito del progetto PNRR JERUS-IT-ARTS finanziato dall’Unione Europea.</p>
+
+<p class="consent-cta"><strong>Prima di cominciare devi essere d’accordo a partecipare al test!</strong></p>`,
+      disclaimerApprove: 'Approva',
+      disclaimerLink:    'Termini d’uso',
       editForm:    'Modifica',
       info:        'Info',
       close:       'Chiudi',

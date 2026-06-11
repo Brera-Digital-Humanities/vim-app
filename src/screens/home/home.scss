@@ -146,6 +146,24 @@
   }
 }
 
+// Small text link under the connectivity status — reopens the welcome popup.
+.home-link {
+  display: block;
+  margin: 0 auto 14px;
+  padding: 6px 8px;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: $font-sans;
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  align-self: center;
+
+  &:hover { color: var(--ink); }
+}
+
 // Low-storage warning (hidden unless storage is nearly full)
 .home-warn {
   margin: 0 var(--page-pad) 18px;

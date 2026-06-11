@@ -108,6 +108,27 @@ const VIM_LANG_ar = {
       form:        'النموذج',
       mediaLargeWarn: 'ملف كبير، قد يفشل الإرسال.',
       removeFile:    'إزالة الملف',
+      // Welcome popup shown once after the first language choice; reopened
+      // from the home via the disclaimerLink. disclaimerText is rendered as
+      // HTML (controlled content) so it can carry <h3>/<p> structure.
+      // NB: Arabic translation drafted from the Italian — please have it
+      // reviewed by a native speaker before release.
+      disclaimerTitle:   'معلومات',
+      disclaimerText: `
+<h3>ما الغرض من هذا التطبيق؟</h3>
+<p>VIM – Valigia Immateriale هو منصة رقمية مخصصة لتوثيق وحفظ التقاليد والتراث الثقافي غير المادي. من خلال جمع الشهادات والتسجيلات والصور والمعلومات الوصفية، يساهم التطبيق في الحفاظ على الممارسات الثقافية والمعارف والتقاليد التي تمثل جزءًا مهمًا من ذاكرة وهوية الأفراد والمجتمع.</p>
+
+<h3>ماذا يمكنك أن توثّق؟</h3>
+<p>يمكنك المساهمة في توثيق ممارسة أو تعبير ثقافي، على سبيل المثال: أغنية، موسيقى، رقصة، حكاية شفهية، احتفال، طقس، حرفة يدوية، ممارسة مرتبطة بالطعام أو أي معرفة أخرى متوارثة عبر الزمن.</p>
+<p>تم بناء التطبيق باستخدام تصنيفات مؤسسية ومجتمعية في الوقت نفسه لجعله شاملاً قدر الإمكان (اليونسكو).</p>
+
+<h3>أين تذهب البيانات؟ ولمن ملكيتها؟</h3>
+<p>عملية جمع البيانات هذه التي تجري بين يونيو ويوليو 2026 تهدف بشكل أساسي إلى تحسين الأداة. سيتم جمع البيانات مؤقتًا على خوادم VIM للمشروع الموجودة في سويسرا، وفي نهاية مرحلة الاختبار سيتم التبرع بها للمتحف الوطني الفلسطيني.</p>
+<p>المشروع بأكمله تنفّذه أكاديمية الفنون الجميلة في بريرا (Accademia di Belle Arti di Brera)، ضمن مشروع PNRR JERUS-IT-ARTS الممول من الاتحاد الأوروبي.</p>
+
+<p class="consent-cta"><strong>قبل أن تبدأ يجب أن توافق على المشاركة في الاختبار!</strong></p>`,
+      disclaimerApprove: 'موافق',
+      disclaimerLink:    'شروط الاستخدام',
       editForm:    'تعديل',
       info:        'معلومات',
       close:       'إغلاق',

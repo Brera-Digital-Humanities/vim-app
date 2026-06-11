@@ -72,8 +72,8 @@ function saveAuth() {
   });
 }
 
-/** saveLang() — Persist the chosen language (to skip the language screen next time). */
-function saveLang()  { return _saveState('lang', { currentLangIdx, langChosen }); }
+/** saveLang() — Persist language + welcome-popup dismissal across sessions. */
+function saveLang()  { return _saveState('lang', { currentLangIdx, langChosen, disclaimerSeen }); }
 
 /** loadState() — Load persisted records/singletons into the global variables. */
 function loadState() {
@@ -99,6 +99,7 @@ function loadState() {
         if (l && typeof l === 'object' && typeof l.currentLangIdx === 'number') {
           currentLangIdx = l.currentLangIdx;
           langChosen     = !!l.langChosen;
+          disclaimerSeen = !!l.disclaimerSeen;
         }
         // Migrate older layouts (whole arrays under single keys) to per-record stores, once.
         _migrateLegacy(legacyDrafts, legacyOutbox, legacySent);
