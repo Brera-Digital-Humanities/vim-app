@@ -70,7 +70,9 @@ function openForm(fieldIdx) {
   window._fieldIdx  = fieldIdx || 0;
   window._compiling = true;
   recalc();   // derive calculate fields (e.g. paese_group) from current answers
-  showScreen('screen-form', tr().questionnaire, true);
+  // Empty title in the app bar while filling — the section header inside the
+  // form already provides the context (Modulo/Form/نموذج was redundant here).
+  showScreen('screen-form', '', true);
   document.getElementById('lang-btn').style.display       = '';
   document.getElementById('form-nav-extra').style.display = 'flex';
   renderPage(pageIdx);
