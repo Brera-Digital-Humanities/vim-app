@@ -107,6 +107,7 @@ const VIM_LANG_ar = {
       networkError: 'خطأ في الشبكة',
       form:        'النموذج',
       mediaLargeWarn: 'ملف كبير، قد يفشل الإرسال.',
+      removeFile:    'إزالة الملف',
       editForm:    'تعديل',
       info:        'معلومات',
       close:       'إغلاق',

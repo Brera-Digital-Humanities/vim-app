@@ -345,8 +345,36 @@
   overflow-wrap: anywhere;
 }
 
+// File-name row: filename text + small "×" to remove the file
 .media-file-name {
   color: var(--accent2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .mf-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+}
+
+// Inline "remove file" button — small circle next to the filename
+.media-clear-btn {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: $font-sans;
+  font-size: var(--text-md);
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover { border-color: var(--error); color: var(--error); }
 }
 
 .audio-recorder-status {

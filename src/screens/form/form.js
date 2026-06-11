@@ -1,7 +1,7 @@
 // VIM — form screen: rendering, navigation, drafts, question/choice builders, completion
 
 // Soft warning threshold for media size (server may reject larger attachments).
-const MAX_MEDIA_MB = 10;
+const MAX_MEDIA_MB = 100;   // Kobo per-attachment hard limit
 
 let activeAudioRecording = null;
 
@@ -476,12 +476,11 @@ function buildMediaField(q, kind) {
       <rect x="1" y="5" width="15" height="14" rx="2"/>
     </svg>`;
   } else {
-    recLabel = s.tapFile; uplLabel = s.tapFile;
-    recAccept = '*/*'; uplAccept = '*/*'; recCapture = '';
-    icon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-      <polyline points="14 2 14 8 20 8"/>
-    </svg>`;
+    // 'file': just an upload picker — no separate "record" action exists for
+    // a generic file, so we render a single button (see media-actions below).
+    recLabel = ''; uplLabel = s.tapFile;
+    recAccept = ''; uplAccept = '*/*'; recCapture = '';
+    icon = '';
   }
 
   const capAttr  = recCapture ? `capture="${recCapture}"` : '';
@@ -495,34 +494,43 @@ function buildMediaField(q, kind) {
     <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
   </svg>`;
 
-  const recordControl = kind === 'audio'
-    ? `<button type="button" id="media_rec_btn_${q.name}" class="media-btn${captured}"
-          onclick="toggleAudioRecording('${q.name}')">
-          <span class="mb-icon">${icon}</span>
-          <span class="mb-text">${recLabel}</span>
-        </button>`
-    : `<label class="media-btn${captured}" for="media_rec_${q.name}">
-          <span class="mb-icon">${icon}</span>
-          <span class="mb-text">${recLabel}</span>
-        </label>`;
+  // For 'file' there's only the upload button; for audio/image/video we also
+  // render a record/capture control (microphone, camera).
+  const recordControl = kind === 'file'
+    ? ''
+    : (kind === 'audio'
+      ? `<button type="button" id="media_rec_btn_${q.name}" class="media-btn${captured}"
+            onclick="toggleAudioRecording('${q.name}')">
+            <span class="mb-icon">${icon}</span>
+            <span class="mb-text">${recLabel}</span>
+          </button>`
+      : `<label class="media-btn${captured}" for="media_rec_${q.name}">
+            <span class="mb-icon">${icon}</span>
+            <span class="mb-text">${recLabel}</span>
+          </label>`);
+  const recordInput = kind === 'file'
+    ? ''
+    : `<input type="file" id="media_rec_${q.name}" accept="${recAccept}" ${capAttr}
+        style="display:none" onchange="handleMedia(event,'${q.name}','${kind}')"/>`;
 
   return `
     <div class="media-field">
       <div class="media-actions">
-        <!-- Button 1: record/capture -->
         ${recordControl}
-        <!-- Button 2: upload from file -->
+        <!-- Upload from file -->
         <label class="media-btn${captured}" for="media_upl_${q.name}">
           <span class="mb-icon">${uploadIcon}</span>
           <span class="mb-text">${uplLabel}</span>
         </label>
       </div>
       <!-- Hidden inputs — driven by the labels above -->
-      <input type="file" id="media_rec_${q.name}" accept="${recAccept}" ${capAttr}
-        style="display:none" onchange="handleMedia(event,'${q.name}','${kind}')"/>
+      ${recordInput}
       <input type="file" id="media_upl_${q.name}" accept="${uplAccept}"
         style="display:none" onchange="handleMedia(event,'${q.name}','${kind}')"/>
-      <div id="media-file-${q.name}" class="media-file-name" style="${cap ? '' : 'display:none'}">${capInfo}</div>
+      <div id="media-file-${q.name}" class="media-file-name" style="${cap ? '' : 'display:none'}">
+        <span class="mf-text">${capInfo}</span>
+        <button type="button" class="media-clear-btn" onclick="clearStoredMedia('${q.name}')" aria-label="${s.removeFile}">&times;</button>
+      </div>
       ${kind === 'audio' ? `<div id="audio-recorder-${q.name}" class="audio-recorder-status" style="display:none"></div>` : ''}
       <!-- Large-file warning: filled by handleMedia() when over MAX_MEDIA_MB -->
       <div id="media-warn-${q.name}" class="media-warn" style="display:none"></div>
@@ -549,7 +557,8 @@ function storeMediaFile(name, kind, file) {
   const fileName = document.getElementById('media-file-' + name);
   if (fileName) {
     fileName.style.display = '';
-    fileName.textContent = '✓ ' + file.name;
+    const txt = fileName.querySelector('.mf-text');
+    if (txt) txt.textContent = '✓ ' + file.name;
   }
 
   // Large-file warning (soft: the server may reject very large attachments)
@@ -574,6 +583,35 @@ function storeMediaFile(name, kind, file) {
   // Mark both buttons as "captured"
   document.querySelectorAll(`#media_rec_btn_${name}, [for="media_rec_${name}"], [for="media_upl_${name}"]`)
     .forEach(el => el.classList.add('captured'));
+
+  updateCompleteBtn();
+  updateNextBtnState();
+}
+
+/** clearStoredMedia(name) — Drop the captured file for a media field and reset
+ *  its UI (filename, preview, warning, button "captured" state). The pair of
+ *  hidden file inputs is also reset so re-picking the same file fires onchange. */
+function clearStoredMedia(name) {
+  delete mediaFiles[name];
+  delete answers[name];
+
+  const fileName = document.getElementById('media-file-' + name);
+  if (fileName) fileName.style.display = 'none';
+
+  const warn = document.getElementById('media-warn-' + name);
+  if (warn) { warn.style.display = 'none'; warn.textContent = ''; }
+
+  const preview = document.getElementById('media-preview-' + name);
+  if (preview) { preview.style.display = 'none'; preview.innerHTML = ''; }
+
+  // Reset hidden inputs so the same filename can be re-chosen and fire change
+  const rec = document.getElementById('media_rec_' + name);
+  const upl = document.getElementById('media_upl_' + name);
+  if (rec) rec.value = '';
+  if (upl) upl.value = '';
+
+  document.querySelectorAll(`#media_rec_btn_${name}, [for="media_rec_${name}"], [for="media_upl_${name}"]`)
+    .forEach(el => el.classList.remove('captured'));
 
   updateCompleteBtn();
   updateNextBtnState();

@@ -120,6 +120,7 @@ const VIM_LANG_it = {
       networkError: 'Errore di rete',
       form:        'Modulo',
       mediaLargeWarn: 'File grande, l’invio potrebbe non riuscire.',
+      removeFile:    'Rimuovi file',
       editForm:    'Modifica',
       info:        'Info',
       close:       'Chiudi',

@@ -107,6 +107,7 @@ const VIM_LANG_en = {
       networkError: 'Network error',
       form:        'Form',
       mediaLargeWarn: 'Large file, the upload may fail.',
+      removeFile:    'Remove file',
       editForm:    'Edit',
       info:        'Info',
       close:       'Close',
