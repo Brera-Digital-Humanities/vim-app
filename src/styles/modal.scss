@@ -143,13 +143,24 @@
 .consent-modal-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(28, 24, 20, .6);
+  background: rgba(28, 24, 20, .75);
   z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   animation: fadeIn .15s ease;
+  // Prevent touch/scroll events from chaining to the page underneath
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+
+// While a consent popup is open, freeze the scrollable screen behind it so
+// the user can't drag the home content (which would also reveal "extra
+// space" beyond the layout bounds). The popup itself scrolls internally.
+.phone-shell.modal-open .screen-scroll {
+  overflow: hidden;
+  touch-action: none;
 }
 
 // Box flex column with a max-height. Title and CTA stay fixed; the inner
@@ -187,6 +198,7 @@
   flex: 1;
   min-height: 0;          // allow flex child to actually scroll
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding-inline-end: 6px; // small breathing space for the scrollbar
   font-size: var(--text-base);
   color: var(--ink);

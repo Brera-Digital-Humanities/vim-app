@@ -75,9 +75,12 @@ function showDisclaimer() {
       <div class="consent-text">${s.disclaimerText}</div>
       <button class="consent-approve" type="button">${s.disclaimerApprove}</button>
     </div>`;
-  (document.querySelector('.phone-shell') || document.body).appendChild(overlay);
+  const shell = document.querySelector('.phone-shell') || document.body;
+  shell.appendChild(overlay);
+  shell.classList.add('modal-open');   // freezes the underlying screen scroll
   overlay.querySelector('.consent-approve').onclick = () => {
     overlay.remove();
+    shell.classList.remove('modal-open');
     if (!disclaimerSeen) { disclaimerSeen = true; saveLang(); }
   };
 }
