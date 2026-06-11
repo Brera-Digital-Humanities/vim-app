@@ -9,7 +9,12 @@
     class="bar-back-btn"
     onclick="barBack()"
     style="display:none">
-    <span id="bar-back-arrow" class="bar-back-arrow">←</span>
+    <span id="bar-back-arrow" class="bar-back-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="10 16 5 12 10 8"/>
+      </svg>
+    </span>
     <span id="bar-back-label" class="bar-back-label">Home</span>
   </button>
   <span class="bar-title" id="bar-title">La valigia immateriale</span>

@@ -149,6 +149,15 @@
 .bb-arrow { font-size: var(--text-lg); line-height: 1; }
 .bb-label { line-height: 1.2; }
 
-.btn-home-arrow { font-size: var(--text-lg); line-height: 1; }
+// SVG arrow with explicit pixel sizing (predictable cross-platform alignment).
+.btn-home-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+
+  svg { display: block; width: 100%; height: 100%; }
+}
 .btn-home-label { line-height: 1.2; }
 

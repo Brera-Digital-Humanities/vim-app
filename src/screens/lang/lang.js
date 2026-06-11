@@ -87,14 +87,11 @@ function applyUILang() {
   const brandH2 = document.querySelector('#screen-home .brand h2');
   if (brandH2) brandH2.textContent = s.appTitle;
 
-  // App-bar back button: arrow (mirrored in RTL) + "Home" label
-  const backArrow = document.getElementById('bar-back-arrow');
-  if (backArrow) backArrow.textContent = isRTL ? '→' : '←';
+  // App-bar back button label (arrow is an SVG; RTL mirror via CSS scaleX)
   const backLabel = document.getElementById('bar-back-label');
   if (backLabel) backLabel.textContent = s.home;
 
-  // Bottom-nav Home button on secondary screens (drafts/outbox/sent/account)
-  document.querySelectorAll('.btn-home-arrow').forEach(el => { el.textContent = isRTL ? '→' : '←'; });
+  // Bottom-nav Home button label on secondary screens (drafts/outbox/sent/account)
   document.querySelectorAll('.btn-home-label').forEach(el => { el.textContent = s.home; });
 
   // Sent: bottom-bar "back to list" button (visible only in detail view)

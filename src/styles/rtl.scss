@@ -37,6 +37,11 @@
   .sent-arrow,
   .bb-arrow { display: inline-block; transform: scaleX(-1); }
 
+  // SVG back-arrows in the app-bar and bottom-nav Home button mirror via the
+  // same trick (the markup no longer carries a directional character).
+  .bar-back-arrow svg,
+  .btn-home-arrow svg { transform: scaleX(-1); }
+
   // Mirrored animations for RTL
   @keyframes slideIn {
     from { opacity: 0; transform: translateX(-32px); }

@@ -53,8 +53,15 @@
   line-height: 1;
 }
 
+// SVG arrow inside the back-button span: explicit pixel size so the icon is
+// centered predictably across platforms (DM Sans doesn't ship a U+2190 glyph,
+// so a text "←" would fall back to a different font with its own metrics).
 .bar-back-arrow {
-  font-size: var(--text-xl);
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+
+  svg { display: block; width: 100%; height: 100%; }
 }
 
 .bar-back-label {
