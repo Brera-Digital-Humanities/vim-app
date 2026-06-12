@@ -99,12 +99,16 @@ via `file://` (service worker, cache and API calls need a static server).
 
 | To change… | Edit | Note |
 |---|---|---|
-| Colors, fonts, tokens | `src/styles/tokens.scss` | CSS variables only |
-| A screen's style / markup / logic | `src/screens/<screen>/` | e.g. `form`, `outbox`, `drafts`, `sent` |
+| Colors, fonts, tokens | `src/styles/tokens.scss` | CSS variables; SCSS mixins `btn-typography` / `btn-outline` |
+| A screen's style / markup / logic | `src/screens/<screen>/` | e.g. `form`, `outbox`, `drafts`, `sent`, `account` |
 | Shared list/card styles | `src/styles/screens-base.scss` | `.list`, `.list-card`, `.card-*` |
+| Top app-bar / bottom nav | `src/partials/app-bar.html` + `screens/*/*.html` `.screen-nav` | top back is form-only; `.screen-nav` hosts Home (+ optional back-to-list on sent) |
+| Welcome / consent popup | `screens/lang/lang.js` (`showDisclaimer`) + `src/i18n/` (`disclaimerText`) + `styles/modal.scss` (`.consent-modal-*`) | shown once after first language pick, re-openable from the home link |
 | Navigation | `src/core/router.js` | `showScreen`, `goHome`… |
-| Field rendering / completion gate | `src/screens/form/form.js` | `renderPage`, `updateCompleteBtn` |
-| Conditional fields | `RELEVANT` in `data.js` (from Kobo) + `core/relevant.js` | |
+| Field rendering / completion gate | `src/screens/form/form.js` | `renderPage`, `updateCompleteBtn`, `buildMediaField`, `clearStoredMedia` |
+| Field hints (info button) | Kobo `hint::xx (xx)` columns → `npm run sync` → `getHint()` / `showInfo()` | per-language hint shown in a modal |
+| Media size cap | `MAX_MEDIA_MB` in `src/screens/form/form.js` | 100 MB = Kobo per-attachment hard limit |
+| Conditional fields | `RELEVANT` in `data.js` (from Kobo) + `core/relevant.js` | XLSForm syntax; XForm semantics: hidden → value dropped (`clearHiddenFields`) |
 | Submission target/format | `src/api.js` | XML build + POST to the backend |
 | Offline queue / auto-send | `src/screens/outbox/outbox.js` + `core/storage.js` | see §6 |
 | UI texts / new language | `src/i18n/` | see `src/README.md` |

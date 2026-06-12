@@ -23,10 +23,12 @@ src/
 ├── pwa/                 service-worker.js + icons/
 ├── i18n/                One language per file (it/en/ar) + index.js (UI_LANGS)
 ├── core/                Shared logic: state, storage, auth, router, relevant,
-│                        labels, i18n-runtime, connectivity, feedback, init
-└── screens/             One folder per screen (html + js + scss):
-                         login · lang · home · form · drafts · outbox · sent · account
-styles/                  Design system (tokens, layout, components, rtl, …)
+│                        labels, calculate, clock, i18n-runtime, connectivity,
+│                        feedback, init
+├── screens/             One folder per screen (html + js + scss):
+│                        login · lang · home · form · drafts · outbox · sent · account
+└── styles/              Design system: tokens, base, layout, phone-shell,
+                         app-bar, screens-base, buttons, modal, feedback, rtl
 ```
 
 Screens are inserted into the shells at the `<!-- @screens -->` marker; the app
@@ -75,12 +77,67 @@ Global variables for one session; drafts/outbox/sent are persisted in IndexedDB
 | `answers` | `{ name: value }` (media fields hold the file name) |
 | `mediaFiles` | `{ name: File }` |
 | `drafts` | `[{ id, answers, mediaFiles, pageIdx, fieldIdx, savedAt, label }]` |
-| `outbox` | `[{ id, label, answers, mediaFiles, xml, schemaSig, autoSend, savedAt }]` |
+| `outbox` | `[{ id, label, answers, mediaFiles, xml, schemaSig, autoSend, savedAt, submissionId?, koboId?, koboUuid? }]` |
 | `sentForms` | `[{ id, label, sentAt, answers }]` (text only, no media) |
 | `currentLangIdx` | active language index in `UI_LANGS` |
+| `langChosen` | `true` once a language has been confirmed (skip lang screen at startup) |
+| `disclaimerSeen` | `true` once the welcome popup has been dismissed (persisted; never re-shown automatically) |
+| `window._editingDraft` / `_editingOutboxId` | index/id of the record being re-edited (null = new form) |
 
 `id` is a stable OpenRosa `instanceID` (`uuid:…`), kept from draft through
-submission so re-sends are deduplicated server-side.
+submission so re-sends are deduplicated server-side. `outbox.submissionId` /
+`koboId` / `koboUuid` are filled by `core/storage.js` after a previous send
+attempt, so a retry can correlate with what the server already received.
+
+## Field hints (info button)
+
+If a field has `hint::Italian (it)` / `hint::English (en)` / `hint::Arabic (ar)`
+on Kobo, `npm run sync` extracts them as `hint_it/en/ar` on each field. The
+form renders a small `i` button before the question label; clicking it opens
+the hint in a modal in the current language (`showInfo()` + `getHint()` in
+`core/labels.js`).
+
+## Media fields
+
+Audio, image, video and file fields are rendered by `buildMediaField()`:
+
+- **Two buttons** (capture + upload) for audio/image/video.
+- **One button** (upload only) for the generic `file` type — no separate
+  "record" semantics exist.
+- An inline **× clear** sits next to the captured filename
+  (`clearStoredMedia(name)` drops the file from `mediaFiles` + `answers` and
+  resets the hidden inputs, so the same file can be re-picked).
+- `MAX_MEDIA_MB = 100` (Kobo per-attachment hard limit). Above this a warning
+  is shown but the upload is not blocked.
+
+## Welcome / consent popup
+
+A dedicated full-screen modal (`.consent-modal-overlay/.consent-modal-box`,
+distinct from the bottom-sheet `.modal-sheet`) is opened by
+`showDisclaimer()` in `screens/lang/lang.js`:
+
+- Auto-opened **once**, right after the first `confirmLanguage()`. Approval
+  sets `disclaimerSeen = true` and persists it (`saveLang()`); subsequent
+  logins never re-trigger it.
+- Re-openable manually from the link under the connectivity indicator on the
+  home (`#home-disclaimer-link`).
+- Title + scrollable body + single full-width "Approve" CTA. Texts come from
+  the i18n keys `disclaimerTitle / disclaimerText / disclaimerApprove /
+  disclaimerLink`. `disclaimerText` is treated as **trusted HTML** (curated in
+  the i18n files) and may carry `<h3>` / `<p>` sections.
+- While open, `.modal-open` is set on `.phone-shell` to lock the underlying
+  screen scroll; `overscroll-behavior: contain` on the overlay prevents
+  scroll chaining.
+
+## Navigation bars
+
+- **Top app-bar** (`partials/app-bar.html`): back button (`#bar-back-btn`)
+  is shown **only on the form** — it opens the exit confirmation. On all
+  other screens it stays hidden (see `showScreen()` in `core/router.js`).
+- **Bottom `.screen-nav`** (in `drafts/outbox/sent/account`): a fixed bar
+  hosting a Home button (`.btn-home`, outline look). `screen-sent` adds a
+  second `.btn-back-detail` (dark fill) shown only while a sent record's
+  detail is open (`renderSent()` hides it, `showSentDetail()` reveals it).
 
 ## Submission
 
@@ -93,10 +150,24 @@ queue, auto-send and idempotency.
 ## Conventions
 
 - Vanilla JS ES6+, no framework, no runtime deps.
-- **CSS variables only** (`var(--accent)`, never raw hex).
+- **CSS variables only** for colour/size tokens (`var(--accent)`, never raw
+  hex). Font scale: `--text-xs/sm/base/md/lg/xl/hero`. Radii:
+  `--radius-sm/md/lg/pill`.
+- **Shared SCSS mixins** in `styles/tokens.scss`:
+  `@include btn-typography($size)` (DM Sans + uppercase + letter-spacing,
+  size parameterised) and `@include btn-outline` (surface bg / ink text /
+  accent-border hover). Use these for any new primary or outline CTA so the
+  type stack stays consistent.
 - Shared list/card styles live in `styles/screens-base.scss` (`.list`,
   `.list-card`, `.card-*`) — don't inline repeated styles in JS.
-- Modals are appended inside `.phone-shell`.
+- Modals (`openModal`, `showInfo`, `showDisclaimer`, `clearStoredMedia`'s
+  caller) are appended inside `.phone-shell`.
+- **RTL**: rely on `dir="rtl"` on `.phone-shell` to mirror flex layouts —
+  do **not** add `flex-direction: row-reverse` (it double-reverses and
+  cancels the mirror). For directional glyphs use `transform: scaleX(-1)`
+  in `rtl.scss`, except for Bidi_Mirrored characters (`‹`, `›`) which the
+  browser auto-flips. Use logical properties (`margin-inline-end`,
+  `inset-inline-end`) instead of `left/right`.
 - Test RTL (Arabic) on every UI change.
 - `npm run check` (syntax) and `npm test` (unit + jsdom) before committing.
 
