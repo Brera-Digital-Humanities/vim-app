@@ -1,5 +1,7 @@
 # VIM — La valigia immateriale
 
+Project page: <https://vim-data.org/>
+
 A multilingual Progressive Web App (PWA) for collecting Palestinian intangible
 cultural heritage. It presents a digital form (Italian, English, العربية with
 RTL), one question per screen, and submits the data — through the **VIM

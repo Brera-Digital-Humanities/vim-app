@@ -195,6 +195,7 @@ one-time rendering support in `src/screens/form/form.js`.
 
 ## 10. References
 
+- VIM project page: https://vim-data.org/
 - `src/README.md` — source & form reference
 - KoboToolbox API: https://eu.kobotoolbox.org/api/v2/
 - OpenRosa (XForm submission standard, used by the XML built in `api.js`): https://docs.getodk.org/openrosa/
