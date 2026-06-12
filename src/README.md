@@ -46,7 +46,7 @@ ui: {…} }` in `src/i18n/`. To add one:
 1. Create `i18n/xx.js`, copy every `ui` key from `it.js` and translate it.
 2. Add `VIM_LANG_xx` to the array in `i18n/index.js`.
 3. Add `i18n/xx.js` to the `[js]` section of `build.order`.
-4. Add the matching `label::<Language> (xx)` and `hint::<Language> (xx)`
+4. Add the matching `label::<Language> (Xx)` and `hint::<Language> (Xx)`
    columns on the Kobo form so field labels and hints are translated too
    (pulled by `npm run sync` — see [Upstream Kobo schema](#upstream-kobo-schema-to-replicate)).
 
@@ -62,17 +62,18 @@ edit `data.js` by hand. It is a grouped XLSForm: each `begin_group` becomes a
 The minimum the sync script reads. Anything else on the form is harmless but
 ignored.
 
-- **Translations** (Kobo settings): `Italian (it)` · `English (en)` ·
-  `Arabic (ar)` — exact names (initial uppercase, as Kobo writes them).
+- **Translations** (Kobo settings): `Italian (It)` · `English (En)` ·
+  `Arabic (Ar)` — as written on the Kobo form (sync detects them
+  case-insensitively, so legacy `(it)/(en)/(ar)` work too).
 - **Survey sheet** — columns read per row:
   - `type` — one of: `text · integer · decimal · date · time · dateTime ·
     select_one <list> · select_multiple <list> · audio · image · video ·
     file · note · geopoint · calculate · begin_group / end_group`. Other
     types (start, end, deviceid, …) are skipped.
   - `name` — field key (alphanumeric, no spaces).
-  - `label::Italian (it)` / `label::English (en)` / `label::Arabic (ar)` —
+  - `label::Italian (It)` / `label::English (En)` / `label::Arabic (Ar)` —
     question text per language.
-  - `hint::Italian (it)` / `hint::English (en)` / `hint::Arabic (ar)` —
+  - `hint::Italian (It)` / `hint::English (En)` / `hint::Arabic (Ar)` —
     optional; rendered as a small `i` button next to the question that opens
     the hint in a modal (`getHint()` in `core/labels.js`, `showInfo()` in
     `screens/form/form.js`).
@@ -82,8 +83,8 @@ ignored.
     (e.g. `cat=${file_occasion_cat}`).
   - `calculation` — only on `calculate` rows; feeds cascading selects and
     metadata, not rendered.
-- **Choices sheet** — `list_name`, `name`, plus `label::Italian (it)` /
-  `::English (en)` / `::Arabic (ar)`. Extra scalar columns are preserved on
+- **Choices sheet** — `list_name`, `name`, plus `label::Italian (It)` /
+  `::English (En)` / `::Arabic (Ar)`. Extra scalar columns are preserved on
   each choice (e.g. `cat` used by `choice_filter`).
 - **Sections** = `begin_group … end_group`. Rows outside any group are
   ignored; order inside a group is preserved.
