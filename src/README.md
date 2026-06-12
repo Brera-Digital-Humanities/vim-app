@@ -46,8 +46,9 @@ ui: {…} }` in `src/i18n/`. To add one:
 1. Create `i18n/xx.js`, copy every `ui` key from `it.js` and translate it.
 2. Add `VIM_LANG_xx` to the array in `i18n/index.js`.
 3. Add `i18n/xx.js` to the `[js]` section of `build.order`.
-4. Add the matching `label_xx` / `hint_xx` columns to the Kobo form (field
-   labels come from there, via `npm run sync`).
+4. Add the matching `label::<Language> (xx)` and `hint::<Language> (xx)`
+   columns on the Kobo form so field labels and hints are translated too
+   (pulled by `npm run sync` — see [Upstream Kobo schema](#upstream-kobo-schema-to-replicate)).
 
 ## The form
 
@@ -55,6 +56,40 @@ Defined on **KoboToolbox** and pulled into `data.js` by `npm run sync` — never
 edit `data.js` by hand. It is a grouped XLSForm: each `begin_group` becomes a
 `PAGES` entry, each `select_one/_multiple` list a `CHOICES` entry. The app shows
 **one field per screen**, grouped into sections, in Kobo's order.
+
+### Upstream Kobo schema (to replicate)
+
+The minimum the sync script reads. Anything else on the form is harmless but
+ignored.
+
+- **Translations** (Kobo settings): `Italian (it)` · `English (en)` ·
+  `Arabic (ar)` — exact names, detected case-insensitively.
+- **Survey sheet** — columns read per row:
+  - `type` — one of: `text · integer · decimal · date · time · dateTime ·
+    select_one <list> · select_multiple <list> · audio · image · video ·
+    file · note · geopoint · calculate · begin_group / end_group`. Other
+    types (start, end, deviceid, …) are skipped.
+  - `name` — field key (alphanumeric, no spaces).
+  - `label::Italian (it)` / `label::English (en)` / `label::Arabic (ar)` —
+    question text per language.
+  - `hint::Italian (it)` / `hint::English (en)` / `hint::Arabic (ar)` —
+    optional; rendered as a small `i` button next to the question that opens
+    the hint in a modal (`getHint()` in `core/labels.js`, `showInfo()` in
+    `screens/form/form.js`).
+  - `required` — `yes` or empty.
+  - `relevant` — XLSForm expression (see Conditional fields below).
+  - `choice_filter` — cascading select expression
+    (e.g. `cat=${file_occasion_cat}`).
+  - `calculation` — only on `calculate` rows; feeds cascading selects and
+    metadata, not rendered.
+- **Choices sheet** — `list_name`, `name`, plus `label::Italian (it)` /
+  `::English (en)` / `::Arabic (ar)`. Extra scalar columns are preserved on
+  each choice (e.g. `cat` used by `choice_filter`).
+- **Sections** = `begin_group … end_group`. Rows outside any group are
+  ignored; order inside a group is preserved.
+
+Always re-run `npm run sync` after editing the form on Kobo, then
+`npm run build`.
 
 **Completion** — the "Complete" button unlocks when every field that is both
 *required* (Kobo `required`) and *currently visible* is filled, in any section
@@ -89,13 +124,29 @@ submission so re-sends are deduplicated server-side. `outbox.submissionId` /
 `koboId` / `koboUuid` are filled by `core/storage.js` after a previous send
 attempt, so a retry can correlate with what the server already received.
 
-## Field hints (info button)
+## Screens
 
-If a field has `hint::Italian (it)` / `hint::English (en)` / `hint::Arabic (ar)`
-on Kobo, `npm run sync` extracts them as `hint_it/en/ar` on each field. The
-form renders a small `i` button before the question label; clicking it opens
-the hint in a modal in the current language (`showInfo()` + `getHint()` in
-`core/labels.js`).
+One folder per screen under `src/screens/`. The router (`core/router.js`)
+swaps the active `.screen` and updates the app bar.
+
+| Screen | What it does |
+|---|---|
+| `login` | Username + password (eye toggle). Calls the VIM backend, persists the JWT. |
+| `lang` | Language picker (it/en/ar). Skipped at startup once `langChosen` is set. |
+| `home` | Main menu: fill / change-language / drafts / outbox / sent. Connectivity dot, low-storage warning, link to the welcome popup. |
+| `form` | One question per screen, section header + progress pill, save-draft / complete CTAs. Top back-btn opens the exit confirmation (form-only). |
+| `drafts` | Saved-drafts list — resume / delete per card. |
+| `outbox` | Completed forms queued for sending — per-card auto-send toggle, edit / send / delete; "Send all" at the bottom. |
+| `sent` | Read-only list of sent forms (text only). A row opens a detail view with a back-to-list button. |
+| `account` | Logged user info, change-language shortcut, logout. |
+
+A separate **welcome popup** (`.consent-modal-overlay`, opened by
+`showDisclaimer()` in `screens/lang/lang.js`) is shown once after the first
+language confirmation and re-openable from the home link
+(`#home-disclaimer-link`). Dismissal sets the persisted `disclaimerSeen`
+flag, so subsequent logins don't re-trigger it. Texts come from the i18n
+keys `disclaimerTitle / disclaimerText / disclaimerApprove / disclaimerLink`
+(`disclaimerText` is rendered as trusted HTML with `<h3>`/`<p>` sections).
 
 ## Media fields
 
@@ -109,25 +160,6 @@ Audio, image, video and file fields are rendered by `buildMediaField()`:
   resets the hidden inputs, so the same file can be re-picked).
 - `MAX_MEDIA_MB = 100` (Kobo per-attachment hard limit). Above this a warning
   is shown but the upload is not blocked.
-
-## Welcome / consent popup
-
-A dedicated full-screen modal (`.consent-modal-overlay/.consent-modal-box`,
-distinct from the bottom-sheet `.modal-sheet`) is opened by
-`showDisclaimer()` in `screens/lang/lang.js`:
-
-- Auto-opened **once**, right after the first `confirmLanguage()`. Approval
-  sets `disclaimerSeen = true` and persists it (`saveLang()`); subsequent
-  logins never re-trigger it.
-- Re-openable manually from the link under the connectivity indicator on the
-  home (`#home-disclaimer-link`).
-- Title + scrollable body + single full-width "Approve" CTA. Texts come from
-  the i18n keys `disclaimerTitle / disclaimerText / disclaimerApprove /
-  disclaimerLink`. `disclaimerText` is treated as **trusted HTML** (curated in
-  the i18n files) and may carry `<h3>` / `<p>` sections.
-- While open, `.modal-open` is set on `.phone-shell` to lock the underlying
-  screen scroll; `overscroll-behavior: contain` on the overlay prevents
-  scroll chaining.
 
 ## Navigation bars
 
