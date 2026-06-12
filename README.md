@@ -44,6 +44,11 @@ npm test           # unit + DOM tests
 - `SETUP.md` — setup, build, run, deploy, offline/storage, troubleshooting.
 - `src/README.md` — source layout and form reference.
 
+## Credits
+
+The whole project is carried out by the Accademia di Belle Arti di Brera, as
+part of the PNRR JERUS-IT-ARTS project funded by the European Union.
+
 ## License
 
 GPL-2.0 — see [`LICENSE`](LICENSE).
