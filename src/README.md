@@ -63,7 +63,7 @@ The minimum the sync script reads. Anything else on the form is harmless but
 ignored.
 
 - **Translations** (Kobo settings): `Italian (it)` · `English (en)` ·
-  `Arabic (ar)` — exact names, detected case-insensitively.
+  `Arabic (ar)` — exact names (initial uppercase, as Kobo writes them).
 - **Survey sheet** — columns read per row:
   - `type` — one of: `text · integer · decimal · date · time · dateTime ·
     select_one <list> · select_multiple <list> · audio · image · video ·
@@ -131,14 +131,17 @@ swaps the active `.screen` and updates the app bar.
 
 | Screen | What it does |
 |---|---|
-| `login` | Username + password (eye toggle). Calls the VIM backend, persists the JWT. |
-| `lang` | Language picker (it/en/ar). Skipped at startup once `langChosen` is set. |
-| `home` | Main menu: fill / change-language / drafts / outbox / sent. Connectivity dot, low-storage warning, link to the welcome popup. |
-| `form` | One question per screen, section header + progress pill, save-draft / complete CTAs. Top back-btn opens the exit confirmation (form-only). |
-| `drafts` | Saved-drafts list — resume / delete per card. |
-| `outbox` | Completed forms queued for sending — per-card auto-send toggle, edit / send / delete; "Send all" at the bottom. |
-| `sent` | Read-only list of sent forms (text only). A row opens a detail view with a back-to-list button. |
-| `account` | Logged user info, change-language shortcut, logout. |
+| Login | Username + password (eye toggle). Calls the VIM backend, persists the JWT. |
+| Language | Picker (it/en/ar). Skipped at startup once `langChosen` is set. |
+| Home | Main menu: fill / change-language / drafts / outbox / sent. Connectivity dot, low-storage warning, link to the welcome popup. |
+| Form | One question per screen, section header + progress pill, save-draft / complete CTAs. Top back-btn opens the exit confirmation (form-only). |
+| Drafts | Saved-drafts list — resume / delete per card. |
+| Outbox | Completed forms queued for sending — per-card auto-send toggle, edit / send / delete; "Send all" at the bottom. |
+| Sent | Read-only list of sent forms (text only). A row opens a detail view with a back-to-list button. |
+| Account | Logged user info, change-language shortcut, logout. |
+
+Folder names (under `src/screens/`) are the lowercase equivalents
+(`login · lang · home · form · drafts · outbox · sent · account`).
 
 A separate **welcome popup** (`.consent-modal-overlay`, opened by
 `showDisclaimer()` in `screens/lang/lang.js`) is shown once after the first
