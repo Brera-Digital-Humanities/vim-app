@@ -1,0 +1,24 @@
+name: CI
+
+# Verify source health on every push to main and on every PR. The build is
+# NOT run here on purpose: it needs .env (gitignored) and produces artefacts
+# that don't belong in CI. Deploy is built locally and uploaded to the host.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    name: Syntax check + tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run check     # node --check on every src/**/*.js
+      - run: npm test          # unit (node:test) + DOM (jsdom)

@@ -193,7 +193,17 @@ one-time rendering support in `src/screens/form/form.js`.
 
 ---
 
-## 10. References
+## 10. Continuous integration
+
+GitHub Actions runs a single minimal job (`.github/workflows/ci.yml`) on every
+push to `main` and every pull request: `npm run check` (syntax) and
+`npm test` (unit + DOM). The **build is intentionally not run on CI** — it
+needs `.env` (gitignored) and produces artefacts (`dist/`, `demo-desktop/`)
+that don't belong in the repo. Build and deploy stay local.
+
+---
+
+## 11. References
 
 - VIM project page: https://vim-data.org/
 - `src/README.md` — source & form reference
