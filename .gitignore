@@ -10,7 +10,8 @@
 # Dipendenze npm (rigenerabili con `npm install`)
 # =============================================================================
 node_modules/
-package-lock.json
+# package-lock.json va COMMITTATO: garantisce versioni esatte (riproducibilità
+# build) + hash di integrità (protezione supply-chain). `npm ci` lo richiede.
 
 # =============================================================================
 # Artefatti generati dallo script di build (rigenerabili con `npm run build`)
