@@ -119,7 +119,6 @@ const VIM_LANG_it = {
       httpStatus:  'HTTP',
       networkError: 'Errore di rete',
       form:        'Modulo',
-      mediaLargeWarn: 'File grande: questo allegato KoBo potrebbe non essere accettato.',
       externalUploadFailed: 'Upload del file esterno non riuscito.',
       externalUploadEtagMissing: 'Upload multipart incompleto: il bucket non espone l’header ETag. Verifica la configurazione CORS.',
       externalUploadPreparing: 'Preparazione file…',

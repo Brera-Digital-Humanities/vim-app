@@ -1,8 +1,5 @@
 // VIM — form screen: rendering, navigation, drafts, question/choice builders, completion
 
-// Soft warning threshold for media size (server may reject larger attachments).
-const MAX_MEDIA_MB = 100;   // Kobo per-attachment hard limit
-
 let activeAudioRecording = null;
 
 // --- field rendering & navigation ---
@@ -534,7 +531,6 @@ function buildMediaField(q, kind) {
         <button type="button" class="media-clear-btn" onclick="clearStoredMedia('${q.name}')" aria-label="${s.removeFile}">&times;</button>
       </div>
       ${kind === 'audio' ? `<div id="audio-recorder-${q.name}" class="audio-recorder-status" style="display:none"></div>` : ''}
-      <!-- Large-file warning: filled by handleMedia() when over MAX_MEDIA_MB -->
       <div id="media-warn-${q.name}" class="media-warn" style="display:none"></div>
       <!-- Preview area: filled by handleMedia() -->
       <div id="media-preview-${q.name}" class="media-preview"></div>
@@ -572,16 +568,8 @@ function storeMediaFile(name, kind, file) {
     if (txt) txt.textContent = '✓ ' + file.name;
   }
 
-  // Large-file warning only applies to native Kobo attachments. xfile_* uploads
-  // are handled by the external S3/proxy flow and can exceed Kobo limits.
   const warn = document.getElementById('media-warn-' + name);
-  if (warn) {
-    const mb = file.size / (1024 * 1024);
-    const big = !isExternalFileName(name) && mb > MAX_MEDIA_MB;
-    warn.style.display = big ? '' : 'none';
-    if (big) warn.textContent = `(${mb.toFixed(0)} MB) ` + tr().mediaLargeWarn;
-    else warn.textContent = '';
-  }
+  if (warn) { warn.style.display = 'none'; warn.textContent = ''; }
 
   // Inline preview
   const preview = document.getElementById('media-preview-' + name);

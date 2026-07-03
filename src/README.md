@@ -162,8 +162,8 @@ Audio, image, video and file fields are rendered by `buildMediaField()`:
 - An inline **× clear** sits next to the captured filename
   (`clearStoredMedia(name)` drops the file from `mediaFiles` + `answers` and
   resets the hidden inputs, so the same file can be re-picked).
-- `MAX_MEDIA_MB = 100` (Kobo per-attachment hard limit). Above this a warning
-  is shown but the upload is not blocked.
+- Large media are uploaded through the external-file flow and progress is shown
+  from the outbox while the form is sent.
 
 ## Navigation bars
 
