@@ -3,6 +3,8 @@
 let _autoSyncing = false;
 const _sendingIds = new Set();
 let _outboxLastResult = null;
+const _outboxUploadProgress = new Map();
+let _outboxProgressRenderQueued = false;
 
 function isOutboxSending() {
   return _sendingIds.size > 0 || _autoSyncing;
@@ -24,6 +26,87 @@ function _latestOutboxError() {
   return outbox
     .filter(item => item.lastError)
     .sort((a, b) => String(b.lastAttemptAt || '').localeCompare(String(a.lastAttemptAt || '')))[0] || null;
+}
+
+function _formatUploadBytes(bytes) {
+  const value = Math.max(0, Number(bytes || 0));
+  if (value >= 1024 * 1024 * 1024) return `${(value / (1024 * 1024 * 1024)).toFixed(1)} GB`;
+  if (value >= 1024 * 1024) return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+  if (value >= 1024) return `${(value / 1024).toFixed(1)} KB`;
+  return `${Math.round(value)} B`;
+}
+
+function _outboxProgressLabel(progress) {
+  const s = tr();
+  if (!progress) return '';
+  if (progress.phase === 'external-start') return s.externalUploadPreparing;
+  if (progress.phase === 'external-complete') return s.externalUploadCompleting;
+  if (progress.phase === 'submit') return s.submitToKobo;
+  if (progress.phase === 'prepare') return s.submitPreparing;
+
+  const filename = progress.fileName ? `: ${progress.fileName}` : '';
+  const count = progress.totalFiles > 1 && progress.fileIndex
+    ? ` ${progress.fileIndex} / ${progress.totalFiles}`
+    : '';
+
+  return `${s.externalUploadProgress}${count}${filename}`;
+}
+
+function _outboxProgressHtml(item) {
+  const progress = _outboxUploadProgress.get(item.id);
+  if (!progress) return '';
+
+  const percent = Number.isFinite(progress.percent)
+    ? Math.max(0, Math.min(100, progress.percent))
+    : null;
+  const valueAttrs = percent === null ? '' : ` aria-valuenow="${percent}"`;
+  const fillStyle = percent === null ? '' : ` style="width:${percent}%"`;
+  const pctText = percent === null ? '' : `${percent}%`;
+  const byteText = progress.totalBytes
+    ? `${_formatUploadBytes(progress.loadedBytes)} / ${_formatUploadBytes(progress.totalBytes)}`
+    : '';
+  const meta = [pctText, byteText].filter(Boolean).join(' · ');
+
+  return `<div class="upload-progress ${percent === null ? 'is-indeterminate' : ''}" role="progressbar" aria-valuemin="0" aria-valuemax="100"${valueAttrs}>
+    <div class="upload-progress-row">
+      <span class="upload-progress-label">${_obHtml(_outboxProgressLabel(progress))}</span>
+      <span class="upload-progress-value">${_obHtml(meta)}</span>
+    </div>
+    <div class="upload-progress-track"><div class="upload-progress-fill"${fillStyle}></div></div>
+  </div>`;
+}
+
+function _scheduleOutboxRender() {
+  if (!document.getElementById('outbox-list')) return;
+  if (_outboxProgressRenderQueued) return;
+  _outboxProgressRenderQueued = true;
+  const schedule = window.requestAnimationFrame || (fn => setTimeout(fn, 80));
+  schedule(() => {
+    _outboxProgressRenderQueued = false;
+    renderOutbox();
+  });
+}
+
+function _setOutboxProgress(item, progress) {
+  if (!item || !item.id) return;
+  const totalBytes = Math.max(0, Number(progress.totalBytes || 0));
+  const loadedBytes = Math.max(0, Math.min(totalBytes || Number.MAX_SAFE_INTEGER, Number(progress.loadedBytes || 0)));
+  const percent = Number.isFinite(progress.percent)
+    ? progress.percent
+    : (totalBytes ? Math.round((loadedBytes / totalBytes) * 100) : null);
+
+  _outboxUploadProgress.set(item.id, Object.assign({}, progress, {
+    loadedBytes,
+    totalBytes,
+    percent,
+  }));
+  _scheduleOutboxRender();
+}
+
+function _clearOutboxProgress(item) {
+  if (!item || !item.id) return;
+  _outboxUploadProgress.delete(item.id);
+  _scheduleOutboxRender();
 }
 
 function renderOutboxDebug() {
@@ -115,6 +198,7 @@ function renderOutbox() {
       </button></div>
       ${failNote}
       ${lastError}
+      ${_outboxProgressHtml(item)}
       <div class="card-actions">
         <button class="card-btn" onclick="editOutbox(${i})" ${sending ? 'disabled' : ''}>✎ ${_obHtml(s.editForm)}</button>
         <button class="card-btn primary" onclick="sendSingle(${i})" ${sending ? 'disabled' : ''}>${sending ? _obHtml(s.sending) : _obHtml(item.failed ? s.retry : s.invia)}</button>
@@ -129,12 +213,32 @@ function renderOutbox() {
 // sentForms and drop its record; on a permanent failure flag it so we stop
 // auto-retrying. instanceID makes the send idempotent.
 async function _sendItem(item) {
-  const xml = item.xml || buildSubmissionXml(item.answers, item.mediaFiles, item.id);
   item.lastAttemptAt = new Date().toLocaleString();
   item.attempts = (item.attempts || 0) + 1;
   delete item.lastError;
   delete item.lastStatus;
-  const res = await doSubmit(xml, item.mediaFiles, item.submissionId);
+  let res;
+  try {
+    _setOutboxProgress(item, { phase: 'prepare', percent: null });
+    const externalChanged = await prepareExternalFilesForSubmit(item, {
+      onProgress: progress => _setOutboxProgress(item, progress),
+    });
+    const mustRebuildXml = externalChanged || hasExternalFileAnswers(item.answers);
+    const xml = !mustRebuildXml && item.xml
+      ? item.xml
+      : buildSubmissionXml(item.answers, nativeMediaFiles(item.mediaFiles), item.id);
+    item.xml = xml;
+    _setOutboxProgress(item, { phase: 'submit', percent: null });
+    res = await doSubmit(xml, nativeMediaFiles(item.mediaFiles), item.submissionId);
+  } catch (error) {
+    res = {
+      ok: false,
+      permanent: false,
+      status: 0,
+      message: error && error.message ? error.message : tr().externalUploadFailed,
+    };
+  }
+  _clearOutboxProgress(item);
   if (res.submissionId) item.submissionId = res.submissionId;
   if (res.koboId) item.koboId = res.koboId;
   if (res.koboUuid) item.koboUuid = res.koboUuid;
@@ -203,7 +307,16 @@ async function autoSync() {
   if (_autoSyncing || _sendingIds.size || window._compiling || !navigator.onLine || !pending().length) return;
   _autoSyncing = true;
   try {
-    for (const item of pending()) await _sendItem(item);
+    for (const item of pending()) {
+      _sendingIds.add(item.id);
+      if (document.getElementById('outbox-list')) renderOutbox();
+      try {
+        await _sendItem(item);
+      } finally {
+        _sendingIds.delete(item.id);
+        _clearOutboxProgress(item);
+      }
+    }
   } finally {
     _autoSyncing = false;
   }
@@ -238,7 +351,10 @@ async function sendAllOutbox() {
     for (const item of queue) await _sendItem(item);
   } finally {
     _autoSyncing = false;
-    queue.forEach(item => _sendingIds.delete(item.id));
+    queue.forEach(item => {
+      _sendingIds.delete(item.id);
+      _clearOutboxProgress(item);
+    });
   }
   updateOutboxBadge();
   renderOutbox();

@@ -17,7 +17,9 @@
  * structure lands in "extra" columns and leaves the form's real columns empty.
  * Each PAGES section is a group; calculate fields are placed by their xpath
  * (paese_group at the top level, file_name inside sez_materiali). Media fields
- * carry only the filename (the binary is sent as a separate multipart part).
+ * native media fields carry only the filename (the binary is sent as a separate
+ * multipart part). xfile_* fields carry JSON metadata for files already uploaded
+ * directly to S3.
  * Built once at completion and stored, so a queued submission is immune to
  * later changes of the form schema.
  */
@@ -29,6 +31,9 @@ function buildSubmissionXml(ans, mf, instanceId) {
     const v = ans[name];
     if (v === undefined || v === null || v === '' ||
         (Array.isArray(v) && v.length === 0)) return '';
+    if (typeof isExternalFileName === 'function' && isExternalFileName(name)) {
+      return `<${name}>${esc(v)}</${name}>`;
+    }
     if (mf[name]) return `<${name}>${esc(mf[name].name)}</${name}>`;   // filename only
     return `<${name}>${esc(Array.isArray(v) ? v.join(' ') : v)}</${name}>`;
   };
@@ -134,8 +139,11 @@ async function doSubmit(xml, mf, submissionId) {
       formData.append('kobo_asset_uid', UID);
     }
 
-    // Media attachments: each file keyed by its field name
-    Object.entries(mf).forEach(([fieldName, file]) => {
+    // Native Kobo media attachments: each file keyed by its field name.
+    // xfile_* entries are uploaded to S3 before this function and are not sent
+    // to Kobo as binary attachments.
+    const koboMediaFiles = typeof nativeMediaFiles === 'function' ? nativeMediaFiles(mf) : mf;
+    Object.entries(koboMediaFiles).forEach(([fieldName, file]) => {
       formData.append(fieldName, file, file.name);
     });
 

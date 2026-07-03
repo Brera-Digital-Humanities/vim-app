@@ -27,9 +27,11 @@ function loadEnv() {
   return env;
 }
 
-// Field types VIM knows how to render. Metadata rows are skipped.
+// Field types VIM knows how to render. Metadata rows are skipped. Kobo stores
+// external files in hidden xfile_* fields, but the VIM app renders them as
+// upload controls and writes JSON metadata back into those hidden fields.
 const FIELD_TYPES = new Set(['text','integer','decimal','date','time','dateTime',
-  'select_one','select_multiple','audio','image','video','file','note','geopoint']);
+  'select_one','select_multiple','audio','image','video','file','xfile','note','geopoint']);
 
 async function main() {
   const env = loadEnv();
@@ -78,7 +80,8 @@ async function main() {
   const CALCULATIONS = [];   // ordered [name, expr]; calculate fields aren't rendered
   let cur = null;
   for (const row of content.survey) {
-    const t = row.type;
+    const rawType = row.type;
+    const t = rawType === 'hidden' && /^xfile_/.test(row.name || '') ? 'xfile' : rawType;
     // calculate fields are not rendered, but their value feeds cascading selects
     // (choice_filter, e.g. region_district's pg=${paese_group}) and metadata.
     if (t === 'calculate' && row.name && row.calculation) {

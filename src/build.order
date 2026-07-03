@@ -32,6 +32,7 @@ core/relevant.js
 core/calculate.js
 core/router.js
 core/auth.js
+core/uploads.js
 core/feedback.js
 core/connectivity.js
 screens/lang/lang.js

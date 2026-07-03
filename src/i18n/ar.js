@@ -106,7 +106,14 @@ const VIM_LANG_ar = {
       httpStatus:  'HTTP',
       networkError: 'خطأ في الشبكة',
       form:        'النموذج',
-      mediaLargeWarn: 'ملف كبير، قد يفشل الإرسال.',
+      mediaLargeWarn: 'ملف كبير: سيستخدم الإرسال التخزين الخارجي إذا كان الحقل يدعمه.',
+      externalUploadFailed: 'فشل رفع الملف الخارجي.',
+      externalUploadEtagMissing: 'لا يمكن إكمال الرفع المتعدد: لا يعرض الحاوي ترويسة ETag. تحقق من إعداد CORS.',
+      externalUploadPreparing: 'جارٍ تحضير الملف…',
+      externalUploadProgress: 'جارٍ رفع الملف',
+      externalUploadCompleting: 'جارٍ إكمال الرفع…',
+      submitPreparing: 'جارٍ تحضير الإرسال…',
+      submitToKobo: 'جارٍ إرسال النموذج إلى Kobo…',
       removeFile:    'إزالة الملف',
       // Welcome popup shown once after the first language choice; reopened
       // from the home via the disclaimerLink. disclaimerText is rendered as

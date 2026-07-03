@@ -119,7 +119,14 @@ const VIM_LANG_it = {
       httpStatus:  'HTTP',
       networkError: 'Errore di rete',
       form:        'Modulo',
-      mediaLargeWarn: 'File grande, l’invio potrebbe non riuscire.',
+      mediaLargeWarn: 'File grande: l’invio userà lo storage esterno se il campo lo prevede.',
+      externalUploadFailed: 'Upload del file esterno non riuscito.',
+      externalUploadEtagMissing: 'Upload multipart incompleto: il bucket non espone l’header ETag. Verifica la configurazione CORS.',
+      externalUploadPreparing: 'Preparazione file…',
+      externalUploadProgress: 'Caricamento file',
+      externalUploadCompleting: 'Completamento upload…',
+      submitPreparing: 'Preparazione invio…',
+      submitToKobo: 'Invio modulo a Kobo…',
       removeFile:    'Rimuovi file',
       // Welcome popup shown once after the first language choice; reopened
       // from the home via the disclaimerLink. disclaimerText is rendered as

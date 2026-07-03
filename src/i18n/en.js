@@ -106,7 +106,14 @@ const VIM_LANG_en = {
       httpStatus:  'HTTP',
       networkError: 'Network error',
       form:        'Form',
-      mediaLargeWarn: 'Large file, the upload may fail.',
+      mediaLargeWarn: 'Large file: submission will use external storage when this field supports it.',
+      externalUploadFailed: 'External file upload failed.',
+      externalUploadEtagMissing: 'Multipart upload cannot complete: the bucket does not expose the ETag header. Check CORS configuration.',
+      externalUploadPreparing: 'Preparing file…',
+      externalUploadProgress: 'Uploading file',
+      externalUploadCompleting: 'Completing upload…',
+      submitPreparing: 'Preparing submission…',
+      submitToKobo: 'Submitting form to Kobo…',
       removeFile:    'Remove file',
       // Welcome popup shown once after the first language choice; reopened
       // from the home via the disclaimerLink. disclaimerText is rendered as

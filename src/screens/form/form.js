@@ -339,11 +339,12 @@ function _finalizeComplete(autoSend) {
   recalc();              // ensure calculate fields (paese_group, file_name) are current
   clearHiddenFields();   // safety net: never submit values of hidden fields
   const id = window._instanceId || newId();   // stable instanceID for dedup
+  const pendingExternal = hasPendingExternalMedia(mediaFiles);
   const saved = {
     id,
     answers:    JSON.parse(JSON.stringify(answers)),
     mediaFiles: mediaFiles,
-    xml:        buildSubmissionXml(answers, mediaFiles, id),   // snapshot (schema-proof)
+    xml:        pendingExternal ? null : buildSubmissionXml(answers, nativeMediaFiles(mediaFiles), id),
     schemaSig:  schemaSig(),                                   // detect later schema changes
     autoSend:   autoSend !== false,
     savedAt:    new Date().toLocaleString(),
@@ -408,7 +409,7 @@ function schemaSig() {
 /**
  * buildQuestion(q) — Build the HTML for a single form field.
  * Types: text/integer/decimal/date/email → standard inputs · audio/image/video/
- * file → media field (two buttons) · select_one {list} → radio choices.
+ * file/xfile → media field (two buttons) · select_one {list} → radio choices.
  */
 function buildQuestion(q) {
   const label    = getLabel(q);
@@ -434,6 +435,7 @@ function buildQuestion(q) {
   else if (t === 'image')                html += buildMediaField(q, 'image');
   else if (t === 'video')                html += buildMediaField(q, 'video');
   else if (t === 'file')                 html += buildMediaField(q, 'file');
+  else if (t === 'xfile')                html += buildMediaField(q, externalKindForField(q.name, null));
   else if (listName)                     html += buildChoices(q, listName, 'radio');
   else                                   html += `<input type="text" name="${q.name}" value="${val}" placeholder="…"/>`;
 
@@ -448,7 +450,7 @@ function buildQuestion(q) {
  */
 function buildMediaField(q, kind) {
   const s   = tr();
-  const cap = mediaFiles[q.name]; // file already captured (if any)
+  const cap = mediaFiles[q.name] || uploadedExternalFileInfo(q.name); // file already captured/uploaded (if any)
 
   // Per-type configuration
   let recLabel, uplLabel, recAccept, uplAccept, recCapture, icon;
@@ -548,6 +550,15 @@ function handleMedia(event, name, kind) {
   const file = event.target.files[0];
   if (!file) return;
   storeMediaFile(name, kind, file);
+}
+
+function uploadedExternalFileInfo(name) {
+  if (!isExternalFileName(name) || !isUploadedExternalFileValue(answers[name])) return null;
+  try {
+    return JSON.parse(answers[name]);
+  } catch (error) {
+    return null;
+  }
 }
 
 function storeMediaFile(name, kind, file) {
@@ -856,7 +867,7 @@ function isFieldRequired(f) { return f.required === 'yes' || f.required === 'tru
 
 // Empty check; media fields keep their value in mediaFiles, not answers.
 function isFieldEmpty(f) {
-  if (/^(audio|image|video|file)$/.test(f.type) && mediaFiles[f.name]) return false;
+  if (/^(audio|image|video|file|xfile)$/.test(f.type) && (mediaFiles[f.name] || answers[f.name])) return false;
   const v = answers[f.name];
   return v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0);
 }
