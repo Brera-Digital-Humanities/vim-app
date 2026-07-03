@@ -113,6 +113,7 @@ const VIM_LANG_ar = {
       externalUploadCompleting: 'جارٍ إكمال الرفع…',
       submitPreparing: 'جارٍ تحضير الإرسال…',
       submitToKobo: 'جارٍ إرسال النموذج إلى Kobo…',
+      submitNativeMediaTooLarge: 'الملف "{file}" ({size}) لا يزال مرفقاً كوسائط Kobo أصلية. حدّث التطبيق وأعد إنشاء الإرسال كي تستخدم الملفات الكبيرة رافع الملفات الخارجي.',
       removeFile:    'إزالة الملف',
       // Welcome popup shown once after the first language choice; reopened
       // from the home via the disclaimerLink. disclaimerText is rendered as

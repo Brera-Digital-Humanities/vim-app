@@ -74,6 +74,7 @@ function buildSubmissionXml(ans, mf, instanceId) {
  *          permanent=true when a retry can't help (e.g. file too large / bad request).
  */
 const SUBMIT_TIMEOUT_MS = 120000;   // abort a stalled upload so the queue isn't blocked
+const SUBMIT_NATIVE_MEDIA_MAX_BYTES = 12 * 1024 * 1024;
 
 function _shortText(value, max) {
   const text = String(value || '')
@@ -90,6 +91,23 @@ function _flattenError(value) {
   if (Array.isArray(value)) return value.map(_flattenError).filter(Boolean).join(' ');
   if (typeof value === 'object') return Object.values(value).map(_flattenError).filter(Boolean).join(' ');
   return String(value);
+}
+
+function _formatBytes(bytes) {
+  const value = Math.max(0, Number(bytes || 0));
+  if (value >= 1024 * 1024) return `${(value / 1024 / 1024).toFixed(value >= 10 * 1024 * 1024 ? 0 : 1)} MB`;
+  if (value >= 1024) return `${Math.round(value / 1024)} KB`;
+  return `${value} B`;
+}
+
+function _nativeMediaTooLargeMessage(fieldName, file) {
+  const s = typeof tr === 'function' ? tr() : {};
+  const template = s.submitNativeMediaTooLarge ||
+    'The file "{file}" ({size}) is still attached as native Kobo media. Refresh the app and recreate the submission so large files use the external uploader.';
+  return template
+    .replace('{field}', String(fieldName || 'file'))
+    .replace('{file}', String((file && file.name) || fieldName || 'file'))
+    .replace('{size}', _formatBytes(file && file.size));
 }
 
 async function _readSubmitResponse(response) {
@@ -143,6 +161,18 @@ async function doSubmit(xml, mf, submissionId) {
     // xfile_* entries are uploaded to S3 before this function and are not sent
     // to Kobo as binary attachments.
     const koboMediaFiles = typeof nativeMediaFiles === 'function' ? nativeMediaFiles(mf) : mf;
+    const tooLargeNativeMedia = Object.entries(koboMediaFiles || {}).find(([, file]) => {
+      return Number(file && file.size ? file.size : 0) > SUBMIT_NATIVE_MEDIA_MAX_BYTES;
+    });
+    if (tooLargeNativeMedia) {
+      clearTimeout(timer);
+      return {
+        ok: false,
+        permanent: true,
+        status: 0,
+        message: _nativeMediaTooLargeMessage(tooLargeNativeMedia[0], tooLargeNativeMedia[1]),
+      };
+    }
     Object.entries(koboMediaFiles).forEach(([fieldName, file]) => {
       formData.append(fieldName, file, file.name);
     });

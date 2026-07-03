@@ -113,6 +113,7 @@ const VIM_LANG_en = {
       externalUploadCompleting: 'Completing upload…',
       submitPreparing: 'Preparing submission…',
       submitToKobo: 'Submitting form to Kobo…',
+      submitNativeMediaTooLarge: 'The file "{file}" ({size}) is still attached as native Kobo media. Refresh the app and recreate the submission so large files use the external uploader.',
       removeFile:    'Remove file',
       // Welcome popup shown once after the first language choice; reopened
       // from the home via the disclaimerLink. disclaimerText is rendered as
