@@ -572,13 +572,15 @@ function storeMediaFile(name, kind, file) {
     if (txt) txt.textContent = '✓ ' + file.name;
   }
 
-  // Large-file warning (soft: the server may reject very large attachments)
+  // Large-file warning only applies to native Kobo attachments. xfile_* uploads
+  // are handled by the external S3/proxy flow and can exceed Kobo limits.
   const warn = document.getElementById('media-warn-' + name);
   if (warn) {
     const mb = file.size / (1024 * 1024);
-    const big = mb > MAX_MEDIA_MB;
+    const big = !isExternalFileName(name) && mb > MAX_MEDIA_MB;
     warn.style.display = big ? '' : 'none';
     if (big) warn.textContent = `(${mb.toFixed(0)} MB) ` + tr().mediaLargeWarn;
+    else warn.textContent = '';
   }
 
   // Inline preview

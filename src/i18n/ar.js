@@ -106,7 +106,7 @@ const VIM_LANG_ar = {
       httpStatus:  'HTTP',
       networkError: 'خطأ في الشبكة',
       form:        'النموذج',
-      mediaLargeWarn: 'ملف كبير: سيستخدم الإرسال التخزين الخارجي إذا كان الحقل يدعمه.',
+      mediaLargeWarn: 'ملف كبير: قد لا يقبل Kobo هذا المرفق الأصلي.',
       externalUploadFailed: 'فشل رفع الملف الخارجي.',
       externalUploadEtagMissing: 'لا يمكن إكمال الرفع المتعدد: لا يعرض الحاوي ترويسة ETag. تحقق من إعداد CORS.',
       externalUploadPreparing: 'جارٍ تحضير الملف…',

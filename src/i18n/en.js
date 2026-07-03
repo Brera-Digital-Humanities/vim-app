@@ -106,7 +106,7 @@ const VIM_LANG_en = {
       httpStatus:  'HTTP',
       networkError: 'Network error',
       form:        'Form',
-      mediaLargeWarn: 'Large file: submission will use external storage when this field supports it.',
+      mediaLargeWarn: 'Large file: this native Kobo attachment may be rejected.',
       externalUploadFailed: 'External file upload failed.',
       externalUploadEtagMissing: 'Multipart upload cannot complete: the bucket does not expose the ETag header. Check CORS configuration.',
       externalUploadPreparing: 'Preparing file…',
